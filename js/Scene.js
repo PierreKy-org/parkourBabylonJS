@@ -1,3 +1,4 @@
+import Box from "./Box.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 
@@ -24,6 +25,7 @@ export default class Scene {
 
   initCamera() {
     var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), this.scene);
+    camera.rotationOffset = 180;
     camera.inputs.clear();
     camera.checkCollisions = true;
 
@@ -38,7 +40,7 @@ export default class Scene {
   initGround() {
     var ground = BABYLON.MeshBuilder.CreateGround(
       "ground",
-      { width: 100, height: 100, updtable: false, subdivisions: 1 },
+      { width: 500, height: 20, updtable: false, subdivisions: 1 },
       this.scene
     );
 
@@ -86,26 +88,7 @@ export default class Scene {
         json.forEach((line, x) => {
           line.forEach((column, y) => {
             if (column != 0) {
-              const pX = json.length - x;
-              const pY = y;
-              const box = BABYLON.MeshBuilder.CreateBox(`box_${x}_${y}`, { height: 1, width: 1, depth: 1 });
-              box.position = new BABYLON.Vector3(pY, pX, 0);
-              box.checkCollisions = true;
-
-              box.physicsImpostor = new BABYLON.PhysicsImpostor(
-                box,
-                BABYLON.PhysicsImpostor.BoxImpostor,
-                { mass: 0 },
-                this.scene
-              );
-
-              box.enableEdgesRendering();
-              box.edgesWidth = 4.0;
-              box.edgesColor = new BABYLON.Color4(0, 0, 1, 1);
-
-              var myMaterial = new BABYLON.StandardMaterial("myMaterial", this.scene);
-
-              box.material = myMaterial;
+              new Box(json.length - x, y, 0);
             }
           });
         })
