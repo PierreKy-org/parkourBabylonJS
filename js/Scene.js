@@ -20,7 +20,10 @@ export default class Scene {
 
     this.initEvents();
 
-    this.initLevel();
+    (async () => {
+      await this.initLevel();
+      this.gui.map(this);
+    })();
   }
 
   initCamera() {
@@ -81,18 +84,16 @@ export default class Scene {
     window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
   }
 
-  initLevel() {
-    fetch("./assets/level1.json")
-      .then((res) => res.json())
-      .then((json) =>
-        json.forEach((line, x) => {
-          line.forEach((column, y) => {
-            if (column != 0) {
-              new Box(json.length - x, y, 0);
-            }
-          });
-        })
-      );
+  async initLevel() {
+    let file = await fetch("./assets/level1.json");
+    this.map = await file.json();
+    this.map.forEach((line, x) => {
+      line.forEach((column, y) => {
+        if (column != 0) {
+          new Box(this.map.length - x, y, 0);
+        }
+      });
+    });
   }
 
   render() {

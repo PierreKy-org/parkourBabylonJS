@@ -22,4 +22,25 @@ export default class Gui {
       2
     )}, z: ${lv.z.toFixed(2)}\nAngular Velocity  x:${av.x.toFixed(2)}, y: ${av.y.toFixed(2)}, z: ${av.z.toFixed(2)}`;
   }
+
+  map(scene) {
+    if (scene.map) {
+      let width = 10;
+      let offsetX = window.innerWidth / 2 - width * 2;
+      let offsetY = window.innerHeight / 2 - width * 2;
+      scene.map.forEach((line, x) => {
+        line.forEach((column, y) => {
+          if (column != 0) {
+            var rect = new BABYLON.GUI.Rectangle();
+            rect.width = `${width}px`;
+            rect.height = `${width}px`;
+            rect.left = y * width - offsetX;
+            rect.top = -(this.map.length - x) * width - offsetY;
+            rect.background = "green";
+            this.advancedTexture.addControl(rect);
+          }
+        });
+      });
+    }
+  }
 }
