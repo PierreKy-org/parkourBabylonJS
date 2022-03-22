@@ -1,79 +1,70 @@
 export default class Player {
   constructor(scene) {
     this.scene = scene;
-    this.head = BABYLON.MeshBuilder.CreateSphere(
+    this.mesh = BABYLON.MeshBuilder.CreateSphere(
       "playerHead",
       { height: 1, width: 1, depth: 1, diameter: 0.5 },
       this.scene.scene
     );
-    this.head.material = new BABYLON.StandardMaterial("materialHead", this.scene.scene);
-    this.head.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
+    this.mesh.material = new BABYLON.StandardMaterial("materialHead", this.scene.scene);
+    this.mesh.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
 
-    this.initEyes();
-
-    this.player = BABYLON.Mesh.MergeMeshes([this.head, this.eyeL, this.eyeR], true, true, undefined, false, true);
+    var texture = new BABYLON.Texture("../assets/cross.png", this.scene.scene);
+    this.mesh.material.diffuseTexture = texture;
 
     this.initPhisics();
   }
 
   initPhisics() {
-    this.head.physicsImpostor = new BABYLON.PhysicsImpostor(
-      this.player,
+    this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
+      this.mesh,
       BABYLON.PhysicsImpostor.SphereImpostor,
       { mass: 1, friction: 1, restitution: 3.5 },
       this.scene.scene
     );
-    this.player.position = new BABYLON.Vector3(0, 10, 0);
+    this.mesh.reIntegrateRotationIntoRotationQuaternion = true;
+    this.mesh.position = new BABYLON.Vector3(0, 10, 0);
 
-    this.player.showBoundingBox = true;
+    this.mesh.showBoundingBox = true;
 
-    this.scene.camera.lockedTarget = this.player;
+    //this.scene.camera.lockedTarget = this.mesh;
 
-    this.groundCheckRay = new BABYLON.Ray(this.player.position, new BABYLON.Vector3(0, -1, 0), 10);
+    this.groundCheckRay = new BABYLON.Ray(this.mesh.position, new BABYLON.Vector3(0, -1, 0), 10);
 
     this.speed = 0;
     this.jump = 2;
+    this.angle = 0;
     this.lastJump = Date.now();
-  }
-
-  initEyes() {
-    this.eyeL = BABYLON.Mesh.CreatePolyhedron("playerEyeL", { type: 1, size: 0.1 }, this.scene.scene);
-    this.eyeL.position.z = 0.5;
-    this.eyeL.material = new BABYLON.StandardMaterial("materialEyeL", this.scene.scene);
-    this.eyeL.material.emissiveColor = new BABYLON.Color3(0, 0, 1);
-
-    this.eyeR = BABYLON.Mesh.CreatePolyhedron("playerEyeR", { type: 1, size: 0.1 }, this.scene.scene);
-    this.eyeR.position.z = -0.5;
-    this.eyeR.material = new BABYLON.StandardMaterial("materialEyeR", this.scene.scene);
-    this.eyeR.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
   }
 
   move() {
     this.checkGroundDistance();
     if (this.scene.inputStates.up && this.canJump()) {
-      this.head.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(-this.speed, 8, 0));
+      this.setLinearVelocity();
       this.jump--;
       this.lastJump = Date.now();
     }
     if (this.scene.inputStates.down) {
       this.speed = 0;
-      this.head.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-      this.head.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+
+      this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+      this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+      this.resetRotation();
     }
     if (this.scene.inputStates.left) {
       this.updateSpeed(true);
-      this.head.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, this.speed, 0));
+      this.setAngularVelocity();
     }
     if (this.scene.inputStates.right) {
       this.updateSpeed(false);
-      this.head.physicsImpostor.setAngularVelocity(new BABYLON.Quaternion(0, 0, this.speed, 0));
+      this.setAngularVelocity();
     }
     this.updateColor();
   }
 
   checkGroundDistance() {
-    this.groundCheckRay.origin = this.player.getAbsolutePosition();
-    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => mesh != this.player).distance;
+    this.groundCheckRay.origin = this.mesh.getAbsolutePosition();
+    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => mesh != this.mesh).distance;
     if (distance != 0 && distance <= 0.5 + 0.2) {
       this.jump = 2;
     }
@@ -81,6 +72,50 @@ export default class Player {
 
   canJump() {
     return this.jump > 0 && Date.now() - this.lastJump > 200;
+  }
+
+  resetRotation() {
+    this.mesh.rotationQuaternion.x = 0;
+    this.mesh.rotationQuaternion.y = 0;
+    this.mesh.rotationQuaternion.z = 0;
+  }
+
+  setLinearVelocity() {
+    var vector;
+    switch (this.angle) {
+      case 0:
+        vector = new BABYLON.Vector3(-this.speed, 8, 0);
+        break;
+      case 90:
+        vector = new BABYLON.Vector3(0, 8, this.speed);
+        break;
+      case 180:
+        vector = new BABYLON.Vector3(this.speed, 8, 0);
+        break;
+      case 270:
+        vector = new BABYLON.Vector3(0, 8, -this.speed);
+        break;
+    }
+    this.mesh.physicsImpostor.setLinearVelocity(vector);
+  }
+
+  setAngularVelocity() {
+    var vector;
+    switch (this.angle) {
+      case 0:
+        vector = new BABYLON.Quaternion(0, 0, this.speed, 0);
+        break;
+      case 90:
+        vector = new BABYLON.Quaternion(this.speed, 0, 0, 0);
+        break;
+      case 180:
+        vector = new BABYLON.Quaternion(0, 0, -this.speed, 0);
+        break;
+      case 270:
+        vector = new BABYLON.Quaternion(-this.speed, 0, 0, 0);
+        break;
+    }
+    this.mesh.physicsImpostor.setAngularVelocity(vector);
   }
 
   updateSpeed(increase) {
@@ -117,6 +152,6 @@ export default class Player {
       default:
         color = new BABYLON.Color3(1, 1, 1);
     }
-    this.head.material.emissiveColor = color;
+    this.mesh.material.emissiveColor = color;
   }
 }

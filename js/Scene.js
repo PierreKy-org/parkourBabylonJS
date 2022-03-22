@@ -1,4 +1,5 @@
-import Box from "./Box.js";
+import Box from "./elements/Box.js";
+import Rotator from "./elements/Rotator.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 
@@ -27,10 +28,11 @@ export default class Scene {
   }
 
   initCamera() {
-    var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(0, 0, 0), this.scene);
+    var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(10, 10, 10), this.scene);
     camera.rotationOffset = 180;
     camera.inputs.clear();
-    camera.checkCollisions = true;
+    camera.radius = 5;
+    camera.cameraAcceleration = 0.5;
 
     return camera;
   }
@@ -55,6 +57,8 @@ export default class Scene {
       { mass: 0 },
       this.scene
     );
+    ground.reIntegrateRotationIntoRotationQuaternion = true;
+
     ground.checkCollisions = true;
 
     return ground;
@@ -89,8 +93,14 @@ export default class Scene {
     this.map = await file.json();
     this.map.forEach((line, x) => {
       line.forEach((column, y) => {
-        if (column != 0) {
-          new Box(this.map.length - x, y, 0);
+        switch (column) {
+          case 1:
+            new Box(this.map.length - x, y, 0, this);
+            break;
+          case 2:
+            new Rotator(this.map.length - x, y, 0, this);
+            break;
+          default:
         }
       });
     });

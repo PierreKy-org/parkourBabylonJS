@@ -13,12 +13,12 @@ export default class Gui {
   }
 
   update() {
-    let playerPos = this.scene.player.player.position;
-    let lv = this.scene.player.head.physicsImpostor.getLinearVelocity();
-    let av = this.scene.player.head.physicsImpostor.getAngularVelocity();
+    let playerPos = this.scene.player.mesh.position;
+    let lv = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
+    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
     this.position.text = `x:${playerPos.x.toFixed(2)}\ny:${playerPos.y.toFixed(2)}\nz:${playerPos.z.toFixed(
       2
-    )}\nv:${this.scene.player.speed.toFixed(2)}\nLinear Velocity  x:${lv.x.toFixed(2)}, y: ${lv.y.toFixed(
+    )}\nv:${this.scene.player.speed.toFixed(2)}\nLinear Velocity  x:${lv.x.toFixed(2)}, y: ${(lv.y + 0.001).toFixed(
       2
     )}, z: ${lv.z.toFixed(2)}\nAngular Velocity  x:${av.x.toFixed(2)}, y: ${av.y.toFixed(2)}, z: ${av.z.toFixed(2)}`;
   }

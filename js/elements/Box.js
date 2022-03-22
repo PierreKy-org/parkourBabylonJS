@@ -1,5 +1,6 @@
 export default class Box {
-  constructor(pX, pY, pZ) {
+  constructor(pX, pY, pZ, scene) {
+    this.scene = scene;
     this.box = BABYLON.MeshBuilder.CreateBox(`box_${pX}_${pY}_${pZ}`, { height: 1, width: 1, depth: 1 });
     this.box.position = new BABYLON.Vector3(pY, pX, pZ);
     this.box.checkCollisions = true;
@@ -8,13 +9,13 @@ export default class Box {
       this.box,
       BABYLON.PhysicsImpostor.BoxImpostor,
       { mass: 0 },
-      this.scene
+      this.scene.scene
     );
 
     this.box.enableEdgesRendering();
     this.box.edgesWidth = 4.0;
     this.box.edgesColor = new BABYLON.Color4(0, 0, 1, 1);
 
-    this.box.material = new BABYLON.StandardMaterial("myMaterial", this.scene);
+    this.box.material = new BABYLON.StandardMaterial("myMaterial", this.scene.scene);
   }
 }
