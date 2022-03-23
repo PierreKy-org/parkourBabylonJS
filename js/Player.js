@@ -27,8 +27,6 @@ export default class Player {
 
     this.mesh.showBoundingBox = true;
 
-    //this.scene.camera.lockedTarget = this.mesh;
-
     this.groundCheckRay = new BABYLON.Ray(this.mesh.position, new BABYLON.Vector3(0, -1, 0), 10);
 
     this.speed = 0;

@@ -13,11 +13,10 @@ export default class Scene {
 
     this.gui = new Gui(this);
 
+    this.player = new Player(this);
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
-
-    this.player = new Player(this);
 
     this.initEvents();
 
@@ -28,11 +27,14 @@ export default class Scene {
   }
 
   initCamera() {
-    var camera = new BABYLON.FollowCamera("FollowCam", new BABYLON.Vector3(10, 10, 10), this.scene);
-    camera.rotationOffset = 180;
-    camera.inputs.clear();
-    camera.radius = 5;
-    camera.cameraAcceleration = 0.5;
+    var camera = new BABYLON.ArcFollowCamera(
+      "FollowCam",
+      BABYLON.Tools.ToRadians(270),
+      0,
+      10,
+      this.player.mesh,
+      this.scene
+    );
 
     return camera;
   }

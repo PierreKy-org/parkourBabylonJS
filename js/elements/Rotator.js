@@ -7,7 +7,7 @@ export default class Rotator extends Box {
     this.box.material.emissiveColor = new BABYLON.Color3(1, 0, 1);
     this.box.showBoundingBox = true;
 
-    this.scene.camera.lockedTarget = this.box;
+    //this.scene.camera.lockedTarget = this.box;
 
     this.initBoundingBox();
   }
@@ -35,10 +35,12 @@ export default class Rotator extends Box {
   }
 
   onPlayerCollision() {
+    //Tourne le joueur de la camera de 90°
     this.scene.player.angle = (this.scene.player.mesh.rotationQuaternion.y + 90) % 360;
     this.scene.player.mesh.rotationQuaternion.y = this.scene.player.angle;
-    //this.scene.camera.rotationOffset = (this.scene.player.mesh.rotationQuaternion.y + 180) % 360;
+    this.scene.camera.alpha = BABYLON.Tools.ToRadians((this.scene.player.mesh.rotationQuaternion.y + 90) % 360);
 
+    //Conserve la vitesse et l'acceleration mais change la direction
     this.scene.player.resetRotation();
     let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
     this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, av.x));
