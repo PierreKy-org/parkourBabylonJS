@@ -1,5 +1,5 @@
 export default class Box {
-  constructor(pX, pY, pZ, scene, triggerType = null) {
+  constructor(pX, pY, pZ, scene) {
     this.scene = scene;
     this.box = BABYLON.MeshBuilder.CreateBox(`box_${pX}_${pY}_${pZ}`, {
       height: 1,
@@ -26,22 +26,8 @@ export default class Box {
     );
   }
 
-  initBoundingBox(triggerType) {
-    if (triggerType === null) return;
-    else {
-      this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
-      this.box.actionManager.registerAction(
-        new BABYLON.ExecuteCodeAction(
-          {
-            trigger: triggerType,
-            parameter: {
-              mesh: this.scene.player.mesh,
-            },
-          },
-          () => this.onPlayerCollision()
-        )
-      );
-    }
+  initBoundingBox() {
+    return;
   }
 
   onPlayerCollision() {}
