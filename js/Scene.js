@@ -120,8 +120,7 @@ export default class Scene {
               this.map.length - x,
               y,
               0,
-              this,
-              BABYLON.ActionManager.OnIntersectionExitTrigger
+              this
             );
             break;
           case 3:
@@ -129,8 +128,7 @@ export default class Scene {
               this.map.length - x,
               y,
               0,
-              this,
-              BABYLON.ActionManager.OnIntersectionEnterTrigger
+              this
             );
             break;
           default:

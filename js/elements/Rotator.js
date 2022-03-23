@@ -1,7 +1,7 @@
 import Box from "./Box.js";
 
 export default class Rotator extends Box {
-  constructor(pX, pY, pZ, scene, triggerType) {
+  constructor(pX, pY, pZ, scene) {
     super(pX, pY, pZ, scene);
     this.box.material = new BABYLON.StandardMaterial(
       "materialHead",
@@ -12,12 +12,10 @@ export default class Rotator extends Box {
 
     //this.scene.camera.lockedTarget = this.box;
 
-    this.initBoundingBox(triggerType);
+    this.initBoundingBox();
   }
 
-  initBoundingBox(triggerType) {
-
-    super.initBoundingBox(triggerType);
+  initBoundingBox() {
     this.box.setBoundingInfo(
       new BABYLON.BoundingInfo(
         BABYLON.Vector3.Minimize(
@@ -30,6 +28,19 @@ export default class Rotator extends Box {
         )
       )
     );
+
+    this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
+      this.box.actionManager.registerAction(
+        new BABYLON.ExecuteCodeAction(
+          {
+            trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
+            parameter: {
+              mesh: this.scene.player.mesh,
+            },
+          },
+          () => this.onPlayerCollision()
+        )
+      );
   }
 
   onPlayerCollision() {

@@ -1,7 +1,7 @@
 import Box from "./Box.js";
 
 export default class Jump extends Box {
-  constructor(pX, pY, pZ, scene, triggerType) {
+  constructor(pX, pY, pZ, scene, ) {
     super(pX, pY, pZ, scene);
     this.box.material = new BABYLON.StandardMaterial(
       "materialHead",
@@ -12,11 +12,22 @@ export default class Jump extends Box {
 
     //this.scene.camera.lockedTarget = this.box;
 
-    this.initBoundingBox(triggerType);
+    this.initBoundingBox();
   }
 
-  initBoundingBox(triggerType) {
-    super.initBoundingBox(triggerType);
+  initBoundingBox() {
+    this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
+      this.box.actionManager.registerAction(
+        new BABYLON.ExecuteCodeAction(
+          {
+            trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+            parameter: {
+              mesh: this.scene.player.mesh,
+            },
+          },
+          () => this.onPlayerCollision()
+        )
+      );
   }
 
   onPlayerCollision() {

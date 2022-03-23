@@ -1,7 +1,7 @@
 import Box from "./Box.js";
 
 export default class Simple extends Box {
-  constructor(pX, pY, pZ, scene, triggerType) {
+  constructor(pX, pY, pZ, scene) {
     super(pX, pY, pZ, scene);
     this.box.material = new BABYLON.StandardMaterial(
       "materialHead",
@@ -12,14 +12,6 @@ export default class Simple extends Box {
 
     //this.scene.camera.lockedTarget = this.box;
 
-    this.initBoundingBox(triggerType);
-  }
-
-  initBoundingBox(triggerType) {
-    super.initBoundingBox(triggerType);
-  }
-
-  onPlayerCollision() {
-    return;
+    this.initBoundingBox();
   }
 }
