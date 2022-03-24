@@ -31,7 +31,7 @@ export default class Player {
 
     this.speed = 0;
     this.jump = 2;
-    this.angle = 0;
+    this.orientation = "front";
     this.lastJump = Date.now();
   }
 
@@ -56,14 +56,14 @@ export default class Player {
       this.updateSpeed(false);
       this.setAngularVelocity();
     }
-    if (this.scene.inputStates.r && this.lastCheckPoint) {
-      this.mesh.position = this.lastCheckPoint[0];
-      this.angle = this.lastCheckPoint[1];
+    if (this.scene.inputStates.r && this.lastCheckPointData) {
+      this.mesh.position = this.lastCheckPointData.position;
+      this.orientation = this.lastCheckPointData.orientation;
       this.speed = 0;
       this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
       this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
       this.resetRotation();
-      this.scene.camera.alpha = this.lastCheckPoint[2];
+      this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
     }
     this.updateColor();
   }
@@ -88,17 +88,17 @@ export default class Player {
 
   setLinearVelocity() {
     var vector;
-    switch (this.angle) {
-      case 0:
+    switch (this.orientation) {
+      case "front":
         vector = new BABYLON.Vector3(-this.speed, 8, 0);
         break;
-      case 90:
+      case "right":
         vector = new BABYLON.Vector3(0, 8, this.speed);
         break;
-      case 180:
+      case "back":
         vector = new BABYLON.Vector3(this.speed, 8, 0);
         break;
-      case 270:
+      case "left":
         vector = new BABYLON.Vector3(0, 8, -this.speed);
         break;
     }
@@ -107,17 +107,17 @@ export default class Player {
 
   setAngularVelocity() {
     var vector;
-    switch (this.angle) {
-      case 0:
+    switch (this.orientation) {
+      case "front":
         vector = new BABYLON.Quaternion(0, 0, this.speed, 0);
         break;
-      case 90:
+      case "right":
         vector = new BABYLON.Quaternion(this.speed, 0, 0, 0);
         break;
-      case 180:
+      case "back":
         vector = new BABYLON.Quaternion(0, 0, -this.speed, 0);
         break;
-      case 270:
+      case "left":
         vector = new BABYLON.Quaternion(-this.speed, 0, 0, 0);
         break;
     }

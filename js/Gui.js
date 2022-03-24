@@ -28,19 +28,34 @@ export default class Gui {
       let width = 10;
       let offsetX = window.innerWidth / 2 - width * 2;
       let offsetY = window.innerHeight / 2 - width * 2;
-      scene.map.forEach((line, x) => {
-        line.forEach((column, y) => {
-          if (column != 0) {
-            var rect = new BABYLON.GUI.Rectangle();
-            rect.width = `${width}px`;
-            rect.height = `${width}px`;
-            rect.left = y * width - offsetX;
-            rect.top = -(this.map.length - x) * width - offsetY;
-            rect.background = "green";
-            this.advancedTexture.addControl(rect);
-          }
+      let lastX = 0;
+      scene.map.forEach((plan) => {
+        plan.map.forEach((line, x) => {
+          line.forEach((column, y) => {
+            if (column != 0) {
+              var rect = new BABYLON.GUI.Rectangle();
+              rect.width = `${width}px`;
+              rect.height = `${width}px`;
+              rect.left = (x + lastX) * width - offsetX;
+              rect.top = -(this.map.length - y) * width - offsetY;
+              rect.background = this.getElementColor(column);
+              this.advancedTexture.addControl(rect);
+            }
+          });
         });
+        lastX += plan.map.length;
       });
+    }
+  }
+
+  getElementColor(value) {
+    switch (value) {
+      case 1:
+        return "orange";
+      case 2:
+        return "green";
+      default:
+        return "blue";
     }
   }
 }

@@ -1,8 +1,16 @@
 import Simple from "./elements/Simple.js";
-import Rotator from "./elements/Rotator.js";
+import {
+  RotatorFR,
+  RotatorFL,
+  RotatorBR,
+  RotatorBL,
+  RotatorLF,
+  RotatorLB,
+  RotatorRF,
+  RotatorRB,
+} from "./elements/Rotator.js";
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
-import Camera from "./Camera.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 
@@ -17,10 +25,9 @@ export default class Scene {
     this.gui = new Gui(this);
 
     this.player = new Player(this);
-    this.camera = new Camera(this);
+    this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
-    //this.skybox = this.initSkyBox();
 
     this.initEvents();
 
@@ -30,15 +37,22 @@ export default class Scene {
     })();
   }
 
+  initCamera() {
+    return new BABYLON.ArcFollowCamera("FollowCam", BABYLON.Tools.ToRadians(270), 57, 15, this.player.mesh, this.scene);
+  }
+
   initLight() {
-    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 1));
+    light.diffuse = new BABYLON.Color3(0.5, 0, 0);
+    light.specular = new BABYLON.Color3(0, 0, 0.5);
+    light.groundColor = new BABYLON.Color3(0, 0, 0.28);
     return light;
   }
 
   initGround() {
     var ground = BABYLON.MeshBuilder.CreateGround(
       "ground",
-      { width: 500, height: 20, updtable: false, subdivisions: 1 },
+      { width: 500, height: 500, updtable: false, subdivisions: 1 },
       this.scene
     );
 
@@ -57,23 +71,12 @@ export default class Scene {
     return ground;
   }
 
-  initSkyBox() {
-    var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 10.0 }, this.scene);
-    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", this.scene);
-    skyboxMaterial.backFaceCulling = false;
-    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("assets/skybox", this.scene);
-    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
-    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
-    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
-    skybox.material = skyboxMaterial;
-  }
-
   initEvents() {
     this.scene.onPointerPick = function (evt, pickInfo) {
       pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(250, 253, 0);
     };
 
-    this.inputStates = { left: false, right: false, up: false, down: false, r : false };
+    this.inputStates = { left: false, right: false, up: false, down: false, r: false };
 
     const changeInputState = (key, state) => {
       if (key === "ArrowLeft") {
@@ -97,28 +100,36 @@ export default class Scene {
   async initLevel() {
     let file = await fetch("./assets/level1.json");
     this.map = await file.json();
-    this.map.forEach((line, x) => {
-      line.forEach((column, y) => {
-        switch (column) {
-          case 1:
-            new Simple(this.map.length - x, y, 0, this);
-            break;
-          case 2:
-            new Rotator(this.map.length - x, y, 0, this);
-            break;
-          case 3:
-            new Jump(this.map.length - x, y, 0, this);
-            break;
-          case 4:
-            new Checkpoint(
-              this.map.length - x,
-              y,
-              0,
-              this
-            );
-            break;
-          default:
-        }
+
+    this.map.forEach((plan) => {
+      plan.map.forEach((line, x) => {
+        line.forEach((column, y) => {
+          const offset = {
+            front: { x: plan.origin.x + x, y: plan.origin.y + y, z: plan.origin.z },
+            right: { x: plan.origin.x, y: plan.origin.y + y, z: plan.origin.z - x },
+            back: { x: plan.origin.x - x, y: plan.origin.y + y, z: plan.origin.z },
+            left: { x: plan.origin.x, y: plan.origin.y + y, z: plan.origin.z + x },
+          };
+
+          const position = offset[plan.orientation];
+
+          let callBacks = [
+            (zero) => {},
+            (one) => new Simple(position.x, position.y, position.z, this),
+            (two) => new RotatorFR(position.x, position.y, position.z, this),
+            (three) => new RotatorFL(position.x, position.y, position.z, this),
+            (four) => new RotatorBR(position.x, position.y, position.z, this),
+            (five) => new RotatorBL(position.x, position.y, position.z, this),
+            (six) => new RotatorLF(position.x, position.y, position.z, this),
+            (seven) => new RotatorLB(position.x, position.y, position.z, this),
+            (eight) => new RotatorRF(position.x, position.y, position.z, this),
+            (nine) => new RotatorRB(position.x, position.y, position.z, this),
+            (ten) => new Jump(position.x, position.y, position.z, this),
+            (eleven) => new Checkpoint(position.x, position.y, position.z, this),
+          ];
+
+          callBacks[column]();
+        });
       });
     });
   }

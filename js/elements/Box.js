@@ -6,7 +6,7 @@ export default class Box {
       width: 1,
       depth: 1,
     });
-    this.box.position = new BABYLON.Vector3(pY, pX, pZ);
+    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
     this.box.checkCollisions = true;
 
     this.box.physicsImpostor = new BABYLON.PhysicsImpostor(
