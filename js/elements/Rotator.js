@@ -1,6 +1,6 @@
-import Box from "./Box.js";
+import BigBoundingBox from "./BigBoundingBox.js";
 
-export default class Rotator extends Box {
+export default class Rotator extends BigBoundingBox {
   constructor(pX, pY, pZ, scene) {
     super(pX, pY, pZ, scene);
     this.box.material = new BABYLON.StandardMaterial("material", this.scene.scene);

@@ -1,6 +1,6 @@
-import Box from "./Box.js";
+import BigBoundingBox from "./BigBoundingBox.js";
 
-export default class Checkpoint extends Box {
+export default class Checkpoint extends BigBoundingBox {
   constructor(pX, pY, pZ, scene) {
     super(pX, pY, pZ, scene);
     this.box.material = new BABYLON.StandardMaterial(
