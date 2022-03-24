@@ -64,13 +64,13 @@ export default class Player {
       this.setAngularVelocity();
     }
     if (this.scene.inputStates.r) {
-      this.mesh.position = this.lastCheckPoint[1];
-      this.angle = this.lastCheckPoint[2];
+      this.mesh.position = this.lastCheckPoint[0];
+      this.angle = this.lastCheckPoint[1];
       this.speed = 0;
       this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
       this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
       this.resetRotation();
-      this.scene.camera.alpha = this.lastCheckPoint[3];
+      this.scene.camera.alpha = this.lastCheckPoint[2];
     }
     this.updateColor();
   }
