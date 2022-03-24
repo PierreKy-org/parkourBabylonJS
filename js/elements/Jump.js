@@ -27,6 +27,6 @@ export default class Jump extends Box {
 
   onPlayerCollision() {
     let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 15, al.z));
+    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 10, al.z));
   }
 }
