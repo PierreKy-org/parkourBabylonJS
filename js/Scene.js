@@ -17,6 +17,7 @@ export default class Scene {
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
+    //this.skybox = this.initSkyBox();
 
     this.initEvents();
 
@@ -64,6 +65,17 @@ export default class Scene {
     ground.checkCollisions = true;
 
     return ground;
+  }
+
+  initSkyBox() {
+    var skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 10.0 }, this.scene);
+    var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", this.scene);
+    skyboxMaterial.backFaceCulling = false;
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture("assets/skybox", this.scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+    skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+    skybox.material = skyboxMaterial;
   }
 
   initEvents() {

@@ -44,7 +44,6 @@ export default class Player {
     }
     if (this.scene.inputStates.down) {
       this.speed = 0;
-
       this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
       this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
       this.resetRotation();
