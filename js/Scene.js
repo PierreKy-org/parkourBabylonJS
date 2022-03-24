@@ -1,5 +1,6 @@
 import Simple from "./elements/Simple.js";
 import Rotator from "./elements/Rotator.js";
+import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
 import Camera from "./Camera.js";
 import Gui from "./Gui.js";
@@ -72,7 +73,7 @@ export default class Scene {
       pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(250, 253, 0);
     };
 
-    this.inputStates = { left: false, right: false, up: false, down: false };
+    this.inputStates = { left: false, right: false, up: false, down: false, r : false };
 
     const changeInputState = (key, state) => {
       if (key === "ArrowLeft") {
@@ -83,6 +84,8 @@ export default class Scene {
         this.inputStates.right = state;
       } else if (key === "ArrowDown") {
         this.inputStates.down = state;
+      } else if (key === "r") {
+        this.inputStates.r = state;
       }
     };
 
@@ -105,6 +108,14 @@ export default class Scene {
             break;
           case 3:
             new Jump(this.map.length - x, y, 0, this);
+            break;
+          case 4:
+            new Checkpoint(
+              this.map.length - x,
+              y,
+              0,
+              this
+            );
             break;
           default:
         }
