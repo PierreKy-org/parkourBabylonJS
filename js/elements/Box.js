@@ -16,19 +16,12 @@ export default class Box {
       this.scene.scene
     );
 
-    this.box.enableEdgesRendering();
-    this.box.edgesWidth = 4.0;
-    this.box.edgesColor = new BABYLON.Color4(0, 0, 1, 1);
+    this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
 
-    this.box.material = new BABYLON.StandardMaterial(
-      "myMaterial",
-      this.scene.scene
-    );
+    this.initBoundingBox();
   }
 
-  initBoundingBox() {
-    return;
-  }
+  initBoundingBox() {}
 
   onPlayerCollision() {}
 }

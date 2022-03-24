@@ -1,39 +1,32 @@
 import Box from "./Box.js";
 
 export default class Jump extends Box {
-  constructor(pX, pY, pZ, scene, ) {
+  constructor(pX, pY, pZ, scene) {
     super(pX, pY, pZ, scene);
-    this.box.material = new BABYLON.StandardMaterial(
-      "materialHead",
-      this.scene.scene
-    );
-    this.box.material.emissiveColor = new BABYLON.Color3(1, 0.33, 0.6);
-    this.box.showBoundingBox = true;
+    this.box.material = new BABYLON.StandardMaterial("material", this.scene.scene);
+    this.box.material.emissiveColor = new BABYLON.Color3(0, 0.2, 0.8);
 
-    //this.scene.camera.lockedTarget = this.box;
-
-    this.initBoundingBox();
+    this.box.enableEdgesRendering();
+    this.box.edgesWidth = 4.0;
+    this.box.edgesColor = new BABYLON.Color4(1, 1, 1, 1);
   }
 
   initBoundingBox() {
-    this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
-      this.box.actionManager.registerAction(
-        new BABYLON.ExecuteCodeAction(
-          {
-            trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-            parameter: {
-              mesh: this.scene.player.mesh,
-            },
+    this.box.actionManager.registerAction(
+      new BABYLON.ExecuteCodeAction(
+        {
+          trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+          parameter: {
+            mesh: this.scene.player.mesh,
           },
-          () => this.onPlayerCollision()
-        )
-      );
+        },
+        () => this.onPlayerCollision()
+      )
+    );
   }
 
   onPlayerCollision() {
     let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(
-      new BABYLON.Vector3(al.x, 10, al.z)
-    );
+    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 15, al.z));
   }
 }
