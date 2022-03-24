@@ -6,7 +6,10 @@ export default class Player {
       { height: 1, width: 1, depth: 1, diameter: 0.5 },
       this.scene.scene
     );
-    this.mesh.material = new BABYLON.StandardMaterial("materialHead", this.scene.scene);
+    this.mesh.material = new BABYLON.StandardMaterial(
+      "materialHead",
+      this.scene.scene
+    );
     this.mesh.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
 
     var texture = new BABYLON.Texture("../assets/cross.png", this.scene.scene);
@@ -27,7 +30,11 @@ export default class Player {
 
     this.mesh.showBoundingBox = true;
 
-    this.groundCheckRay = new BABYLON.Ray(this.mesh.position, new BABYLON.Vector3(0, -1, 0), 10);
+    this.groundCheckRay = new BABYLON.Ray(
+      this.mesh.position,
+      new BABYLON.Vector3(0, -1, 0),
+      10
+    );
 
     this.speed = 0;
     this.jump = 2;
@@ -56,12 +63,24 @@ export default class Player {
       this.updateSpeed(false);
       this.setAngularVelocity();
     }
+    if (this.scene.inputStates.r) {
+      this.mesh.position = this.lastCheckPoint[1];
+      this.angle = this.lastCheckPoint[2];
+      this.speed = 0;
+      this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+      this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+      this.resetRotation();
+      this.scene.camera.alpha = this.lastCheckPoint[3];
+    }
     this.updateColor();
   }
 
   checkGroundDistance() {
     this.groundCheckRay.origin = this.mesh.getAbsolutePosition();
-    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => mesh != this.mesh).distance;
+    let distance = this.scene.scene.pickWithRay(
+      this.groundCheckRay,
+      (mesh) => mesh != this.mesh
+    ).distance;
     if (distance != 0 && distance <= 0.5 + 0.2) {
       this.jump = 2;
     }
