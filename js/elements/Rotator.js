@@ -17,7 +17,6 @@ class Rotator extends BigBoundingBox {
 
 class RotatorFR extends Rotator {
   onPlayerCollision() {
-    console.log("RotatorFR");
     this.scene.player.orientation = "right";
     BABYLON.Animation.CreateAndStartAnimation(
       "rotateFR",
@@ -40,8 +39,6 @@ class RotatorFR extends Rotator {
 
 class RotatorFL extends Rotator {
   onPlayerCollision() {
-    console.log("RotatorFL");
-    console.log(BABYLON.Tools.ToDegrees(this.scene.camera.alpha));
     this.scene.player.orientation = "left";
     BABYLON.Animation.CreateAndStartAnimation(
       "rotateFL",
@@ -68,7 +65,6 @@ class RotatorBR extends Rotator {
 
 class RotatorBL extends Rotator {
   onPlayerCollision() {
-    console.log("RotatorBL");
     this.scene.player.orientation = "right";
     BABYLON.Animation.CreateAndStartAnimation(
       "rotateBL",
@@ -91,7 +87,6 @@ class RotatorBL extends Rotator {
 
 class RotatorRF extends Rotator {
   onPlayerCollision() {
-    console.log("RotatorRF");
     this.scene.player.orientation = "front";
     BABYLON.Animation.CreateAndStartAnimation(
       "rotateRF",
@@ -122,7 +117,6 @@ class RotatorLF extends Rotator {
 
 class RotatorLB extends Rotator {
   onPlayerCollision() {
-    console.log("RotatorLB");
     this.scene.player.orientation = "back";
     BABYLON.Animation.CreateAndStartAnimation(
       "rotateLB",
