@@ -6,10 +6,10 @@ export default class Player {
       { height: 1, width: 1, depth: 1, diameter: 0.5 },
       this.scene.scene
     );
-    this.mesh.material = new BABYLON.StandardMaterial("materialHead", this.scene.scene);
+    this.mesh.material = new BABYLON.StandardMaterial("materialPlayer", this.scene.scene);
     this.mesh.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
 
-    var texture = new BABYLON.Texture("../assets/cross.png", this.scene.scene);
+    var texture = new BABYLON.Texture("../assets/nut.png", this.scene.scene);
     this.mesh.material.diffuseTexture = texture;
 
     this.initPhisics();

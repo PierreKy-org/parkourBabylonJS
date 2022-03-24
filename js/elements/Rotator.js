@@ -9,7 +9,7 @@ export default class Rotator extends Box {
 
     this.box.enableEdgesRendering();
     this.box.edgesWidth = 4.0;
-    this.box.edgesColor = new BABYLON.Color4(1, 1, 0, 1);
+    this.box.edgesColor = new BABYLON.Color4(1, 1, 1, 1);
   }
 
   initBoundingBox() {
@@ -38,7 +38,7 @@ export default class Rotator extends Box {
     //Tourne le joueur de la camera de 90°
     this.scene.player.angle = (this.scene.player.mesh.rotationQuaternion.y + 90) % 360;
     this.scene.player.mesh.rotationQuaternion.y = this.scene.player.angle;
-    this.scene.camera.alpha = BABYLON.Tools.ToRadians((this.scene.player.mesh.rotationQuaternion.y + 90) % 360);
+    this.scene.camera.startRotationAnimation();
 
     //Conserve la vitesse et l'acceleration mais change la direction
     this.scene.player.resetRotation();

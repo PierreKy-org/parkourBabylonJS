@@ -1,6 +1,7 @@
 import Simple from "./elements/Simple.js";
 import Rotator from "./elements/Rotator.js";
 import Jump from "./elements/Jump.js";
+import Camera from "./Camera.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 
@@ -15,7 +16,7 @@ export default class Scene {
     this.gui = new Gui(this);
 
     this.player = new Player(this);
-    this.camera = this.initCamera();
+    this.camera = new Camera(this);
     this.light = this.initLight();
     this.ground = this.initGround();
     //this.skybox = this.initSkyBox();
@@ -28,24 +29,8 @@ export default class Scene {
     })();
   }
 
-  initCamera() {
-    var camera = new BABYLON.ArcFollowCamera(
-      "FollowCam",
-      BABYLON.Tools.ToRadians(270),
-      0,
-      10,
-      this.player.mesh,
-      this.scene
-    );
-
-    return camera;
-  }
-
   initLight() {
-    var light = new BABYLON.HemisphericLight(
-      "light",
-      new BABYLON.Vector3(1, 1, 0)
-    );
+    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
     return light;
   }
 
@@ -84,11 +69,7 @@ export default class Scene {
 
   initEvents() {
     this.scene.onPointerPick = function (evt, pickInfo) {
-      pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(
-        250,
-        253,
-        0
-      );
+      pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(250, 253, 0);
     };
 
     this.inputStates = { left: false, right: false, up: false, down: false };
@@ -105,17 +86,9 @@ export default class Scene {
       }
     };
 
-    window.addEventListener(
-      "keydown",
-      (event) => changeInputState(event.key, true),
-      false
-    );
+    window.addEventListener("keydown", (event) => changeInputState(event.key, true), false);
 
-    window.addEventListener(
-      "keyup",
-      (event) => changeInputState(event.key, false),
-      false
-    );
+    window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
   }
 
   async initLevel() {
@@ -128,20 +101,10 @@ export default class Scene {
             new Simple(this.map.length - x, y, 0, this);
             break;
           case 2:
-            new Rotator(
-              this.map.length - x,
-              y,
-              0,
-              this
-            );
+            new Rotator(this.map.length - x, y, 0, this);
             break;
           case 3:
-            new Jump(
-              this.map.length - x,
-              y,
-              0,
-              this
-            );
+            new Jump(this.map.length - x, y, 0, this);
             break;
           default:
         }
