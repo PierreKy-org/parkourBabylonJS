@@ -56,7 +56,7 @@ export default class Player {
       this.updateSpeed(false);
       this.setAngularVelocity();
     }
-    if (this.scene.inputStates.r) {
+    if (this.scene.inputStates.r && this.lastCheckPoint) {
       this.mesh.position = this.lastCheckPoint[0];
       this.angle = this.lastCheckPoint[1];
       this.speed = 0;
