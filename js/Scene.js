@@ -11,6 +11,7 @@ import {
 } from "./elements/Rotator.js";
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
+import Spikes from "./elements/Spikes.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 
@@ -126,6 +127,7 @@ export default class Scene {
             (nine) => new RotatorRB(position.x, position.y, position.z, this),
             (ten) => new Jump(position.x, position.y, position.z, this),
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
+            (twelve) => new Spikes(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
