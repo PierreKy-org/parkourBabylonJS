@@ -1,15 +1,16 @@
 import Box from "./Box.js";
 
 export default class BigBoundingBox extends Box {
-  constructor(pX, pY, pZ, scene) {
+  constructor(pX, pY, pZ, scene, min, max) {
     super(pX, pY, pZ, scene);
+    this.initBoundingBox(min, max);
   }
 
-  initBoundingBox() {
+  initBoundingBox(min, max) {
     this.box.setBoundingInfo(
       new BABYLON.BoundingInfo(
-        BABYLON.Vector3.Minimize(this.box.getBoundingInfo().boundingBox.minimum, new BABYLON.Vector3(0, -100, 0)),
-        BABYLON.Vector3.Maximize(this.box.getBoundingInfo().boundingBox.maximum, new BABYLON.Vector3(0, 100, 0))
+        BABYLON.Vector3.Minimize(this.box.getBoundingInfo().boundingBox.minimum, new BABYLON.Vector3(0, min, 0)),
+        BABYLON.Vector3.Maximize(this.box.getBoundingInfo().boundingBox.maximum, new BABYLON.Vector3(0, max, 0))
       )
     );
 

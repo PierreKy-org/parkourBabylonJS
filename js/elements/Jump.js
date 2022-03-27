@@ -9,6 +9,8 @@ export default class Jump extends Box {
     this.box.enableEdgesRendering();
     this.box.edgesWidth = 4.0;
     this.box.edgesColor = new BABYLON.Color4(1, 1, 1, 1);
+
+    this.initBoundingBox();
   }
 
   initBoundingBox() {

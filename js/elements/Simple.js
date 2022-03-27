@@ -9,5 +9,6 @@ export default class Simple extends Box {
     this.box.enableEdgesRendering();
     this.box.edgesWidth = 4.0;
     this.box.edgesColor = new BABYLON.Color4(1, 1, 0, 1);
+    this.initBoundingBox();
   }
 }

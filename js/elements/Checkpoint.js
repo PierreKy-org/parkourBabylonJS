@@ -2,7 +2,7 @@ import BigBoundingBox from "./BigBoundingBox.js";
 
 export default class Checkpoint extends BigBoundingBox {
   constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+    super(pX, pY, pZ, scene, 0, 3);
     this.box.material = new BABYLON.StandardMaterial("material", this.scene.scene);
     this.box.material.emissiveColor = new BABYLON.Color3(0, 0.5, 0.2);
     this.box.showBoundingBox = true;
@@ -15,8 +15,8 @@ export default class Checkpoint extends BigBoundingBox {
   //@Override
   onPlayerCollision() {
     this.scene.player.lastCheckPointData = {
-      position: this.scene.player.mesh.position,
-      orientation: this.scene.player.angle,
+      position: this.box.position.add(new BABYLON.Vector3(0, 1, 0)),
+      orientation: this.scene.player.orientation,
       cameraAlpha: this.scene.camera.alpha,
     };
   }

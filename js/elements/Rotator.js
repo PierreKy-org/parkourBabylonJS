@@ -3,7 +3,7 @@ import BigBoundingBox from "./BigBoundingBox.js";
 export { RotatorFR, RotatorFL, RotatorBR, RotatorBL, RotatorLF, RotatorLB, RotatorRF, RotatorRB };
 class Rotator extends BigBoundingBox {
   constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+    super(pX, pY, pZ, scene, 0, 100);
     this.box.material = new BABYLON.StandardMaterial("material", this.scene.scene);
     this.box.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
     this.box.material.diffuseTexture = new BABYLON.Texture("../assets/arrow.png", this.scene.scene);

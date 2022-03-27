@@ -27,12 +27,7 @@ export default class Spikes extends Box {
     this.cone2.position.x = this.box.position.x - 0.3;
 
     //This is the merge between box and spikes
-    this.box = BABYLON.Mesh.MergeMeshes([
-      this.box,
-      this.cone,
-      this.cone1,
-      this.cone2,
-    ]);
+    this.box = BABYLON.Mesh.MergeMeshes([this.box, this.cone, this.cone1, this.cone2]);
     this.box.checkCollisions = true;
     this.box.physicsImpostor = new BABYLON.PhysicsImpostor(
       this.box,
@@ -40,17 +35,14 @@ export default class Spikes extends Box {
       { mass: 0 },
       this.scene.scene
     );
-    this.box.material = new BABYLON.StandardMaterial(
-      "material",
-      this.scene.scene
-    );
+    this.box.material = new BABYLON.StandardMaterial("material", this.scene.scene);
     this.box.material.emissiveColor = new BABYLON.Color3(0.8, 0.2, 0);
     this.box.showBoundingBox = true;
 
     this.box.enableEdgesRendering();
     this.box.edgesWidth = 4.0;
     this.box.edgesColor = new BABYLON.Color4(1, 1, 1, 1);
-    
+
     //Enable boundingbox of the merge block
     this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
     this.initBoundingBox();
@@ -68,7 +60,7 @@ export default class Spikes extends Box {
         () => this.onPlayerCollision()
       )
     );
-}
+  }
 
   onPlayerCollision() {
     this.scene.player.mesh.position = this.scene.player.lastCheckPointData.position;
@@ -78,6 +70,5 @@ export default class Spikes extends Box {
     this.scene.player.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.scene.player.resetRotation();
     this.scene.camera.alpha = this.scene.player.lastCheckPointData.cameraAlpha;
-    
   }
 }

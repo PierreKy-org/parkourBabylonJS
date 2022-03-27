@@ -26,9 +26,9 @@ export default class Gui {
   map(scene) {
     if (scene.map) {
       let width = 10;
-      let offsetX = window.innerWidth / 2 - width * 2;
-      let offsetY = window.innerHeight / 2 - width * 2;
-      let lastX = 0;
+      let offsetX = window.innerWidth / 2;
+      let offsetY = window.innerHeight / 2;
+      let lastX = 1;
       scene.map.forEach((plan) => {
         plan.map.forEach((line, x) => {
           line.forEach((column, y) => {
@@ -37,7 +37,7 @@ export default class Gui {
               rect.width = `${width}px`;
               rect.height = `${width}px`;
               rect.left = (x + lastX) * width - offsetX;
-              rect.top = -(this.map.length - y) * width - offsetY;
+              rect.top = (line.length - y) * width - offsetY;
               rect.background = this.getElementColor(column);
               this.advancedTexture.addControl(rect);
             }

@@ -17,8 +17,6 @@ export default class Box {
     );
 
     this.box.actionManager = new BABYLON.ActionManager(this.scene.scene);
-
-    this.initBoundingBox();
   }
 
   initBoundingBox() {}
