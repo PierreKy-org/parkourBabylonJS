@@ -63,7 +63,7 @@
           square.classList.add(`tile_${json[i][j]}`);
           square.addEventListener("click", () => {
             square.className = "";
-            square.innerHTML = (parseInt(square.innerHTML, 10) + 1) % 10;
+            square.innerHTML = (parseInt(square.innerHTML, 10) + 1) % 13;
             square.classList.add(`tile_${square.innerHTML}`);
           });
           square.addEventListener("contextmenu", (e) => {
