@@ -54,7 +54,6 @@ window.onload = () => {
     button1.background = "green";
     button1.onPointerUpObservable.add(function () {
       clicks++;
-      console.log(clicks);
     });
     goToGame.addControl(button1);
 
@@ -66,19 +65,17 @@ window.onload = () => {
 
   var clicks = 0;
   var showScene = 0;
-  var advancedTexture;
 
-  console.log(showScene);
   engine.runRenderLoop(() => {
     showScene = clicks % 2;
-    console.log(clicks);
-    console.log(showScene);
     switch (showScene) {
       case 0:
         scene0.render();
         break;
       case 1:
+        scene0.dispose();
         scene1.render();
+
         break;
     }
   });
