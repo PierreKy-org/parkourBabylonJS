@@ -3,20 +3,19 @@ export default class Gui {
     this.scene = scene;
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
-    this.position = new BABYLON.GUI.TextBlock();
-    this.position.text = "Hello world";
-    this.position.color = "white";
-    this.position.top = "-350px";
-    this.position.fontSize = 24;
+    this.debug = new BABYLON.GUI.TextBlock();
+    this.debug.color = "white";
+    this.debug.top = "-350px";
+    this.debug.fontSize = 24;
 
-    this.advancedTexture.addControl(this.position);
+    this.advancedTexture.addControl(this.debug);
   }
 
   update() {
     let playerPos = this.scene.player.mesh.position;
     let lv = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
     let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.position.text = `x:${playerPos.x.toFixed(2)}\ny:${playerPos.y.toFixed(2)}\nz:${playerPos.z.toFixed(
+    this.debug.text = `x:${playerPos.x.toFixed(2)}\ny:${playerPos.y.toFixed(2)}\nz:${playerPos.z.toFixed(
       2
     )}\nv:${this.scene.player.speed.toFixed(2)}\nLinear Velocity  x:${lv.x.toFixed(2)}, y: ${(lv.y + 0.001).toFixed(
       2
