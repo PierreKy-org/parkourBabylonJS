@@ -64,181 +64,76 @@ class Rotator {
       )
     );
   }
-}
 
-class RotatorFR extends Rotator {
-  onPlayerCollision() {
-    this.scene.player.orientation = "right";
+  rotate(orientation, from, to, angular, linear) {
+    this.scene.player.orientation = orientation;
     BABYLON.Animation.CreateAndStartAnimation(
-      "rotateFR",
+      this.constructor.name,
       this.scene.camera,
       "alpha",
       1.5,
       1,
-      BABYLON.Tools.ToRadians(270),
-      BABYLON.Tools.ToRadians(180),
+      BABYLON.Tools.ToRadians(from),
+      BABYLON.Tools.ToRadians(to),
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 
     this.scene.player.resetRotation();
     let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, av.x));
+    this.scene.player.mesh.physicsImpostor.setAngularVelocity(
+      new BABYLON.Vector3(av.z * angular.x, av.y * angular.y, av.x * angular.z)
+    );
     let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(-al.z, al.y, -al.x));
+    this.scene.player.mesh.physicsImpostor.setLinearVelocity(
+      new BABYLON.Vector3(al.z * linear.x, al.y * linear.y, al.x * linear.z)
+    );
+  }
+}
+
+class RotatorFR extends Rotator {
+  onPlayerCollision() {
+    this.rotate("right", 270, 180, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, -1));
   }
 }
 
 class RotatorFL extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "left";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateFL",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(270),
-      BABYLON.Tools.ToRadians(360),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(-av.z, 0, av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.z, al.y, al.x));
-    console.log("FR");
+    this.rotate("left", 270, 360, new BABYLON.Vector3(-1, 0, 1), new BABYLON.Vector3(1, 1, 1));
   }
 }
 
 class RotatorBR extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "right";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateFR",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(90),
-      BABYLON.Tools.ToRadians(180),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(-av.z, 0, av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.z, al.y, al.x));
+    this.rotate("right", 90, 180, new BABYLON.Vector3(-1, 0, 1), new BABYLON.Vector3(1, 1, 1));
   }
 }
 
 class RotatorBL extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "left";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateBL",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(90),
-      BABYLON.Tools.ToRadians(180),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.z, al.y, al.x));
+    this.rotate("left", 90, 180, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(1, 1, 1));
   }
 }
 
 class RotatorRF extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "front";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateRF",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(180),
-      BABYLON.Tools.ToRadians(270),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(-al.z, al.y, al.x));
+    this.rotate("front", 180, 270, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, 1));
   }
 }
 
 class RotatorRB extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "back";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateRB",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(180),
-      BABYLON.Tools.ToRadians(90),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, -av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.z, al.y, al.x));
+    this.rotate("back", 180, 90, new BABYLON.Vector3(1, 0, -1), new BABYLON.Vector3(1, 1, 1));
   }
 }
 
 class RotatorLF extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "front";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateLB",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(360),
-      BABYLON.Tools.ToRadians(270),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, -av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.z, al.y, al.x));
+    this.rotate("front", 360, 270, new BABYLON.Vector3(1, 0, -1), new BABYLON.Vector3(1, 1, 1));
   }
 }
 
 class RotatorLB extends Rotator {
   onPlayerCollision() {
-    this.scene.player.orientation = "back";
-    BABYLON.Animation.CreateAndStartAnimation(
-      "rotateLB",
-      this.scene.camera,
-      "alpha",
-      1.5,
-      1,
-      BABYLON.Tools.ToRadians(0),
-      BABYLON.Tools.ToRadians(90),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-    );
-
-    this.scene.player.resetRotation();
-    let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3(av.z, 0, av.x));
-    let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(-al.z, al.y, al.x));
+    this.rotate("back", 0, 90, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, 1));
   }
 }
