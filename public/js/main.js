@@ -49,7 +49,6 @@ window.onload = () => {
 
   var clicks = 0;
   var showScene = 0;
-  var advancedTexture;
 
   engine.runRenderLoop(() => {
     showScene = clicks % 2;
@@ -58,7 +57,9 @@ window.onload = () => {
         scene0.render();
         break;
       case 1:
+        scene0.dispose();
         scene1.render();
+
         break;
     }
   });
