@@ -160,4 +160,14 @@ export default class Player {
     }
     this.mesh.material.emissiveColor = color;
   }
+
+  respawn() {
+    this.mesh.position = this.lastCheckPointData.position;
+    this.orientation = this.lastCheckPointData.orientation;
+    this.speed = 0;
+    this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+    this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+    this.resetRotation();
+    this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
+  }
 }

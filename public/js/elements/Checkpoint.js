@@ -1,15 +1,12 @@
 export default class Checkpoint {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
-    this.initBuilder();
-
-    this.box = Checkpoint.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
-    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+    this.initInstance(pX, pY, pZ);
 
     this.setPhysics();
   }
 
-  initBuilder() {
+  initInstance(pX, pY, pZ) {
     if (!Checkpoint.builder) {
       Checkpoint.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
@@ -24,9 +21,11 @@ export default class Checkpoint {
       Checkpoint.builder.material.emissiveColor = BABYLON.Color3.White();
       Checkpoint.builder.material.diffuseTexture = new BABYLON.Texture("../assets/checkboard.jpg", this.scene.scene);
 
-      Checkpoint.builder.registerInstancedBuffer("color", 3);
-      Checkpoint.builder.instancedBuffers.color = new BABYLON.Color3(1, 1, 1);
+      this.box = Checkpoint.builder;
+    } else {
+      this.box = Checkpoint.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
+    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 
   setPhysics() {

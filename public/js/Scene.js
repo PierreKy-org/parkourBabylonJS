@@ -43,10 +43,9 @@ export default class Scene {
   }
 
   initLight() {
-    var light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 1));
-    light.diffuse = new BABYLON.Color3(0.5, 0, 0);
-    light.specular = new BABYLON.Color3(0, 0, 0.5);
-    light.groundColor = new BABYLON.Color3(0, 0, 0.28);
+    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
+    light.groundColor = new BABYLON.Color3(1, 1, 1);
+    light.intensity = 1;
     return light;
   }
 
@@ -65,9 +64,20 @@ export default class Scene {
       { mass: 0 },
       this.scene
     );
-    ground.reIntegrateRotationIntoRotationQuaternion = true;
-
     ground.checkCollisions = true;
+
+    ground.actionManager = new BABYLON.ActionManager(this.scene);
+    ground.actionManager.registerAction(
+      new BABYLON.ExecuteCodeAction(
+        {
+          trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+          parameter: {
+            mesh: this.player.mesh,
+          },
+        },
+        () => this.player.respawn()
+      )
+    );
 
     return ground;
   }

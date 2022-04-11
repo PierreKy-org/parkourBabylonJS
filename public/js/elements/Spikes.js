@@ -5,15 +5,13 @@ export { Spikes };
 class Spikes {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
-    this.initBuilder();
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
         let x = pX + i * 0.3;
         let y = pY + 0.25;
         let z = pZ + j * 0.3;
-        let spike = Spikes.builder.createInstance(`box_${x}_${y}_${z}`);
-        spike.position = new BABYLON.Vector3(x, y, z);
+        let spike = this.initInstance(x, y, z);
         this.setPhysics(spike);
       }
     }
@@ -24,9 +22,11 @@ class Spikes {
       depth: 1,
     });
     this.box.position = new BABYLON.Vector3(pX, pY - 0.25, pZ);
+    this.box.material = Spikes.builder.material;
   }
 
-  initBuilder() {
+  initInstance(pX, pY, pZ) {
+    var spike;
     if (!Spikes.builder) {
       Spikes.builder = BABYLON.MeshBuilder.CreateCylinder(
         "cone",
@@ -36,14 +36,17 @@ class Spikes {
 
       Spikes.builder.alwaysSelectAsActiveMesh = true;
 
-      Spikes.builder.material = new BABYLON.StandardMaterial("SpikeMaterial");
-      Spikes.builder.material.disableLighting = true;
-      Spikes.builder.material.emissiveColor = BABYLON.Color3.White();
-      Spikes.builder.material.diffuseTexture = new BABYLON.Texture("../assets/brick.png", this.scene.scene);
+      Spikes.builder.material = new BABYLON.CellMaterial("cell", this.scene.scene);
+      Spikes.builder.material.computeHighLevel = true;
+      Spikes.builder.material.diffuseColor = new BABYLON.Color3(0.9, 0.3, 0);
 
-      Spikes.builder.registerInstancedBuffer("color", 3);
-      Spikes.builder.instancedBuffers.color = new BABYLON.Color3(1, 1, 1);
+      spike = Spikes.builder;
+    } else {
+      spike = Spikes.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
+    spike.position = new BABYLON.Vector3(pX, pY, pZ);
+
+    return spike;
   }
 
   setPhysics(spike) {
@@ -64,18 +67,8 @@ class Spikes {
             mesh: this.scene.player.mesh,
           },
         },
-        () => this.onPlayerCollision()
+        () => this.scene.player.respawn()
       )
     );
-  }
-
-  onPlayerCollision() {
-    this.scene.player.mesh.position = this.scene.player.lastCheckPointData.position;
-    this.scene.player.orientation = this.scene.player.lastCheckPointData.orientation;
-    this.scene.player.speed = 0;
-    this.scene.player.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-    this.scene.player.resetRotation();
-    this.scene.camera.alpha = this.scene.player.lastCheckPointData.cameraAlpha;
   }
 }

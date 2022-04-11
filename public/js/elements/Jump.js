@@ -1,15 +1,11 @@
 export default class Jump {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
-    this.initBuilder();
-
-    this.box = Jump.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
-    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
-
-    this.setPhysics();
+    this.initInstance(pX, pY, pZ);
+    this.setPhysics(pX, pY, pZ);
   }
 
-  initBuilder() {
+  initInstance(pX, pY, pZ) {
     if (!Jump.builder) {
       Jump.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
@@ -19,14 +15,14 @@ export default class Jump {
 
       Jump.builder.alwaysSelectAsActiveMesh = true;
 
-      Jump.builder.material = new BABYLON.StandardMaterial("simpleMaterial");
-      Jump.builder.material.disableLighting = true;
-      Jump.builder.material.emissiveColor = BABYLON.Color3.White();
-      Jump.builder.material.diffuseTexture = new BABYLON.Texture("../assets/grass.jpg", this.scene.scene);
+      Jump.builder.material = new BABYLON.StandardMaterial("material", this.scene.scene);
+      Jump.builder.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
 
-      Jump.builder.registerInstancedBuffer("color", 3);
-      Jump.builder.instancedBuffers.color = new BABYLON.Color3(1, 1, 1);
+      this.box = Jump.builder;
+    } else {
+      this.box = Jump.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
+    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 
   setPhysics() {

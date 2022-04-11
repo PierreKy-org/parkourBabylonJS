@@ -2,19 +2,11 @@ export { RotatorFR, RotatorFL, RotatorBR, RotatorBL, RotatorLF, RotatorLB, Rotat
 class Rotator {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
-    this.initBuilder();
-
-    this.box = Rotator.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
-    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
-
+    this.initInstance(pX, pY, pZ);
     this.setPhysics();
-
-    this.box.enableEdgesRendering();
-    this.box.edgesWidth = 4.0;
-    this.box.edgesColor = new BABYLON.Color4(1, 1, 1, 1);
   }
 
-  initBuilder() {
+  initInstance(pX, pY, pZ) {
     if (!Rotator.builder) {
       Rotator.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
@@ -29,9 +21,11 @@ class Rotator {
       Rotator.builder.material.emissiveColor = BABYLON.Color3.White();
       Rotator.builder.material.diffuseTexture = new BABYLON.Texture("../assets/arrow.png", this.scene.scene);
 
-      Rotator.builder.registerInstancedBuffer("color", 3);
-      Rotator.builder.instancedBuffers.color = new BABYLON.Color3(1, 1, 1);
+      this.box = Rotator.builder;
+    } else {
+      this.box = Rotator.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
+    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 
   setPhysics() {
