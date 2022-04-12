@@ -19,6 +19,7 @@ const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
   constructor(engine) {
+    this.pause = false;
     this.scene = new BABYLON.Scene(engine);
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
     this.scene.enablePhysics(this.gravityVector, physicsPlugin);
@@ -87,7 +88,7 @@ export default class Scene {
       pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(250, 253, 0);
     };
 
-    this.inputStates = { left: false, right: false, up: false, down: false, r: false };
+    this.inputStates = { left: false, right: false, up: false, down: false, r: false, escape : false };
 
     const changeInputState = (key, state) => {
       if (key === "ArrowLeft") {
@@ -100,6 +101,8 @@ export default class Scene {
         this.inputStates.down = state;
       } else if (key === "r") {
         this.inputStates.r = state;
+      } else if (key === "Escape"){
+        this.inputStates.escape = state;
       }
     };
 
@@ -147,7 +150,22 @@ export default class Scene {
   }
 
   render() {
-    this.player.move();
+    //TODO : escape peut etre maintenu et le jeu se saccade
+    if (this.inputStates.escape) {
+      if (!this.pause) {
+        this.player.mesh.physicsImpostor.mass = 0;
+        setTimeout(() => (this.pause = true), 200);
+      } else {
+        this.player.mesh.physicsImpostor.mass = 1;
+        setTimeout(() => (this.pause = false), 100);
+        
+      }
+    }
+    if(!this.pause) {
+      this.player.move();
+
+    }
+
     this.gui.update();
     this.scene.render();
   }
