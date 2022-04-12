@@ -14,6 +14,7 @@ import Jump from "./elements/Jump.js";
 import { Spikes } from "./elements/Spikes.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
+import Collectible from "./elements/Collectible.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
@@ -29,6 +30,8 @@ export default class Scene {
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
+
+    this.collected = 0;
 
     this.initEvents();
 
@@ -83,10 +86,6 @@ export default class Scene {
   }
 
   initEvents() {
-    this.scene.onPointerPick = function (evt, pickInfo) {
-      pickInfo.pickedMesh.material.emissiveColor = new BABYLON.Color3(250, 253, 0);
-    };
-
     this.inputStates = { left: false, right: false, up: false, down: false, r: false };
 
     const changeInputState = (key, state) => {
@@ -138,6 +137,7 @@ export default class Scene {
             (ten) => new Jump(position.x, position.y, position.z, this),
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => new Spikes(position.x, position.y, position.z, this),
+            (thirteen) => new Collectible(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
