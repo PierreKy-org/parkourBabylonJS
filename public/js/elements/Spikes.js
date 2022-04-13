@@ -1,5 +1,3 @@
-import Simple from "./Simple.js";
-
 export { Spikes };
 
 class Spikes {
@@ -16,13 +14,7 @@ class Spikes {
       }
     }
 
-    this.box = BABYLON.MeshBuilder.CreateBox("box", {
-      height: 0.5,
-      width: 1,
-      depth: 1,
-    });
-    this.box.position = new BABYLON.Vector3(pX, pY - 0.25, pZ);
-    this.box.material = Spikes.builder.material;
+    this.initBox(pX, pY, pZ);
   }
 
   initInstance(pX, pY, pZ) {
@@ -42,11 +34,38 @@ class Spikes {
 
       spike = Spikes.builder;
     } else {
-      spike = Spikes.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
+      spike = Spikes.builder.createInstance(`spike_${pX}_${pY}_${pZ}`);
     }
     spike.position = new BABYLON.Vector3(pX, pY, pZ);
 
     return spike;
+  }
+
+  initBox(pX, pY, pZ) {
+    var box;
+    if (!Spikes.box) {
+      Spikes.box = BABYLON.MeshBuilder.CreateBox("box", {
+        height: 0.5,
+        width: 1,
+        depth: 1,
+      });
+      Spikes.box.material = Spikes.builder.material;
+
+      Spikes.box.physicsImpostor = new BABYLON.PhysicsImpostor(
+        Spikes.box,
+        BABYLON.PhysicsImpostor.BoxImpostor,
+        { mass: 0 },
+        this.scene.scene
+      );
+
+      box = Spikes.box;
+    } else {
+      box = Spikes.box.createInstance(`box_${pX}_${pY}_${pZ}`);
+    }
+
+    box.position = new BABYLON.Vector3(pX, pY - 0.25, pZ);
+
+    return box;
   }
 
   setPhysics(spike) {

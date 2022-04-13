@@ -21,6 +21,8 @@ export default class Simple {
       Simple.builder.material.bottomColor = new BABYLON.Color3(0, 0, 0);
       Simple.builder.material.offset = 0.4;
 
+      Simple.builder.material.disableLighting = true;
+
       this.box = Simple.builder;
     } else {
       this.box = Simple.builder.createInstance(`box_${pX}_${pY}_${pZ}`);

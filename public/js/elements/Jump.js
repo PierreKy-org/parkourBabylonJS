@@ -15,8 +15,12 @@ export default class Jump {
 
       Jump.builder.alwaysSelectAsActiveMesh = true;
 
-      Jump.builder.material = new BABYLON.StandardMaterial("material", this.scene.scene);
-      Jump.builder.material.emissiveColor = new BABYLON.Color3(1, 0, 0);
+      Jump.builder.material = new BABYLON.GradientMaterial("grad", this.scene.scene);
+      Jump.builder.material.topColor = new BABYLON.Color3(1, 1, 1);
+      Jump.builder.material.bottomColor = new BABYLON.Color3(0, 0, 0);
+      Jump.builder.material.offset = 0.6;
+
+      Jump.builder.material.disableLighting = true;
 
       this.box = Jump.builder;
     } else {

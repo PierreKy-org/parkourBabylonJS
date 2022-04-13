@@ -46,9 +46,8 @@ export default class Scene {
   }
 
   initLight() {
-    var light = new BABYLON.HemisphericLight("light1", new BABYLON.Vector3(0, 1, 0), this.scene);
-    light.groundColor = new BABYLON.Color3(1, 1, 1);
-    light.intensity = 1;
+    var light = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, -1), this.scene);
+    light.diffuse = new BABYLON.Color3(1, 1, 1);
     return light;
   }
 
