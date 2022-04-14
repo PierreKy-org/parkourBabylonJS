@@ -70,7 +70,9 @@ export default class Player {
 
   checkGroundDistance() {
     this.groundCheckRay.origin = this.mesh.getAbsolutePosition();
-    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => mesh != this.mesh).distance;
+    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => {
+      return mesh != this.mesh && mesh != this.scene.ground.mesh;
+    }).distance;
     if (distance != 0 && distance <= 0.5 + 0.2) {
       this.jump = 2;
     }

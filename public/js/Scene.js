@@ -31,6 +31,8 @@ export default class Scene {
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
+    this.initFog();
+    this.initSkyBox();
 
     this.collected = 0;
 
@@ -52,42 +54,66 @@ export default class Scene {
     return light;
   }
 
+  initSkyBox() {
+    const background = BABYLON.MeshBuilder.CreatePlane("background", { height: 200, width: 3000 }, this.scene);
+    background.position.z = 400;
+
+    const floor = BABYLON.MeshBuilder.CreatePlane("floor", { height: 1000, width: 1000 }, this.scene);
+    floor.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+    floor.position.y = -10;
+    floor.material = new BABYLON.StandardMaterial("floorMaterial", this.scene);
+    floor.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
+  }
+
+  initFog() {
+    this.scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
+    this.scene.fogColor = new BABYLON.Color3(0.79, 0.34, 0.04);
+    this.scene.fogDensity = 0.01;
+  }
+
   initGround() {
-    var ground = BABYLON.MeshBuilder.CreateGround(
+    var mapSubX = 1000;
+    var mapSubZ = 1000;
+    var mapData = this.getNoiseMap(mapSubX, mapSubZ, 0.03, 5);
+
+    var ground = new BABYLON.DynamicTerrain(
       "ground",
-      { width: 500, height: 500, updtable: false, subdivisions: 1 },
+      {
+        mapData: mapData,
+        mapSubX: mapSubX,
+        mapSubZ: mapSubZ,
+        terrainSub: 150,
+      },
       this.scene
     );
-
-    ground.material = new BABYLON.GridMaterial("groundMaterial", this.scene);
-
-    ground.physicsImpostor = new BABYLON.PhysicsImpostor(
-      ground,
-      BABYLON.PhysicsImpostor.BoxImpostor,
-      { mass: 0 },
-      this.scene
-    );
-    ground.checkCollisions = true;
-
-    ground.actionManager = new BABYLON.ActionManager(this.scene);
-    ground.actionManager.registerAction(
-      new BABYLON.ExecuteCodeAction(
-        {
-          trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
-          parameter: {
-            mesh: this.player.mesh,
-          },
-        },
-        () => this.player.respawn()
-      )
-    );
+    ground.mesh.material = new BABYLON.StandardMaterial("groundMaterial", this.scene);
+    ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
+    ground.mesh.material.alpha = 0.8;
+    ground.mesh.material.wireframe = true;
 
     return ground;
   }
 
-  initEvents() {
+  getNoiseMap(mapSubX, mapSubZ, scale, amp) {
+    noise.seed(Math.random());
+    var mapData = new Float32Array(mapSubX * mapSubZ * 3);
 
-    this.inputStates = { left: false, right: false, up: false, down: false, r: false, escape : false };
+    for (var l = 0; l < mapSubZ; l++) {
+      for (var w = 0; w < mapSubX; w++) {
+        var x = (w - mapSubX * 0.5) * 2.0;
+        var z = (l - mapSubZ * 0.5) * 2.0;
+        var y = noise.simplex2(x * scale, z * scale) * amp - amp;
+
+        mapData[3 * (l * mapSubX + w)] = x;
+        mapData[3 * (l * mapSubX + w) + 1] = y;
+        mapData[3 * (l * mapSubX + w) + 2] = z;
+      }
+    }
+    return mapData;
+  }
+
+  initEvents() {
+    this.inputStates = { left: false, right: false, up: false, down: false, r: false, escape: false };
 
     const changeInputState = (key, state) => {
       if (key === "ArrowLeft") {
@@ -100,7 +126,7 @@ export default class Scene {
         this.inputStates.down = state;
       } else if (key === "r") {
         this.inputStates.r = state;
-      } else if (key === "Escape"){
+      } else if (key === "Escape") {
         this.inputStates.escape = state;
       }
     };
@@ -158,12 +184,17 @@ export default class Scene {
       } else {
         this.player.mesh.physicsImpostor.mass = 1;
         setTimeout(() => (this.pause = false), 100);
-        
       }
     }
-    if(!this.pause) {
+    if (!this.pause) {
       this.player.move();
+    }
 
+    if (
+      this.player.mesh.position.y <=
+      this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
+    ) {
+      this.player.respawn();
     }
 
     this.gui.update();
