@@ -15,13 +15,17 @@ import { Spikes } from "./elements/Spikes.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
+import AssetsManager from "./AssetManager.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
-  constructor(engine) {
-    this.pause = false;
-    this.scene = new BABYLON.Scene(engine);
+  constructor(assets) {
+    this.scene = new BABYLON.Scene(window.engine);
+    this.assetsManager = new AssetsManager(this.scene, assets);
+  }
+
+  initScene() {
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
     this.scene.enablePhysics(this.gravityVector, physicsPlugin);
 
@@ -35,6 +39,7 @@ export default class Scene {
     this.initSkyBox();
 
     this.collected = 0;
+    this.pause = false;
 
     this.initEvents();
 
@@ -196,6 +201,8 @@ export default class Scene {
     ) {
       this.player.respawn();
     }
+
+    this.ground.mesh.position.x -= 0.05;
 
     this.gui.update();
     this.scene.render();

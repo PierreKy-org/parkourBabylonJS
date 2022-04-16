@@ -1,0 +1,11 @@
+Model Information:
+* title:	Worn Baseball Ball
+* source:	https://sketchfab.com/3d-models/worn-baseball-ball-fdf3de6ae225421ea78961b897b9608a
+* author:	Alex Bes (https://sketchfab.com/alexbescg)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Worn Baseball Ball" (https://sketchfab.com/3d-models/worn-baseball-ball-fdf3de6ae225421ea78961b897b9608a) by Alex Bes (https://sketchfab.com/alexbescg) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

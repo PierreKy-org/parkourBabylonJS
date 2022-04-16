@@ -51,17 +51,17 @@ class Spikes {
       });
       Spikes.box.material = Spikes.builder.material;
 
-      Spikes.box.physicsImpostor = new BABYLON.PhysicsImpostor(
-        Spikes.box,
-        BABYLON.PhysicsImpostor.BoxImpostor,
-        { mass: 0 },
-        this.scene.scene
-      );
-
       box = Spikes.box;
     } else {
       box = Spikes.box.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
+
+    box.physicsImpostor = new BABYLON.PhysicsImpostor(
+      box,
+      BABYLON.PhysicsImpostor.BoxImpostor,
+      { mass: 0 },
+      this.scene.scene
+    );
 
     box.position = new BABYLON.Vector3(pX, pY - 0.25, pZ);
 

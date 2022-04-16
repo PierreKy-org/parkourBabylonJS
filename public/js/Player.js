@@ -1,16 +1,10 @@
 export default class Player {
   constructor(scene) {
     this.scene = scene;
-    this.mesh = BABYLON.MeshBuilder.CreateSphere(
-      "playerHead",
-      { height: 1, width: 1, depth: 1, diameter: 0.5 },
-      this.scene.scene
-    );
-    this.mesh.material = new BABYLON.StandardMaterial("materialPlayer", this.scene.scene);
-    this.mesh.material.emissiveColor = new BABYLON.Color3(1, 1, 1);
 
-    var texture = new BABYLON.Texture("../assets/nut.png", this.scene.scene);
-    this.mesh.material.diffuseTexture = texture;
+    this.model = this.scene.assetsManager.Assets["baseball"];
+    this.mesh = this.model.mesh;
+    this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
 
     this.initPhisics();
   }
@@ -19,13 +13,11 @@ export default class Player {
     this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
       this.mesh,
       BABYLON.PhysicsImpostor.SphereImpostor,
-      { mass: 1, friction: 1, restitution: 3.5 },
+      { mass: 1, friction: 1, restitution: 1 },
       this.scene.scene
     );
     this.mesh.reIntegrateRotationIntoRotationQuaternion = true;
     this.mesh.position = new BABYLON.Vector3(0, 5, 0);
-
-    this.mesh.showBoundingBox = true;
 
     this.groundCheckRay = new BABYLON.Ray(this.mesh.position, new BABYLON.Vector3(0, -1, 0), 10);
 
@@ -71,7 +63,7 @@ export default class Player {
   checkGroundDistance() {
     this.groundCheckRay.origin = this.mesh.getAbsolutePosition();
     let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => {
-      return mesh != this.mesh && mesh != this.scene.ground.mesh;
+      return mesh.name != this.model.name && mesh != this.scene.ground.mesh;
     }).distance;
     if (distance != 0 && distance <= 0.5 + 0.2) {
       this.jump = 2;
@@ -83,9 +75,10 @@ export default class Player {
   }
 
   resetRotation() {
-    this.mesh.rotationQuaternion.x = 0;
-    this.mesh.rotationQuaternion.y = 0;
-    this.mesh.rotationQuaternion.z = 0;
+    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(
+      BABYLON.Vector3.Zero(),
+      this.mesh.rotationQuaternion.w
+    );
   }
 
   setLinearVelocity() {
@@ -160,7 +153,7 @@ export default class Player {
       default:
         color = new BABYLON.Color3(1, 1, 1);
     }
-    this.mesh.material.emissiveColor = color;
+    //this.mesh.material.emissiveColor = color;
   }
 
   respawn() {

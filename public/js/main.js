@@ -1,16 +1,22 @@
 import Scene from "./Scene.js";
-let canvas;
-let engine;
+
 window.onload = () => {
-  canvas = document.querySelector("#myCanvas");
-  engine = new BABYLON.Engine(canvas, true);
+  window.canvas = document.querySelector("#myCanvas");
+  window.engine = new BABYLON.Engine(window.canvas, true);
+
+  var currentScene;
+  var Scenes = [
+    new Scene({
+      baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
+    }),
+  ];
 
   var createScene0 = function () {
-    var scene0 = new BABYLON.Scene(engine);
+    var scene0 = new BABYLON.Scene(window.engine);
 
     var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene0);
     camera.setTarget(BABYLON.Vector3.Zero());
-    camera.attachControl(canvas, true);
+    camera.attachControl(window.canvas, true);
 
     let goToGame = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true, scene0);
     var button1 = BABYLON.GUI.Button.CreateSimpleButton("but1", "Go To Game");
@@ -22,33 +28,22 @@ window.onload = () => {
     button1.cornerRadius = 20;
     button1.background = "green";
     button1.onPointerUpObservable.add(function () {
-      clicks++;
+      currentScene.dispose();
+      currentScene = Scenes[0];
+      currentScene.initScene();
     });
     goToGame.addControl(button1);
 
     return scene0;
   };
 
-  var scene0 = createScene0();
-  var scene1 = new Scene(engine);
+  currentScene = createScene0();
 
-  var clicks = 0;
-  var showScene = 0;
-
-  engine.runRenderLoop(() => {
-    showScene = clicks % 2;
-    switch (showScene) {
-      case 0:
-        scene0.render();
-        break;
-      case 1:
-        scene0.dispose();
-        scene1.render();
-        break;
-    }
+  window.engine.runRenderLoop(() => {
+    currentScene.render();
   });
 };
 
 window.addEventListener("resize", () => {
-  engine.resize();
+  window.engine.resize();
 });
