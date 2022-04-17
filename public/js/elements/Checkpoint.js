@@ -26,6 +26,10 @@ export default class Checkpoint {
       this.box = Checkpoint.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
     }
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+
+    if (!this.scene.player.lastCheckPointData) {
+      this.onPlayerCollision();
+    }
   }
 
   setPhysics() {
@@ -61,7 +65,7 @@ export default class Checkpoint {
 
   onPlayerCollision() {
     this.scene.player.lastCheckPointData = {
-      position: this.box.position.add(new BABYLON.Vector3(0, 1, 0)),
+      position: this.box.position.add(new BABYLON.Vector3(0, 0.8, 0)),
       orientation: this.scene.player.orientation,
       cameraAlpha: this.scene.camera.alpha,
     };

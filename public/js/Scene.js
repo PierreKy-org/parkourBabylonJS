@@ -46,6 +46,7 @@ export default class Scene {
     (async () => {
       await this.initLevel();
       this.gui.map(this);
+      this.player.spawn();
     })();
   }
 
@@ -60,8 +61,10 @@ export default class Scene {
   }
 
   initSkyBox() {
-    const background = BABYLON.MeshBuilder.CreatePlane("background", { height: 200, width: 3000 }, this.scene);
-    background.position.z = 400;
+    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, this.scene);
+    skybox.material = new BABYLON.StandardMaterial("skyBox", this.scene);
+    skybox.material.backFaceCulling = false;
+    skybox.material.disableLighting = true;
 
     const floor = BABYLON.MeshBuilder.CreatePlane("floor", { height: 1000, width: 1000 }, this.scene);
     floor.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);

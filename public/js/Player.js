@@ -6,7 +6,16 @@ export default class Player {
     this.mesh = this.model.mesh;
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
 
+    this.mesh.showBoundingBox = true;
+
     this.initPhisics();
+    this.initTrail();
+  }
+
+  initTrail() {
+    this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, true);
+    this.trail.material = new BABYLON.StandardMaterial("cell", this.scene.scene);
+    this.trail.material.computeHighLevel = true;
   }
 
   initPhisics() {
@@ -17,14 +26,51 @@ export default class Player {
       this.scene.scene
     );
     this.mesh.reIntegrateRotationIntoRotationQuaternion = true;
-    this.mesh.position = new BABYLON.Vector3(0, 5, 0);
 
-    this.groundCheckRay = new BABYLON.Ray(this.mesh.position, new BABYLON.Vector3(0, -1, 0), 10);
+    this.scene.scene.registerBeforeRender(() => {
+      this.rays().forEach((ray) => {
+        let distance = this.scene.scene.pickWithRay(ray, (mesh) => {
+          window.picked = mesh.name;
+          return ![this.model.name, "ray"].includes(mesh.name) && ![this.scene.ground.mesh, this.trail].includes(mesh);
+        }).distance;
+        if (distance != 0 && distance <= 0.5 + 0.2) {
+          this.jump = 2;
+        }
+      });
+    });
+  }
 
+  spawn() {
+    this.respawn();
     this.speed = 0;
     this.jump = 2;
     this.orientation = "front";
     this.lastJump = Date.now();
+  }
+
+  rays() {
+    var { minimum, maximum } = this.mesh.getBoundingInfo().boundingBox;
+    var { x, y, z } = this.mesh.position;
+
+    const offset = 1;
+    const scale = 0.8 * offset;
+    const topLeft = x + minimum.x * scale;
+    const bottomLeft = x + maximum.x * scale;
+    const topRight = z + minimum.z * scale;
+    const bottomRight = z + maximum.z * scale;
+    const height = y + minimum.y * scale;
+
+    return [
+      new BABYLON.Vector3(topLeft, height, 0),
+      new BABYLON.Vector3(topLeft, height, topRight),
+      new BABYLON.Vector3(topLeft, height, bottomRight),
+      new BABYLON.Vector3(bottomLeft, height, 0),
+      new BABYLON.Vector3(bottomLeft, height, topRight),
+      new BABYLON.Vector3(bottomLeft, height, bottomRight),
+      new BABYLON.Vector3(x, height, topRight),
+      new BABYLON.Vector3(x, height, bottomRight),
+      new BABYLON.Vector3(x, height, z),
+    ].map((vect) => new BABYLON.Ray(vect, new BABYLON.Vector3(0, -1, 0), 0.5));
   }
 
   move() {
@@ -60,25 +106,14 @@ export default class Player {
     this.updateColor();
   }
 
-  checkGroundDistance() {
-    this.groundCheckRay.origin = this.mesh.getAbsolutePosition();
-    let distance = this.scene.scene.pickWithRay(this.groundCheckRay, (mesh) => {
-      return mesh.name != this.model.name && mesh != this.scene.ground.mesh;
-    }).distance;
-    if (distance != 0 && distance <= 0.5 + 0.2) {
-      this.jump = 2;
-    }
-  }
+  checkGroundDistance() {}
 
   canJump() {
     return this.jump > 0 && Date.now() - this.lastJump > 200;
   }
 
   resetRotation() {
-    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(
-      BABYLON.Vector3.Zero(),
-      this.mesh.rotationQuaternion.w
-    );
+    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
   }
 
   setLinearVelocity() {
@@ -153,7 +188,7 @@ export default class Player {
       default:
         color = new BABYLON.Color3(1, 1, 1);
     }
-    //this.mesh.material.emissiveColor = color;
+    this.trail.material.emissiveColor = color;
   }
 
   respawn() {

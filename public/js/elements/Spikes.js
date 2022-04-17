@@ -10,6 +10,7 @@ class Spikes {
         let y = pY + 0.25;
         let z = pZ + j * 0.3;
         let spike = this.initInstance(x, y, z);
+        //TODO MODIFIER CAR LA LES 9 HITS
         this.setPhysics(spike);
       }
     }
