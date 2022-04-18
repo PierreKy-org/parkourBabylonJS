@@ -14,6 +14,7 @@ export default class Simple {
         width: 1,
         depth: 1,
       });
+      Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
       Simple.builder.alwaysSelectAsActiveMesh = true;
 
       Simple.builder.material = new BABYLON.GradientMaterial("grad", this.scene.scene);
@@ -25,7 +26,7 @@ export default class Simple {
 
       this.box = Simple.builder;
     } else {
-      this.box = Simple.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
+      this.box = Simple.builder.createInstance(`simple_${pX}_${pY}_${pZ}`);
     }
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }

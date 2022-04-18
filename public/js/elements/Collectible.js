@@ -5,38 +5,20 @@ export default class Collectible {
   }
 
   initInstance(pX, pY, pZ) {
-    BABYLON.SceneLoader.ImportMesh(
-      null,
-      "https://models.babylonjs.com/Marble/marble/",
-      "marble.gltf",
-      this.scene.scene,
-      (meshes) => {
-        meshes[0].position = new BABYLON.Vector3(pX, pY, pZ);
-        this.mesh = meshes[0];
-        this.setPhysics();
-        this.startAnimation();
-      }
-    );
-    //this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+    if (!Collectible.model) {
+      Collectible.model = this.scene.assetsManager.Assets["pumpkin"];
+      Collectible.model.meshes[0].setEnabled(false);
+      Collectible.model.meshes[0].name = "collectible model";
+    }
+    this.mesh = Collectible.model.meshes[1].createInstance(`collectible_${pX}_${pY}_${pZ}`);
+    this.mesh.position = new BABYLON.Vector3(pX, pY, pZ);
+    this.setPhysics();
+    this.startAnimation();
   }
 
   setPhysics() {
     this.mesh.checkCollisions = true;
-    this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
-      this.mesh,
-      BABYLON.PhysicsImpostor.SphereImpostor,
-      { mass: 0 },
-      this.scene.scene
-    );
     this.mesh.rotationQuaternion = null;
-
-    let radius = 0.3;
-    this.mesh.setBoundingInfo(
-      new BABYLON.BoundingInfo(
-        new BABYLON.Vector3(-radius, -radius, -radius),
-        new BABYLON.Vector3(radius, radius, radius)
-      )
-    );
 
     this.mesh.actionManager = new BABYLON.ActionManager(this.scene.scene);
     this.mesh.actionManager.registerAction(

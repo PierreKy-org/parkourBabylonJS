@@ -26,6 +26,7 @@ class Spikes {
         { diameterTop: 0, height: 0.5, tessellation: 96, diameter: 0.3 },
         this.scene.scene
       );
+      Spikes.builder.name = `spike_${pX}_${pY}_${pZ}`;
 
       Spikes.builder.alwaysSelectAsActiveMesh = true;
 
@@ -50,11 +51,12 @@ class Spikes {
         width: 1,
         depth: 1,
       });
+      Spikes.box.name = `spikeBox_${pX}_${pY}_${pZ}`;
       Spikes.box.material = Spikes.builder.material;
 
       box = Spikes.box;
     } else {
-      box = Spikes.box.createInstance(`box_${pX}_${pY}_${pZ}`);
+      box = Spikes.box.createInstance(`spikeBox_${pX}_${pY}_${pZ}`);
     }
 
     box.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -71,13 +73,6 @@ class Spikes {
 
   setPhysics(spike) {
     spike.checkCollisions = true;
-    spike.physicsImpostor = new BABYLON.PhysicsImpostor(
-      spike,
-      BABYLON.PhysicsImpostor.BoxImpostor,
-      { mass: 0 },
-      this.scene.scene
-    );
-
     spike.actionManager = new BABYLON.ActionManager(this.scene.scene);
     spike.actionManager.registerAction(
       new BABYLON.ExecuteCodeAction(

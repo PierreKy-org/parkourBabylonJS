@@ -8,6 +8,7 @@ window.onload = () => {
   var Scenes = [
     new Scene({
       baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
+      pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
     }),
   ];
 

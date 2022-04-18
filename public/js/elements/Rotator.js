@@ -13,6 +13,7 @@ class Rotator {
         width: 1,
         depth: 1,
       });
+      Rotator.builder.name = `rotator_${pX}_${pY}_${pZ}`;
 
       Rotator.builder.alwaysSelectAsActiveMesh = true;
 
@@ -23,7 +24,7 @@ class Rotator {
 
       this.box = Rotator.builder;
     } else {
-      this.box = Rotator.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
+      this.box = Rotator.builder.createInstance(`rotator_${pX}_${pY}_${pZ}`);
     }
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }

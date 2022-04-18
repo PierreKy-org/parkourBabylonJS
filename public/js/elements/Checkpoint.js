@@ -13,6 +13,7 @@ export default class Checkpoint {
         width: 1,
         depth: 1,
       });
+      Checkpoint.builder.name = `checkpoint_${pX}_${pY}_${pZ}`;
 
       Checkpoint.builder.alwaysSelectAsActiveMesh = true;
 
@@ -23,7 +24,7 @@ export default class Checkpoint {
 
       this.box = Checkpoint.builder;
     } else {
-      this.box = Checkpoint.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
+      this.box = Checkpoint.builder.createInstance(`checkpoint_${pX}_${pY}_${pZ}`);
     }
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
 

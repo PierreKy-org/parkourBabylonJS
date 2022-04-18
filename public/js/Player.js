@@ -3,10 +3,9 @@ export default class Player {
     this.scene = scene;
 
     this.model = this.scene.assetsManager.Assets["baseball"];
-    this.mesh = this.model.mesh;
+    this.mesh = this.model.meshes[0];
+    this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
-
-    this.mesh.showBoundingBox = true;
 
     this.initPhisics();
     this.initTrail();
@@ -19,6 +18,10 @@ export default class Player {
   }
 
   initPhisics() {
+    var { minimum, maximum } = this.model.meshes[1].getBoundingInfo().boundingBox;
+    this.mesh.setBoundingInfo(new BABYLON.BoundingInfo(minimum, maximum));
+    this.mesh.showBoundingBox = true;
+
     this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
       this.mesh,
       BABYLON.PhysicsImpostor.SphereImpostor,
@@ -28,15 +31,8 @@ export default class Player {
     this.mesh.reIntegrateRotationIntoRotationQuaternion = true;
 
     this.scene.scene.registerBeforeRender(() => {
-      this.rays().forEach((ray) => {
-        let distance = this.scene.scene.pickWithRay(ray, (mesh) => {
-          window.picked = mesh.name;
-          return ![this.model.name, "ray"].includes(mesh.name) && ![this.scene.ground.mesh, this.trail].includes(mesh);
-        }).distance;
-        if (distance != 0 && distance <= 0.5 + 0.2) {
-          this.jump = 2;
-        }
-      });
+      this.updateRays();
+      this.checkGroundDistance();
     });
   }
 
@@ -48,11 +44,11 @@ export default class Player {
     this.lastJump = Date.now();
   }
 
-  rays() {
+  updateRays() {
     var { minimum, maximum } = this.mesh.getBoundingInfo().boundingBox;
-    var { x, y, z } = this.mesh.position;
+    var { x, y, z } = this.mesh.getAbsolutePosition();
 
-    const offset = 1;
+    const offset = 0.8;
     const scale = 0.8 * offset;
     const topLeft = x + minimum.x * scale;
     const bottomLeft = x + maximum.x * scale;
@@ -60,7 +56,7 @@ export default class Player {
     const bottomRight = z + maximum.z * scale;
     const height = y + minimum.y * scale;
 
-    return [
+    var vectors = [
       new BABYLON.Vector3(topLeft, height, 0),
       new BABYLON.Vector3(topLeft, height, topRight),
       new BABYLON.Vector3(topLeft, height, bottomRight),
@@ -70,11 +66,23 @@ export default class Player {
       new BABYLON.Vector3(x, height, topRight),
       new BABYLON.Vector3(x, height, bottomRight),
       new BABYLON.Vector3(x, height, z),
-    ].map((vect) => new BABYLON.Ray(vect, new BABYLON.Vector3(0, -1, 0), 0.5));
+    ];
+
+    if (this.rays) {
+      vectors.forEach((vector, index) => {
+        this.rays[index].origin = vector;
+      });
+    } else {
+      this.rays = [];
+      vectors.forEach((vector) => {
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.2);
+        BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
+        this.rays.push(ray);
+      });
+    }
   }
 
   move() {
-    this.checkGroundDistance();
     if (this.scene.inputStates.up && this.canJump()) {
       this.setLinearVelocity();
       this.jump--;
@@ -106,7 +114,20 @@ export default class Player {
     this.updateColor();
   }
 
-  checkGroundDistance() {}
+  checkGroundDistance() {
+    for (let ray of this.rays) {
+      let distance = this.scene.scene.pickWithRay(ray, (mesh) => {
+        return (
+          ![this.model.meshes[1].name, "ray"].includes(mesh.name) &&
+          ![this.scene.ground.mesh, this.trail].includes(mesh)
+        );
+      }).distance;
+      if (distance != 0) {
+        this.jump = 2;
+        break;
+      }
+    }
+  }
 
   canJump() {
     return this.jump > 0 && Date.now() - this.lastJump > 200;

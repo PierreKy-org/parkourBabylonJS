@@ -48,6 +48,8 @@ export default class Scene {
       this.gui.map(this);
       this.player.spawn();
     })();
+
+    this.scene.debugLayer.show();
   }
 
   initCamera() {
@@ -63,14 +65,10 @@ export default class Scene {
   initSkyBox() {
     const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, this.scene);
     skybox.material = new BABYLON.StandardMaterial("skyBox", this.scene);
+    skybox.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
+    skybox.position.y = 490;
     skybox.material.backFaceCulling = false;
     skybox.material.disableLighting = true;
-
-    const floor = BABYLON.MeshBuilder.CreatePlane("floor", { height: 1000, width: 1000 }, this.scene);
-    floor.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
-    floor.position.y = -10;
-    floor.material = new BABYLON.StandardMaterial("floorMaterial", this.scene);
-    floor.material.diffuseColor = new BABYLON.Color3(0, 0, 0);
   }
 
   initFog() {

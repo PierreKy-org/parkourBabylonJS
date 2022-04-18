@@ -12,6 +12,7 @@ export default class Jump {
         width: 1,
         depth: 1,
       });
+      Jump.builder.name = `jump_${pX}_${pY}_${pZ}`;
 
       Jump.builder.alwaysSelectAsActiveMesh = true;
 
@@ -24,7 +25,7 @@ export default class Jump {
 
       this.box = Jump.builder;
     } else {
-      this.box = Jump.builder.createInstance(`box_${pX}_${pY}_${pZ}`);
+      this.box = Jump.builder.createInstance(`jump_${pX}_${pY}_${pZ}`);
     }
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }

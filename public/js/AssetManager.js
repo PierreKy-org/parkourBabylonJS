@@ -5,11 +5,7 @@ export default class AssetsManager {
     this.assetsManager = new BABYLON.AssetsManager(scene);
 
     this.assetsManager.onTaskSuccessObservable.add((task) => {
-      var mesh = task.loadedMeshes[0];
-      var { name, bbox } = this.getModelBBox(mesh);
-      mesh.setBoundingInfo(bbox);
-
-      this.Assets[task.name] = { name, mesh };
+      this.Assets[task.name] = { name: task.name, meshes: task.loadedMeshes };
     });
 
     var keys = Object.keys(assets);
@@ -18,13 +14,5 @@ export default class AssetsManager {
     });
 
     this.assetsManager.load();
-  }
-
-  getModelBBox(mesh) {
-    while (mesh._children != null) {
-      mesh = mesh._children[0];
-    }
-    var bbox = mesh.getBoundingInfo().boundingBox;
-    return { name: mesh.name, bbox: new BABYLON.BoundingInfo(bbox.minimum, bbox.maximum) };
   }
 }
