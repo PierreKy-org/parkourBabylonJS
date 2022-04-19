@@ -158,7 +158,8 @@ export default class Scene {
 
     this.map.forEach((plan) => {
       plan.map.forEach((line, x) => {
-        line.forEach((column, y) => {
+        for (let y = line.length - 1; y >= 0; y--) {
+          let column = line[y];
           const offset = {
             front: { x: plan.origin.x + x, y: plan.origin.y + y, z: plan.origin.z },
             right: { x: plan.origin.x, y: plan.origin.y + y, z: plan.origin.z - x },
@@ -186,7 +187,7 @@ export default class Scene {
           ];
 
           callBacks[column]();
-        });
+        }
       });
     });
   }

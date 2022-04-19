@@ -14,8 +14,6 @@ export default class Jump {
       });
       Jump.builder.name = `jump_${pX}_${pY}_${pZ}`;
 
-      Jump.builder.alwaysSelectAsActiveMesh = true;
-
       Jump.builder.material = new BABYLON.GradientMaterial("grad", this.scene.scene);
       Jump.builder.material.topColor = new BABYLON.Color3(1, 1, 1);
       Jump.builder.material.bottomColor = new BABYLON.Color3(0, 0, 0);
@@ -27,6 +25,7 @@ export default class Jump {
     } else {
       this.box = Jump.builder.createInstance(`jump_${pX}_${pY}_${pZ}`);
     }
+    this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 

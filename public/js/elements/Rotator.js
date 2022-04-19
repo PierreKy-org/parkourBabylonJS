@@ -15,8 +15,6 @@ class Rotator {
       });
       Rotator.builder.name = `rotator_${pX}_${pY}_${pZ}`;
 
-      Rotator.builder.alwaysSelectAsActiveMesh = true;
-
       Rotator.builder.material = new BABYLON.StandardMaterial("simpleMaterial");
       Rotator.builder.material.disableLighting = true;
       Rotator.builder.material.emissiveColor = BABYLON.Color3.White();
@@ -26,6 +24,7 @@ class Rotator {
     } else {
       this.box = Rotator.builder.createInstance(`rotator_${pX}_${pY}_${pZ}`);
     }
+    this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 
