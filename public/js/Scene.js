@@ -23,6 +23,15 @@ export default class Scene {
   constructor(assets) {
     this.scene = new BABYLON.Scene(window.engine);
     this.assetsManager = new AssetsManager(this.scene, assets);
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
+    this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
+    setTimeout(() => {this.advancedTexture.menu = this.advancedTexture.getControlByName("Rectangle");
+    this.advancedTexture.menu.isVisible = false;
+    this.advancedTexture.leave = this.advancedTexture.getControlByName("Leave");
+    this.advancedTexture.leave.isVisible = false;
+    this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
+    this.advancedTexture.resume.isVisible = false}, 1200);
+        
   }
 
   initScene() {
@@ -49,7 +58,7 @@ export default class Scene {
       this.player.spawn();
     })();
 
-    this.scene.debugLayer.show();
+    //this.scene.debugLayer.show();
   }
 
   initCamera() {
@@ -134,6 +143,7 @@ export default class Scene {
         this.inputStates.r = state;
       } else if (key === "Escape") {
         this.inputStates.escape = state;
+        
       }
     };
 
@@ -182,12 +192,33 @@ export default class Scene {
   }
 
   render() {
-    //TODO : escape peut etre maintenu et le jeu se saccade
+    //TODO : escape peut etre maintenu et le jeu se saccade et le vecteur vitesse change 
     if (this.inputStates.escape) {
       if (!this.pause) {
         this.player.mesh.physicsImpostor.mass = 0;
+        
+        this.advancedTexture.menu.isVisible = true;
+        this.advancedTexture.leave.isVisible = true;
+        this.advancedTexture.resume.isVisible = true;
+        
+        this.advancedTexture.resume.onPointerClickObservable.add( () => {  
+          this.advancedTexture.menu.isVisible = false;
+          this.advancedTexture.leave.isVisible = false;
+          this.advancedTexture.resume.isVisible = false;
+          this.player.mesh.physicsImpostor.mass = 1;
+          this.pause = false;
+      });
+       this.advancedTexture.leave.onPointerClickObservable.add( () => {  
+          this.advancedTexture.menu.isVisible = false;
+          this.advancedTexture.leave.isVisible = false;
+          this.advancedTexture.resume.isVisible = false;
+          this.scene.dispose();
+      });
         setTimeout(() => (this.pause = true), 200);
       } else {
+        this.advancedTexture.menu.isVisible = false;
+        this.advancedTexture.leave.isVisible = false;
+        this.advancedTexture.resume.isVisible = false;
         this.player.mesh.physicsImpostor.mass = 1;
         setTimeout(() => (this.pause = false), 100);
       }
