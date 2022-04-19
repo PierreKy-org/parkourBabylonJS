@@ -15,8 +15,6 @@ export default class Checkpoint {
       });
       Checkpoint.builder.name = `checkpoint_${pX}_${pY}_${pZ}`;
 
-      Checkpoint.builder.alwaysSelectAsActiveMesh = true;
-
       Checkpoint.builder.material = new BABYLON.StandardMaterial("simpleMaterial");
       Checkpoint.builder.material.disableLighting = true;
       Checkpoint.builder.material.emissiveColor = BABYLON.Color3.White();
@@ -26,6 +24,7 @@ export default class Checkpoint {
     } else {
       this.box = Checkpoint.builder.createInstance(`checkpoint_${pX}_${pY}_${pZ}`);
     }
+    this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
 
     if (!this.scene.player.lastCheckPointData) {

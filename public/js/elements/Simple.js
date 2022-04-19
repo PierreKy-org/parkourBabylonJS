@@ -1,5 +1,7 @@
 export default class Simple {
   static builder;
+  static inverted = false;
+  static invertThreshold = 20;
 
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
@@ -15,19 +17,16 @@ export default class Simple {
         depth: 1,
       });
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
-      Simple.builder.alwaysSelectAsActiveMesh = true;
 
-      Simple.builder.material = new BABYLON.GradientMaterial("grad", this.scene.scene);
-      Simple.builder.material.topColor = new BABYLON.Color3(0, 0, 1);
-      Simple.builder.material.bottomColor = new BABYLON.Color3(0, 0, 0);
-      Simple.builder.material.offset = 0.4;
-
-      Simple.builder.material.disableLighting = true;
+      BABYLON.NodeMaterial.ParseFromSnippetAsync("#NJXV5A#1", this.scene.scene).then((nodeMaterial) => {
+        Simple.builder.material = nodeMaterial;
+      });
 
       this.box = Simple.builder;
     } else {
       this.box = Simple.builder.createInstance(`simple_${pX}_${pY}_${pZ}`);
     }
+    this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 

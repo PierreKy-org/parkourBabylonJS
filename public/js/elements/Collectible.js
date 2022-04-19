@@ -11,6 +11,7 @@ export default class Collectible {
       Collectible.model.meshes[0].name = "collectible model";
     }
     this.mesh = Collectible.model.meshes[1].createInstance(`collectible_${pX}_${pY}_${pZ}`);
+    this.mesh.alwaysSelectAsActiveMesh = true;
     this.mesh.position = new BABYLON.Vector3(pX, pY, pZ);
     this.setPhysics();
     this.startAnimation();

@@ -28,8 +28,6 @@ class Spikes {
       );
       Spikes.builder.name = `spike_${pX}_${pY}_${pZ}`;
 
-      Spikes.builder.alwaysSelectAsActiveMesh = true;
-
       Spikes.builder.material = new BABYLON.CellMaterial("cell", this.scene.scene);
       Spikes.builder.material.computeHighLevel = true;
       Spikes.builder.material.diffuseColor = new BABYLON.Color3(0.9, 0.3, 0);
@@ -38,6 +36,7 @@ class Spikes {
     } else {
       spike = Spikes.builder.createInstance(`spike_${pX}_${pY}_${pZ}`);
     }
+    spike.alwaysSelectAsActiveMesh = true;
     spike.position = new BABYLON.Vector3(pX, pY, pZ);
 
     return spike;
@@ -66,6 +65,7 @@ class Spikes {
       this.scene.scene
     );
 
+    box.alwaysSelectAsActiveMesh = true;
     box.position = new BABYLON.Vector3(pX, pY - 0.25, pZ);
 
     return box;
