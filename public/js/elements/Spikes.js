@@ -28,9 +28,12 @@ class Spikes {
       );
       Spikes.builder.name = `spike_${pX}_${pY}_${pZ}`;
 
-      Spikes.builder.material = new BABYLON.CellMaterial("cell", this.scene.scene);
-      Spikes.builder.material.computeHighLevel = true;
-      Spikes.builder.material.diffuseColor = new BABYLON.Color3(0.9, 0.3, 0);
+      BABYLON.NodeMaterial.ParseFromSnippetAsync(
+        "#NJXV5A#12",
+        this.scene.scene
+      ).then((nodeMaterial) => {
+        Spikes.builder.material = nodeMaterial;
+      });
 
       spike = Spikes.builder;
     } else {
@@ -51,7 +54,12 @@ class Spikes {
         depth: 1,
       });
       Spikes.box.name = `spikeBox_${pX}_${pY}_${pZ}`;
-      Spikes.box.material = Spikes.builder.material;
+      BABYLON.NodeMaterial.ParseFromSnippetAsync(
+        "#NJXV5A#12",
+        this.scene.scene
+      ).then((nodeMaterial) => {
+        Spikes.box.material = nodeMaterial;
+      });
 
       box = Spikes.box;
     } else {

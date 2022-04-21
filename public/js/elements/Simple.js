@@ -19,7 +19,7 @@ export default class Simple {
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
 
       BABYLON.NodeMaterial.ParseFromSnippetAsync(
-        "#NJXV5A#7",
+        "#NJXV5A#12",
         this.scene.scene
       ).then((nodeMaterial) => {
         Simple.builder.material = nodeMaterial;
