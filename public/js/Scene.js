@@ -20,18 +20,20 @@ import AssetsManager from "./AssetManager.js";
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
-  constructor(assets) {
+  constructor(assets, map) {
     this.scene = new BABYLON.Scene(window.engine);
+    this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
     this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
-    setTimeout(() => {this.advancedTexture.menu = this.advancedTexture.getControlByName("Rectangle");
-    this.advancedTexture.menu.isVisible = false;
-    this.advancedTexture.leave = this.advancedTexture.getControlByName("Leave");
-    this.advancedTexture.leave.isVisible = false;
-    this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
-    this.advancedTexture.resume.isVisible = false}, 1200);
-        
+    setTimeout(() => {
+      this.advancedTexture.menu = this.advancedTexture.getControlByName("Rectangle");
+      this.advancedTexture.menu.isVisible = false;
+      this.advancedTexture.leave = this.advancedTexture.getControlByName("Leave");
+      this.advancedTexture.leave.isVisible = false;
+      this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
+      this.advancedTexture.resume.isVisible = false;
+    }, 1200);
   }
 
   initScene() {
@@ -48,7 +50,6 @@ export default class Scene {
     this.initSkyBox();
 
     this.collected = 0;
-    this.pause = false;
 
     this.initEvents();
 
@@ -128,7 +129,7 @@ export default class Scene {
   }
 
   initEvents() {
-    this.inputStates = { left: false, right: false, up: false, down: false, r: false, escape: false };
+    this.inputStates = {};
 
     const changeInputState = (key, state) => {
       if (key === "ArrowLeft") {
@@ -143,7 +144,8 @@ export default class Scene {
         this.inputStates.r = state;
       } else if (key === "Escape") {
         this.inputStates.escape = state;
-        
+      } else if (key === " ") {
+        this.inputStates.space = state;
       }
     };
 
@@ -153,7 +155,7 @@ export default class Scene {
   }
 
   async initLevel() {
-    let file = await fetch("./assets/level1.json");
+    let file = await fetch(`./assets/${this.map}`);
     this.map = await file.json();
 
     this.map.forEach((plan) => {
@@ -192,29 +194,56 @@ export default class Scene {
     });
   }
 
+  distanceCamera(on) {
+    if (on) {
+      this.pause();
+      this.camera.radius = 100;
+      Collectible.model.meshes[1].renderOutline = true;
+    } else {
+      this.resume();
+      this.camera.radius = 15;
+      Collectible.model.meshes[1].renderOutline = false;
+    }
+  }
+
+  pause() {
+    this.player.oldVelocity = {
+      angular: this.player.mesh.physicsImpostor.getAngularVelocity(),
+      linear: this.player.mesh.physicsImpostor.getLinearVelocity(),
+    };
+    this.player.mesh.physicsImpostor.sleep();
+  }
+
+  resume() {
+    this.player.mesh.physicsImpostor.wakeUp();
+    this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
+    this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
+  }
+
   render() {
-    //TODO : escape peut etre maintenu et le jeu se saccade et le vecteur vitesse change 
+    //TODO : escape peut etre maintenu et le jeu se saccade et le vecteur vitesse change
+    /*
     if (this.inputStates.escape) {
       if (!this.pause) {
         this.player.mesh.physicsImpostor.mass = 0;
-        
+
         this.advancedTexture.menu.isVisible = true;
         this.advancedTexture.leave.isVisible = true;
         this.advancedTexture.resume.isVisible = true;
-        
-        this.advancedTexture.resume.onPointerClickObservable.add( () => {  
+
+        this.advancedTexture.resume.onPointerClickObservable.add(() => {
           this.advancedTexture.menu.isVisible = false;
           this.advancedTexture.leave.isVisible = false;
           this.advancedTexture.resume.isVisible = false;
           this.player.mesh.physicsImpostor.mass = 1;
           this.pause = false;
-      });
-       this.advancedTexture.leave.onPointerClickObservable.add( () => {  
+        });
+        this.advancedTexture.leave.onPointerClickObservable.add(() => {
           this.advancedTexture.menu.isVisible = false;
           this.advancedTexture.leave.isVisible = false;
           this.advancedTexture.resume.isVisible = false;
           this.scene.dispose();
-      });
+        });
         setTimeout(() => (this.pause = true), 200);
       } else {
         this.advancedTexture.menu.isVisible = false;
@@ -226,7 +255,9 @@ export default class Scene {
     }
     if (!this.pause) {
       this.player.move();
-    }
+    }*/
+
+    this.player.move();
 
     if (
       this.player.mesh.position.y <=

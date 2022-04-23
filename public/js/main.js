@@ -6,10 +6,13 @@ window.onload = () => {
 
   var currentScene;
   var Scenes = [
-    new Scene({
-      baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
-      pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
-    }),
+    new Scene(
+      {
+        baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
+        pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
+      },
+      "level0.json"
+    ),
   ];
 
   var createScene0 = function () {

@@ -9,6 +9,9 @@ export default class Collectible {
       Collectible.model = this.scene.assetsManager.Assets["pumpkin"];
       Collectible.model.meshes[0].setEnabled(false);
       Collectible.model.meshes[0].name = "collectible model";
+
+      Collectible.model.meshes[1].outlineWidth = 0.1;
+      Collectible.model.meshes[1].outlineColor = BABYLON.Color3.White();
     }
     this.mesh = Collectible.model.meshes[1].createInstance(`collectible_${pX}_${pY}_${pZ}`);
     this.mesh.alwaysSelectAsActiveMesh = true;

@@ -54,6 +54,6 @@ export default class Jump {
 
   onPlayerCollision() {
     let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
-    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 10, al.z));
+    this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 13, al.z));
   }
 }

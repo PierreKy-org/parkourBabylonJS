@@ -40,15 +40,17 @@ export default class Player {
     this.respawn();
     this.speed = 0;
     this.jump = 2;
+    this.normalCamera = true;
     this.orientation = "front";
     this.lastJump = Date.now();
+    this.spaceLastKeyDown = Date.now();
   }
 
   updateRays() {
     var { minimum, maximum } = this.mesh.getBoundingInfo().boundingBox;
     var { x, y, z } = this.mesh.getAbsolutePosition();
 
-    const offset = 0.8;
+    const offset = 0.5;
     const scale = 0.8 * offset;
     const topLeft = x + minimum.x * scale;
     const bottomLeft = x + maximum.x * scale;
@@ -75,7 +77,7 @@ export default class Player {
     } else {
       this.rays = [];
       vectors.forEach((vector) => {
-        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.2);
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.3);
         BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
         this.rays.push(ray);
       });
@@ -83,34 +85,42 @@ export default class Player {
   }
 
   move() {
-    if (this.scene.inputStates.up && this.canJump()) {
-      this.setLinearVelocity();
-      this.jump--;
-      this.lastJump = Date.now();
+    if (this.scene.inputStates.space && Date.now() - this.spaceLastKeyDown > 300) {
+      this.scene.distanceCamera(this.normalCamera);
+      this.normalCamera = !this.normalCamera;
+      this.spaceLastKeyDown = Date.now();
     }
-    if (this.scene.inputStates.down) {
-      this.speed = 0;
-      this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-      this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-      this.resetRotation();
+    if (this.normalCamera) {
+      if (this.scene.inputStates.up && this.canJump()) {
+        this.setLinearVelocity();
+        this.jump--;
+        this.lastJump = Date.now();
+      }
+      if (this.scene.inputStates.down) {
+        this.speed = 0;
+        this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+        this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+        this.resetRotation();
+      }
+      if (this.scene.inputStates.left) {
+        this.updateSpeed(true);
+        this.setAngularVelocity();
+      }
+      if (this.scene.inputStates.right) {
+        this.updateSpeed(false);
+        this.setAngularVelocity();
+      }
+      if (this.scene.inputStates.r && this.lastCheckPointData) {
+        this.mesh.position = this.lastCheckPointData.position;
+        this.orientation = this.lastCheckPointData.orientation;
+        this.speed = 0;
+        this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+        this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+        this.resetRotation();
+        this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
+      }
     }
-    if (this.scene.inputStates.left) {
-      this.updateSpeed(true);
-      this.setAngularVelocity();
-    }
-    if (this.scene.inputStates.right) {
-      this.updateSpeed(false);
-      this.setAngularVelocity();
-    }
-    if (this.scene.inputStates.r && this.lastCheckPointData) {
-      this.mesh.position = this.lastCheckPointData.position;
-      this.orientation = this.lastCheckPointData.orientation;
-      this.speed = 0;
-      this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-      this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-      this.resetRotation();
-      this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
-    }
+
     this.updateColor();
   }
 
@@ -130,7 +140,7 @@ export default class Player {
   }
 
   canJump() {
-    return this.jump > 0 && Date.now() - this.lastJump > 200;
+    return this.jump > 0 && Date.now() - this.lastJump > 300;
   }
 
   resetRotation() {

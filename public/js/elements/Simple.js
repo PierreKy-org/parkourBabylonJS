@@ -1,7 +1,5 @@
 export default class Simple {
   static builder;
-  static inverted = false;
-  static invertThreshold = 20;
 
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
@@ -18,10 +16,7 @@ export default class Simple {
       });
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
 
-      BABYLON.NodeMaterial.ParseFromSnippetAsync(
-        "#NJXV5A#12",
-        this.scene.scene
-      ).then((nodeMaterial) => {
+      BABYLON.NodeMaterial.ParseFromSnippetAsync("#NJXV5A#12", this.scene.scene).then((nodeMaterial) => {
         Simple.builder.material = nodeMaterial;
       });
 
