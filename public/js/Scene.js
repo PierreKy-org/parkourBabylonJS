@@ -23,6 +23,7 @@ export default class Scene {
   constructor(assets, map) {
     this.scene = new BABYLON.Scene(window.engine);
     this.map = map;
+    this.pause = false;
     this.assetsManager = new AssetsManager(this.scene, assets);
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
     this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
@@ -196,7 +197,7 @@ export default class Scene {
 
   distanceCamera(on) {
     if (on) {
-      this.pause();
+      this.pausex();
       this.camera.radius = 100;
       Collectible.model.meshes[1].renderOutline = true;
     } else {
@@ -206,56 +207,58 @@ export default class Scene {
     }
   }
 
-  pause() {
+  pausex() {
     this.player.oldVelocity = {
       angular: this.player.mesh.physicsImpostor.getAngularVelocity(),
       linear: this.player.mesh.physicsImpostor.getLinearVelocity(),
+      speed : this.player.speed
     };
     this.player.mesh.physicsImpostor.sleep();
   }
 
   resume() {
     this.player.mesh.physicsImpostor.wakeUp();
+
     this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
     this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
+    this.player.mesh.physicsImpostor.applyImpulse(this.player.oldVelocity.angular, this.player.mesh.getAbsolutePosition());
+
+  }
+
+  switchMenu(bool){
+    this.advancedTexture.menu.isVisible = bool;
+    this.advancedTexture.leave.isVisible = bool;
+    this.advancedTexture.resume.isVisible = bool;
   }
 
   render() {
-    //TODO : escape peut etre maintenu et le jeu se saccade et le vecteur vitesse change
-    /*
+    //TODO :  le vecteur vitesse change
+    
     if (this.inputStates.escape) {
       if (!this.pause) {
-        this.player.mesh.physicsImpostor.mass = 0;
-
-        this.advancedTexture.menu.isVisible = true;
-        this.advancedTexture.leave.isVisible = true;
-        this.advancedTexture.resume.isVisible = true;
+        this.pausex()
+        this.switchMenu(true)
 
         this.advancedTexture.resume.onPointerClickObservable.add(() => {
-          this.advancedTexture.menu.isVisible = false;
-          this.advancedTexture.leave.isVisible = false;
-          this.advancedTexture.resume.isVisible = false;
-          this.player.mesh.physicsImpostor.mass = 1;
+          this.switchMenu(false)
+          this.resume()
           this.pause = false;
         });
         this.advancedTexture.leave.onPointerClickObservable.add(() => {
-          this.advancedTexture.menu.isVisible = false;
-          this.advancedTexture.leave.isVisible = false;
-          this.advancedTexture.resume.isVisible = false;
+          this.switchMenu(false)
+          this.resume()
           this.scene.dispose();
         });
         setTimeout(() => (this.pause = true), 200);
       } else {
-        this.advancedTexture.menu.isVisible = false;
-        this.advancedTexture.leave.isVisible = false;
-        this.advancedTexture.resume.isVisible = false;
-        this.player.mesh.physicsImpostor.mass = 1;
+        this.switchMenu(false)
+        this.resume()
         setTimeout(() => (this.pause = false), 100);
       }
     }
     if (!this.pause) {
       this.player.move();
-    }*/
+    }
 
     this.player.move();
 
