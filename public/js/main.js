@@ -11,7 +11,7 @@ window.onload = () => {
         baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
         pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
       },
-      "level0.json"
+      "level1.json"
     ),
   ];
 
