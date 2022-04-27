@@ -244,11 +244,7 @@ export default class Scene {
           this.resume()
           this.pause = false;
         });
-        this.advancedTexture.leave.onPointerClickObservable.add(() => {
-          this.switchMenu(false)
-          this.resume()
-          this.scene.dispose();
-        });
+        
         setTimeout(() => (this.pause = true), 200);
       } else {
         this.switchMenu(false)
@@ -271,7 +267,7 @@ export default class Scene {
 
     this.ground.mesh.position.x -= 0.05;
 
-    this.gui.update();
+    //this.gui.update();
     this.scene.render();
   }
 }
