@@ -7,20 +7,28 @@ export default class End {
   }
 
   initInstance(pX, pY, pZ) {
-    this.top = BABYLON.MeshBuilder.CreateCylinder("cylinder", {
-      tessellation: 5,
-      diameterTop: 1,
-      diameterBottom: 0,
-      height: 1,
-    });
+    this.top = BABYLON.MeshBuilder.CreateCylinder(
+      "cylinder",
+      {
+        tessellation: 5,
+        diameterTop: 1,
+        diameterBottom: 0,
+        height: 1,
+      },
+      this.scene.scene
+    );
     this.top.position = new BABYLON.Vector3(0, 4, 0);
 
-    this.bottom = BABYLON.MeshBuilder.CreateCylinder("cylinder", {
-      tessellation: 5,
-      diameterTop: 0,
-      diameterBottom: 1,
-      height: 1,
-    });
+    this.bottom = BABYLON.MeshBuilder.CreateCylinder(
+      "cylinder",
+      {
+        tessellation: 5,
+        diameterTop: 0,
+        diameterBottom: 1,
+        height: 1,
+      },
+      this.scene.scene
+    );
     this.bottom.position = BABYLON.Vector3.Zero();
 
     this.box = BABYLON.Mesh.MergeMeshes([this.top, this.bottom]);
@@ -84,6 +92,6 @@ export default class End {
   }
 
   onPlayerCollision() {
-    console.log("END");
+    window.changeScene(0);
   }
 }

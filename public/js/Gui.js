@@ -1,7 +1,7 @@
 export default class Gui {
   constructor(scene) {
     this.scene = scene;
-    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", this.scene.scene);
 
     this.debug = new BABYLON.GUI.TextBlock();
     this.debug.color = "white";
@@ -28,7 +28,7 @@ export default class Gui {
       let offsetX = window.innerWidth / 2;
       let offsetY = window.innerHeight / 2;
       let lastX = 1;
-      scene.map.forEach((plan) => {
+      scene.level.forEach((plan) => {
         plan.map.forEach((line, x) => {
           line.forEach((column, y) => {
             if (column != 0) {

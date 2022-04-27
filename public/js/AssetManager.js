@@ -12,7 +12,9 @@ export default class AssetsManager {
     keys.forEach((key) => {
       this.assetsManager.addMeshTask(key, "", assets[key].path, assets[key].gltf);
     });
+  }
 
-    this.assetsManager.load();
+  async load() {
+    await this.assetsManager.loadAsync();
   }
 }

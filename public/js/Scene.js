@@ -24,8 +24,8 @@ export default class Scene {
   constructor(assets, map) {
     this.scene = new BABYLON.Scene(window.engine);
     this.map = map;
-    this.pause = false;
     this.assetsManager = new AssetsManager(this.scene, assets);
+    /*
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
     this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
     setTimeout(() => {
@@ -35,14 +35,19 @@ export default class Scene {
       this.advancedTexture.leave.isVisible = false;
       this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
       this.advancedTexture.resume.isVisible = false;
-    }, 1200);
+    }, 1200);*/
+
+    this.initScene();
   }
 
-  initScene() {
+  async initScene() {
+    await this.assetsManager.load();
+
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
     this.scene.enablePhysics(this.gravityVector, physicsPlugin);
+    this.pause = false;
 
-    this.gui = new Gui(this);
+    //this.gui = new Gui(this);
 
     this.player = new Player(this);
     this.camera = this.initCamera();
@@ -55,13 +60,10 @@ export default class Scene {
 
     this.initEvents();
 
-    (async () => {
-      await this.initLevel();
-      this.gui.map(this);
-      this.player.spawn();
-    })();
+    await this.initLevel();
+    this.player.spawn();
 
-    //this.scene.debugLayer.show();
+    this.loaded = true;
   }
 
   initCamera() {
@@ -158,9 +160,9 @@ export default class Scene {
 
   async initLevel() {
     let file = await fetch(`./assets/levels/${this.map}`);
-    this.map = await file.json();
+    this.level = await file.json();
 
-    this.map.forEach((plan) => {
+    this.level.forEach((plan) => {
       plan.map.forEach((line, x) => {
         for (let y = line.length - 1; y >= 0; y--) {
           let column = line[y];
@@ -213,7 +215,7 @@ export default class Scene {
     this.player.oldVelocity = {
       angular: this.player.mesh.physicsImpostor.getAngularVelocity(),
       linear: this.player.mesh.physicsImpostor.getLinearVelocity(),
-      speed : this.player.speed
+      speed: this.player.speed,
     };
     this.player.mesh.physicsImpostor.sleep();
   }
@@ -223,11 +225,13 @@ export default class Scene {
 
     this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
     this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
-    this.player.mesh.physicsImpostor.applyImpulse(this.player.oldVelocity.angular, this.player.mesh.getAbsolutePosition());
-
+    this.player.mesh.physicsImpostor.applyImpulse(
+      this.player.oldVelocity.angular,
+      this.player.mesh.getAbsolutePosition()
+    );
   }
 
-  switchMenu(bool){
+  switchMenu(bool) {
     this.advancedTexture.menu.isVisible = bool;
     this.advancedTexture.leave.isVisible = bool;
     this.advancedTexture.resume.isVisible = bool;
@@ -235,41 +239,42 @@ export default class Scene {
 
   render() {
     //TODO :  le vecteur vitesse change
-    
-    if (this.inputStates.escape) {
-      if (!this.pause) {
-        this.pausex()
-        this.switchMenu(true)
+    if (this.loaded) {
+      if (this.inputStates.escape) {
+        if (!this.pause) {
+          this.pausex();
+          this.switchMenu(true);
 
-        this.advancedTexture.resume.onPointerClickObservable.add(() => {
-          this.switchMenu(false)
-          this.resume()
-          this.pause = false;
-        });
-        
-        setTimeout(() => (this.pause = true), 200);
-      } else {
-        this.switchMenu(false)
-        this.resume()
-        setTimeout(() => (this.pause = false), 100);
+          this.advancedTexture.resume.onPointerClickObservable.add(() => {
+            this.switchMenu(false);
+            this.resume();
+            this.pause = false;
+          });
+
+          setTimeout(() => (this.pause = true), 200);
+        } else {
+          this.switchMenu(false);
+          this.resume();
+          setTimeout(() => (this.pause = false), 100);
+        }
       }
-    }
-    if (!this.pause) {
+      if (!this.pause) {
+        this.player.move();
+      }
+
       this.player.move();
+
+      if (
+        this.player.mesh.position.y <=
+        this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
+      ) {
+        this.player.respawn();
+      }
+
+      this.ground.mesh.position.x -= 0.05;
+
+      //this.gui.update();
+      this.scene.render();
     }
-
-    this.player.move();
-
-    if (
-      this.player.mesh.position.y <=
-      this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
-    ) {
-      this.player.respawn();
-    }
-
-    this.ground.mesh.position.x -= 0.05;
-
-    //this.gui.update();
-    this.scene.render();
   }
 }

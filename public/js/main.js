@@ -7,35 +7,25 @@ window.onload = () => {
 
   var currentScene;
   var Scenes = [
-    new Scene(
-      {
-        baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
-        pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
-      },
-      "level0.json"
-    ),
-    new MenuScene()
+    () => new MenuScene(),
+    () =>
+      new Scene(
+        {
+          baseball: { path: "../../assets/baseball/", gltf: "scene.gltf" },
+          pumpkin: { path: "../../assets/pumpkin/", gltf: "pumpkin.gltf" },
+        },
+        "levelTest.json"
+      ),
   ];
 
-  //Envois le joueur dans le jeu
-  Scenes[1].button1.onPointerUpObservable.add(function () {
-    currentScene.scene.dispose();
-    currentScene = Scenes[0];
-    currentScene.initScene();
-  });
-
-  //quitte le jeu quand on appuie sur le bouton leave
-  setTimeout(() => {
-    Scenes[0].advancedTexture.leave.onPointerUpObservable.add(function () {
+  window.changeScene = (index) => {
+    if (currentScene) {
       currentScene.scene.dispose();
-      
-      currentScene = Scenes[1];
     }
-    )
-  }, 1200);
-  
+    currentScene = Scenes[index]();
+  };
 
-  currentScene = Scenes[1];
+  window.changeScene(0);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();

@@ -18,7 +18,7 @@ class Spikes {
 
   initInstance(pX, pY, pZ) {
     var spike;
-    if (!Spikes.builder) {
+    if (!Spikes.builder || Spikes.builder._scene != this.scene) {
       Spikes.builder = BABYLON.MeshBuilder.CreateCylinder(
         "cone",
         { diameterTop: 0, height: 0.5, tessellation: 96, diameter: 0.3 },

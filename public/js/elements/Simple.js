@@ -8,7 +8,7 @@ export default class Simple {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Simple.builder) {
+    if (!Simple.builder || Simple.builder._scene != this.scene) {
       Simple.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
         width: 1,

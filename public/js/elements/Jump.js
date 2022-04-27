@@ -6,7 +6,7 @@ export default class Jump {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Jump.builder) {
+    if (!Jump.builder || Jump.builder._scene != this.scene) {
       Jump.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
         width: 1,

@@ -7,7 +7,7 @@ export default class Checkpoint {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Checkpoint.builder) {
+    if (!Checkpoint.builder || Checkpoint.builder._scene != this.scene) {
       Checkpoint.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
         width: 1,

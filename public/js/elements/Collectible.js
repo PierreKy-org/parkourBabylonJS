@@ -5,7 +5,7 @@ export default class Collectible {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Collectible.model) {
+    if (!Collectible.model || Collectible.builder._scene != this.scene) {
       Collectible.model = this.scene.assetsManager.Assets["pumpkin"];
       Collectible.model.meshes[0].setEnabled(false);
       Collectible.model.meshes[0].name = "collectible model";
