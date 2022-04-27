@@ -223,12 +223,16 @@ export default class Player {
   }
 
   respawn() {
-    this.mesh.position = this.lastCheckPointData.position;
-    this.orientation = this.lastCheckPointData.orientation;
+    if (this.lastCheckPointData) {
+      this.mesh.position = this.lastCheckPointData.position;
+      this.orientation = this.lastCheckPointData.orientation;
+      this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
+    } else {
+      this.mesh.position = BABYLON.Vector3.Zero();
+    }
     this.speed = 0;
     this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.resetRotation();
-    this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
   }
 }

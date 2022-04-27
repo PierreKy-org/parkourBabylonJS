@@ -16,6 +16,7 @@ import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
 import AssetsManager from "./AssetManager.js";
+import End from "./elements/end.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
@@ -155,7 +156,7 @@ export default class Scene {
   }
 
   async initLevel() {
-    let file = await fetch(`./assets/${this.map}`);
+    let file = await fetch(`./assets/levels/${this.map}`);
     this.map = await file.json();
 
     this.map.forEach((plan) => {
@@ -186,6 +187,7 @@ export default class Scene {
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => new Spikes(position.x, position.y, position.z, this),
             (thirteen) => new Collectible(position.x, position.y, position.z, this),
+            (fourteen) => new End(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
