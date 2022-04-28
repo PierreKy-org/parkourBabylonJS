@@ -16,7 +16,7 @@ import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
 import AssetsManager from "./AssetManager.js";
-import End from "./elements/end.js";
+import End from "./elements/End.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
@@ -203,11 +203,15 @@ export default class Scene {
     if (on) {
       this.pausex();
       this.camera.radius = 100;
-      Collectible.model.meshes[1].renderOutline = true;
+      if (Collectible.model) {
+        Collectible.model.meshes[1].renderOutline = true;
+      }
     } else {
       this.resume();
       this.camera.radius = 15;
-      Collectible.model.meshes[1].renderOutline = false;
+      if (Collectible.model) {
+        Collectible.model.meshes[1].renderOutline = false;
+      }
     }
   }
 

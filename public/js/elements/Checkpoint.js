@@ -7,15 +7,24 @@ export default class Checkpoint {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Checkpoint.builder || Checkpoint.builder._scene != this.scene) {
-      Checkpoint.builder = BABYLON.MeshBuilder.CreateBox("box", {
-        height: 1,
-        width: 1,
-        depth: 1,
-      });
+    if (Checkpoint.builder && Checkpoint.builder._scene != this.scene.scene) {
+      Checkpoint.builder.dispose();
+      Checkpoint.builder = undefined;
+    }
+
+    if (!Checkpoint.builder) {
+      Checkpoint.builder = BABYLON.MeshBuilder.CreateBox(
+        "box",
+        {
+          height: 1,
+          width: 1,
+          depth: 1,
+        },
+        this.scene.scene
+      );
       Checkpoint.builder.name = `checkpoint_${pX}_${pY}_${pZ}`;
 
-      Checkpoint.builder.material = new BABYLON.StandardMaterial("simpleMaterial");
+      Checkpoint.builder.material = new BABYLON.StandardMaterial("simpleMaterial", this.scene.scene);
       Checkpoint.builder.material.disableLighting = true;
       Checkpoint.builder.material.emissiveColor = BABYLON.Color3.White();
       Checkpoint.builder.material.diffuseTexture = new BABYLON.Texture("../assets/checkboard.jpg", this.scene.scene);

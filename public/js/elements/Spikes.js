@@ -9,16 +9,19 @@ class Spikes {
         let x = pX + i * 0.3;
         let y = pY - 0.25;
         let z = pZ + j * 0.3;
-        let spike = this.initInstance(x, y, z);
-        //TODO MODIFIER CAR LA LES 9 HITS
-        this.setPhysics(spike);
+        this.initInstance(x, y, z);
       }
     }
   }
 
-  initInstance(pX, pY, pZ) {
+  async initInstance(pX, pY, pZ) {
+    if (Spikes.builder && Spikes.builder._scene != this.scene.scene) {
+      Spikes.builder.dispose();
+      Spikes.builder = undefined;
+    }
+
     var spike;
-    if (!Spikes.builder || Spikes.builder._scene != this.scene) {
+    if (!Spikes.builder) {
       Spikes.builder = BABYLON.MeshBuilder.CreateCylinder(
         "cone",
         { diameterTop: 0, height: 0.5, tessellation: 96, diameter: 0.3 },
@@ -26,9 +29,15 @@ class Spikes {
       );
       Spikes.builder.name = `spike_${pX}_${pY}_${pZ}`;
 
-      BABYLON.NodeMaterial.ParseFromSnippetAsync("#NJXV5A#14", this.scene.scene).then((nodeMaterial) => {
-        Spikes.builder.material = nodeMaterial;
-      });
+      Spikes.builder.material = await BABYLON.NodeMaterial.ParseFromFileAsync(
+        "Spike #NJXV5A#14",
+        "../../assets/materials/spike.json",
+        this.scene.scene
+      );
+
+      Spikes.builder.renderOutline = true;
+      Spikes.builder.outlineWidth = 0.01;
+      Spikes.builder.outlineColor = new BABYLON.Color3(1, 0, 0);
 
       spike = Spikes.builder;
     } else {
@@ -36,6 +45,8 @@ class Spikes {
     }
     spike.alwaysSelectAsActiveMesh = true;
     spike.position = new BABYLON.Vector3(pX, pY, pZ);
+
+    this.setPhysics(spike);
 
     return spike;
   }

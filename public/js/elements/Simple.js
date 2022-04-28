@@ -4,28 +4,40 @@ export default class Simple {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
     this.initInstance(pX, pY, pZ);
-    this.setPhysics();
   }
 
-  initInstance(pX, pY, pZ) {
-    if (!Simple.builder || Simple.builder._scene != this.scene) {
-      Simple.builder = BABYLON.MeshBuilder.CreateBox("box", {
-        height: 1,
-        width: 1,
-        depth: 1,
-      });
+  async initInstance(pX, pY, pZ) {
+    if (Simple.builder && Simple.builder._scene != this.scene.scene) {
+      Simple.builder.dispose();
+      Simple.builder = undefined;
+    }
+
+    if (!Simple.builder) {
+      Simple.builder = BABYLON.MeshBuilder.CreateBox(
+        "box",
+        {
+          height: 1,
+          width: 1,
+          depth: 1,
+        },
+        this.scene.scene
+      );
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
 
-      BABYLON.NodeMaterial.ParseFromSnippetAsync("#NJXV5A#12", this.scene.scene).then((nodeMaterial) => {
-        Simple.builder.material = nodeMaterial;
-      });
+      Simple.builder.material = await BABYLON.NodeMaterial.ParseFromFileAsync(
+        "Simple #NJXV5A#12",
+        "../../assets/materials/simple.json",
+        this.scene.scene
+      );
 
       this.box = Simple.builder;
     } else {
-      this.box = Simple.builder.createInstance(`simple_${pX}_${pY}_${pZ}`);
+      this.box = Simple.builder.createInstance(`simple_${pX}_${pY}_${pZ}`, this.scene.scene);
     }
     this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+
+    this.setPhysics();
   }
 
   setPhysics() {

@@ -7,7 +7,12 @@ class Rotator {
   }
 
   initInstance(pX, pY, pZ) {
-    if (!Rotator.builder || Rotator.builder._scene != this.scene) {
+    if (Rotator.builder && Rotator.builder._scene != this.scene.scene) {
+      Rotator.builder.dispose();
+      Rotator.builder = undefined;
+    }
+
+    if (!Rotator.builder) {
       Rotator.builder = BABYLON.MeshBuilder.CreateBox("box", {
         height: 1,
         width: 1,

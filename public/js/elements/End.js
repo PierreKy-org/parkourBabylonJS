@@ -2,11 +2,9 @@ export default class End {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
     this.initInstance(pX, pY, pZ);
-    this.setPhysics();
-    this.setParticles();
   }
 
-  initInstance(pX, pY, pZ) {
+  async initInstance(pX, pY, pZ) {
     this.top = BABYLON.MeshBuilder.CreateCylinder(
       "cylinder",
       {
@@ -32,12 +30,18 @@ export default class End {
     this.bottom.position = BABYLON.Vector3.Zero();
 
     this.box = BABYLON.Mesh.MergeMeshes([this.top, this.bottom]);
+    this.box.name = `end_${pX}_${pY}_${pZ}`;
 
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
 
-    BABYLON.NodeMaterial.ParseFromSnippetAsync("#NJXV5A#12", this.scene.scene).then((nodeMaterial) => {
-      this.box.material = nodeMaterial;
-    });
+    this.box.material = await BABYLON.NodeMaterial.ParseFromFileAsync(
+      "Simple #NJXV5A#12",
+      "../../assets/materials/simple.json",
+      this.scene.scene
+    );
+
+    this.setPhysics();
+    this.setParticles();
   }
 
   setPhysics() {
@@ -77,15 +81,18 @@ export default class End {
     this.particles.maxLifeTime = 1.5;
 
     // Emission rate
-    this.particles.emitRate = 1000;
+    this.particles.emitRate = 500;
 
     /******* Emission Space ********/
-    this.particles.createCylinderEmitter(0.25, 3, 0.25, 0);
+    this.particles.createCylinderEmitter(0.05, 3, 0.05, 0);
 
     // Speed
     this.particles.minEmitPower = 0.1;
     this.particles.maxEmitPower = 2;
-    this.particles.updateSpeed = 0.005;
+    this.particles.updateSpeed = 0.008;
+
+    this.particles.gravity = new BABYLON.Vector3(0, -2.0, 0);
+    this.particles.renderingGroupId = 1;
 
     // Start the particle system
     this.particles.start();

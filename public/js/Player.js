@@ -77,7 +77,7 @@ export default class Player {
     } else {
       this.rays = [];
       vectors.forEach((vector) => {
-        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.3);
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.5);
         BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
         this.rays.push(ray);
       });
