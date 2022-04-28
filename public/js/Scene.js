@@ -25,7 +25,7 @@ export default class Scene {
     this.scene = new BABYLON.Scene(window.engine);
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
-    /*
+    
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
     this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
     setTimeout(() => {
@@ -35,7 +35,7 @@ export default class Scene {
       this.advancedTexture.leave.isVisible = false;
       this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
       this.advancedTexture.resume.isVisible = false;
-    }, 1200);*/
+    }, 1200);
 
     this.initScene();
   }
@@ -252,6 +252,12 @@ export default class Scene {
           this.advancedTexture.resume.onPointerClickObservable.add(() => {
             this.switchMenu(false);
             this.resume();
+            this.pause = false;
+          });
+
+          this.advancedTexture.leave.onPointerClickObservable.add(() => {
+            this.switchMenu(false);
+            window.changeScene(0)
             this.pause = false;
           });
 
