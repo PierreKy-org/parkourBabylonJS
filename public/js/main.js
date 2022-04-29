@@ -11,8 +11,13 @@ window.onload = () => {
     () =>
       new Scene(
         {
-          baseball: { path: "../../assets/models/baseball/", gltf: "scene.gltf" },
-          pumpkin: { path: "../../assets/models/pumpkin/", gltf: "pumpkin.gltf" },
+          models: {
+            baseball: { path: "../../assets/models/baseball/", gltf: "scene.gltf" },
+            pumpkin: { path: "../../assets/models/pumpkin/", gltf: "pumpkin.gltf" },
+          },
+          materials: {
+            spike: { path: "../../assets/materials/spike.json", name: "Spike #NJXV5A#14" },
+          },
         },
         "levelTest.json"
       ),

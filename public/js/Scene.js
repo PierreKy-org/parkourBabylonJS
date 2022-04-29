@@ -11,7 +11,7 @@ import {
 } from "./elements/Rotator.js";
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
-import { Spikes } from "./elements/Spikes.js";
+import { SpikesBottom, SpikesTop, SpikesFront, SpikesBack, SpikesLeft, SpikesRight } from "./elements/Spikes.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
@@ -64,6 +64,8 @@ export default class Scene {
     this.player.spawn();
 
     this.loaded = true;
+
+    this.scene.debugLayer.show();
   }
 
   initCamera() {
@@ -188,9 +190,15 @@ export default class Scene {
             (nine) => new RotatorRB(position.x, position.y, position.z, this),
             (ten) => new Jump(position.x, position.y, position.z, this),
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
-            (twelve) => new Spikes(position.x, position.y, position.z, this),
+            (twelve) => {},
             (thirteen) => new Collectible(position.x, position.y, position.z, this),
             (fourteen) => new End(position.x, position.y, position.z, this),
+            (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
+            (sixteen) => new SpikesTop(position.x, position.y, position.z, this),
+            (seventeen) => new SpikesFront(position.x, position.y, position.z, this),
+            (eigthteen) => new SpikesBack(position.x, position.y, position.z, this),
+            (nineteeen) => new SpikesLeft(position.x, position.y, position.z, this),
+            (twenty) => new SpikesRight(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
