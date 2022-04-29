@@ -34,11 +34,7 @@ export default class End {
 
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
 
-    this.box.material = await BABYLON.NodeMaterial.ParseFromFileAsync(
-      "Simple #NJXV5A#12",
-      "../../assets/materials/simple.json",
-      this.scene.scene
-    );
+    this.box.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
     this.setPhysics();
     this.setParticles();

@@ -22,10 +22,11 @@ const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
   constructor(assets, map) {
+    window.engine.displayLoadingUI();
     this.scene = new BABYLON.Scene(window.engine);
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
-    
+
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
     this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
     setTimeout(() => {
@@ -65,7 +66,7 @@ export default class Scene {
 
     this.loaded = true;
 
-    this.scene.debugLayer.show();
+    window.engine.hideLoadingUI();
   }
 
   initCamera() {
@@ -265,7 +266,7 @@ export default class Scene {
 
           this.advancedTexture.leave.onPointerClickObservable.add(() => {
             this.switchMenu(false);
-            window.changeScene(0)
+            window.changeScene(0);
             this.pause = false;
           });
 

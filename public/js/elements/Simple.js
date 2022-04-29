@@ -24,11 +24,7 @@ export default class Simple {
       );
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
 
-      Simple.builder.material = await BABYLON.NodeMaterial.ParseFromFileAsync(
-        "Simple #NJXV5A#12",
-        "../../assets/materials/simple.json",
-        this.scene.scene
-      );
+      Simple.builder.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
       this.box = Simple.builder;
     } else {

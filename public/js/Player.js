@@ -7,8 +7,15 @@ export default class Player {
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
 
-    this.initPhisics();
     this.initTrail();
+    this.initPhisics();
+    this.initGui();
+
+    this.scene.scene.registerBeforeRender(() => {
+      this.updateRays();
+      this.checkGroundDistance();
+      this.updateIndicator();
+    });
   }
 
   initTrail() {
@@ -29,11 +36,31 @@ export default class Player {
       this.scene.scene
     );
     this.mesh.reIntegrateRotationIntoRotationQuaternion = true;
+  }
 
-    this.scene.scene.registerBeforeRender(() => {
-      this.updateRays();
-      this.checkGroundDistance();
+  initGui() {
+    this.indicator = BABYLON.MeshBuilder.CreatePlane("plane", {
+      height: 0.3,
+      width: 0.3,
+      sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
+    this.indicator.material = new BABYLON.StandardMaterial("transp", this.scene.scene, true);
+    this.indicator.material.diffuseTexture = new BABYLON.Texture("../assets/indicator.png");
+    this.indicator.material.diffuseTexture.hasAlpha = true;
+    this.indicator.renderingGroupId = 2;
+  }
+
+  updateIndicator() {
+    let target = new BABYLON.Vector3(0, 0, 0);
+
+    this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.8, 0));
+
+    this.indicator.rotation = BABYLON.Vector3.RotationFromAxis(
+      BABYLON.Vector3.Zero(),
+      this.indicator.position.subtract(target),
+      BABYLON.Vector3.Zero()
+    );
+    this.indicator.rotation.z -= Math.PI / 2;
   }
 
   spawn() {

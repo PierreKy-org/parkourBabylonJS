@@ -16,10 +16,7 @@ export default class AssetsManager {
       this.assetsManager.addMeshTask(key, "", models[key].path, models[key].gltf);
     });
 
-    var keys = Object.keys(materials);
-    this.materials = keys.map((key) =>
-      BABYLON.NodeMaterial.ParseFromFileAsync(materials[key].name, materials[key].path, scene.scene)
-    );
+    this.materials = materials.map((mat) => BABYLON.NodeMaterial.ParseFromFileAsync(mat.name, mat.path, scene.scene));
   }
 
   async load() {
