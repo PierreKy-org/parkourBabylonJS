@@ -110,6 +110,26 @@ export default class End {
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 
-    setTimeout(() => window.changeScene(0), 3000);
+    setTimeout(async () => {
+      var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI", true, this.scene.scene);
+      advancedTexture.idealWidth = 1500;
+      advancedTexture.idealHeight = 1200;
+
+      await advancedTexture.parseContent(this.scene.assetsManager.Textures["End"]);
+
+      let grid = advancedTexture.getChildren()[0].children[0];
+      let button = grid._children[3]._children[0];
+      let time = grid._children[1]._children[0];
+      let completion = grid._children[2]._children[0];
+
+      let duration = Date.now() - this.scene.startTimer;
+      time._text = `${new Date(duration).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}:${duration % 1000}`;
+
+      completion._text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
+
+      button.onPointerClickObservable.add(() => {
+        window.changeScene(0);
+      });
+    }, 2400);
   }
 }

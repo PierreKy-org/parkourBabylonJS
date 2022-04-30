@@ -22,6 +22,7 @@ window.onload = () => {
               path: "../../assets/materials/simple.json",
             },
           ],
+          textures: ["../../assets/textures/end.json"],
           audio: {
             jump: { path: "../../assets/audio/jump.wav", loop: false },
             hit: { path: "../../assets/audio/gameOver.mp3", loop: false },

@@ -22,7 +22,6 @@ const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
   constructor(assets, map) {
-    window.engine.displayLoadingUI();
     this.scene = new BABYLON.Scene(window.engine);
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
@@ -42,6 +41,7 @@ export default class Scene {
   }
 
   async initScene() {
+    window.engine.displayLoadingUI();
     await this.assetsManager.load();
 
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
@@ -57,6 +57,7 @@ export default class Scene {
     this.initFog();
     this.initSkyBox();
 
+    this.collectable = 0;
     this.collected = 0;
 
     this.initEvents();
@@ -68,8 +69,8 @@ export default class Scene {
     this.assetsManager.Audio["music"].setVolume(0.3);
 
     this.loaded = true;
-
     window.engine.hideLoadingUI();
+    this.startTimer = Date.now();
   }
 
   initCamera() {
