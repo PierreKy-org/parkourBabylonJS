@@ -64,6 +64,9 @@ export default class Scene {
     await this.initLevel();
     this.player.spawn();
 
+    this.assetsManager.Audio["music"].play();
+    this.assetsManager.Audio["music"].setVolume(0.3);
+
     this.loaded = true;
 
     window.engine.hideLoadingUI();
@@ -238,10 +241,6 @@ export default class Scene {
 
     this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
     this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
-    this.player.mesh.physicsImpostor.applyImpulse(
-      this.player.oldVelocity.angular,
-      this.player.mesh.getAbsolutePosition()
-    );
   }
 
   switchMenu(bool) {
@@ -277,16 +276,12 @@ export default class Scene {
           setTimeout(() => (this.pause = false), 100);
         }
       }
-      if (!this.pause) {
-        this.player.move();
-      }
-
-      this.player.move();
 
       if (
         this.player.mesh.position.y <=
         this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
       ) {
+        this.assetsManager.Audio["hit"].play();
         this.player.respawn();
       }
 

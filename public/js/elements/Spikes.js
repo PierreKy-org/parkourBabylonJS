@@ -67,7 +67,10 @@ class Spikes {
             mesh: this.scene.player.mesh,
           },
         },
-        () => this.scene.player.respawn()
+        () => {
+          this.scene.assetsManager.Audio["hit"].play();
+          this.scene.player.respawn();
+        }
       )
     );
   }

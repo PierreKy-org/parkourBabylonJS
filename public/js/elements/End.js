@@ -33,6 +33,7 @@ export default class End {
     this.box.name = `end_${pX}_${pY}_${pZ}`;
 
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+    this.scene.endPosition = this.box.position.add(new BABYLON.Vector3(0, 2, 0));
 
     this.box.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
@@ -95,6 +96,20 @@ export default class End {
   }
 
   onPlayerCollision() {
-    window.changeScene(0);
+    this.scene.pausex();
+    this.scene.assetsManager.Audio["music"].stop();
+    this.scene.assetsManager.Audio["end"].play();
+    BABYLON.Animation.CreateAndStartAnimation(
+      this.constructor.name,
+      this.scene.camera,
+      "radius",
+      1.5,
+      3,
+      this.scene.camera.radius,
+      2,
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+    );
+
+    setTimeout(() => window.changeScene(0), 3000);
   }
 }

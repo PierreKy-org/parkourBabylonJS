@@ -15,6 +15,7 @@ export default class Player {
       this.updateRays();
       this.checkGroundDistance();
       this.updateIndicator();
+      this.move();
     });
   }
 
@@ -27,7 +28,6 @@ export default class Player {
   initPhisics() {
     var { minimum, maximum } = this.model.meshes[1].getBoundingInfo().boundingBox;
     this.mesh.setBoundingInfo(new BABYLON.BoundingInfo(minimum, maximum));
-    this.mesh.showBoundingBox = true;
 
     this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
       this.mesh,
@@ -39,25 +39,23 @@ export default class Player {
   }
 
   initGui() {
-    this.indicator = BABYLON.MeshBuilder.CreatePlane("plane", {
+    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
       height: 0.3,
       width: 0.3,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    this.indicator.material = new BABYLON.StandardMaterial("transp", this.scene.scene, true);
+    this.indicator.material = new BABYLON.StandardMaterial("indicator_mat", this.scene.scene, true);
     this.indicator.material.diffuseTexture = new BABYLON.Texture("../assets/indicator.png");
     this.indicator.material.diffuseTexture.hasAlpha = true;
     this.indicator.renderingGroupId = 2;
   }
 
   updateIndicator() {
-    let target = new BABYLON.Vector3(0, 0, 0);
-
-    this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.8, 0));
+    this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.6, 0));
 
     this.indicator.rotation = BABYLON.Vector3.RotationFromAxis(
       BABYLON.Vector3.Zero(),
-      this.indicator.position.subtract(target),
+      this.indicator.position.subtract(this.scene.endPosition),
       BABYLON.Vector3.Zero()
     );
     this.indicator.rotation.z -= Math.PI / 2;
@@ -77,7 +75,7 @@ export default class Player {
     var { minimum, maximum } = this.mesh.getBoundingInfo().boundingBox;
     var { x, y, z } = this.mesh.getAbsolutePosition();
 
-    const offset = 0.5;
+    const offset = 1;
     const scale = 0.8 * offset;
     const topLeft = x + minimum.x * scale;
     const bottomLeft = x + maximum.x * scale;
@@ -104,8 +102,8 @@ export default class Player {
     } else {
       this.rays = [];
       vectors.forEach((vector) => {
-        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), 0.5);
-        BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
+        let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[8]) * 0.6;
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
         this.rays.push(ray);
       });
     }
@@ -120,6 +118,7 @@ export default class Player {
     if (this.normalCamera) {
       if (this.scene.inputStates.up && this.canJump()) {
         this.setLinearVelocity();
+        this.scene.assetsManager.Audio["jump"].play();
         this.jump--;
         this.lastJump = Date.now();
       }
