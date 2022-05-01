@@ -61,6 +61,11 @@ export default class ReduceSpeed {
       if(this.scene.player.maxSpeed > 5 && this.scene.player.valueJump > 6){
         this.scene.player.maxSpeed -= 10
         this.scene.player.valueJump -= 2
+        BABYLON.ParticleHelper.ParseFromFileAsync(
+            "reducespeed",
+            "../../assets/particles/reducespeed.json",
+            this.scene.scene
+          ).then((sys) => (sys.emitter = this.scene.player.mesh.position));
       }
     }
   }
