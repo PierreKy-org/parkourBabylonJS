@@ -5,9 +5,9 @@ export default class Collectible {
   }
 
   initInstance(pX, pY, pZ) {
-    if (Collectible.builder && Collectible.builder._scene != this.scene.scene) {
-      Collectible.builder.dispose();
-      Collectible.builder = undefined;
+    if (Collectible.model && Collectible.model.meshes[0]._scene != this.scene.scene) {
+      Collectible.model.meshes[0].dispose();
+      Collectible.model = undefined;
     }
 
     if (!Collectible.model) {
@@ -68,7 +68,14 @@ export default class Collectible {
     this.scene.scene.beginAnimation(this.mesh, 0, 30, true);
   }
 
-  onPlayerCollision() {
+  async onPlayerCollision() {
+    this.scene.assetsManager.Audio["collected"].setVolume(0.4);
+    this.scene.assetsManager.Audio["collected"].play();
+    BABYLON.ParticleHelper.ParseFromFileAsync(
+      "collected",
+      "../../assets/particles/collected.json",
+      this.scene.scene
+    ).then((sys) => (sys.emitter = this.mesh.position));
     this.mesh.dispose();
     this.scene.collected += 1;
   }
