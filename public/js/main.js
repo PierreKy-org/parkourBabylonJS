@@ -43,7 +43,7 @@ window.onload = () => {
             bounce: { path: "../../assets/audio/bounce.wav", loop: false },
           },
         },
-        "levelTest.json"
+        "level_1.json"
       ),
   ];
 

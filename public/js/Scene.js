@@ -11,7 +11,14 @@ import {
 } from "./elements/Rotator.js";
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
-import { SpikesBottom, SpikesTop, SpikesFront, SpikesBack, SpikesLeft, SpikesRight } from "./elements/Spikes.js";
+import {
+  SpikesBottom,
+  SpikesTop,
+  SpikesFront,
+  SpikesBack,
+  SpikesLeft,
+  SpikesRight,
+} from "./elements/Spikes.js";
 import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
@@ -28,16 +35,24 @@ export default class Scene {
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
 
-    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("GUI", true, this.scene);
-    this.advancedTexture.parseFromSnippetAsync("#79Y8VR#5");
+    this.advancedTexture =
+      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+        "GUI",
+        true,
+        this.scene
+      );
+    this.advancedTexture.parseFromURLAsync("../../assets/guis/guiMenu.json");
     setTimeout(() => {
-      this.advancedTexture.menu = this.advancedTexture.getControlByName("Rectangle");
+      this.advancedTexture.menu =
+        this.advancedTexture.getControlByName("Rectangle");
       this.advancedTexture.menu.isVisible = false;
-      this.advancedTexture.leave = this.advancedTexture.getControlByName("Leave");
+      this.advancedTexture.leave =
+        this.advancedTexture.getControlByName("Leave");
       this.advancedTexture.leave.isVisible = false;
-      this.advancedTexture.resume = this.advancedTexture.getControlByName("Continue");
+      this.advancedTexture.resume =
+        this.advancedTexture.getControlByName("Continue");
       this.advancedTexture.resume.isVisible = false;
-    }, 1200);
+    }, 500);
 
     this.initScene();
   }
@@ -76,17 +91,32 @@ export default class Scene {
   }
 
   initCamera() {
-    return new BABYLON.ArcFollowCamera("FollowCam", BABYLON.Tools.ToRadians(270), 57, 15, this.player.mesh, this.scene);
+    return new BABYLON.ArcFollowCamera(
+      "FollowCam",
+      BABYLON.Tools.ToRadians(270),
+      57,
+      15,
+      this.player.mesh,
+      this.scene
+    );
   }
 
   initLight() {
-    var light = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, -1), this.scene);
+    var light = new BABYLON.HemisphericLight(
+      "hemiLight",
+      new BABYLON.Vector3(0, 1, -1),
+      this.scene
+    );
     light.diffuse = new BABYLON.Color3(1, 1, 1);
     return light;
   }
 
   initSkyBox() {
-    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, this.scene);
+    const skybox = BABYLON.MeshBuilder.CreateBox(
+      "skyBox",
+      { size: 1000.0 },
+      this.scene
+    );
     skybox.material = new BABYLON.StandardMaterial("skyBox", this.scene);
     skybox.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
     skybox.position.y = 490;
@@ -115,7 +145,10 @@ export default class Scene {
       },
       this.scene
     );
-    ground.mesh.material = new BABYLON.StandardMaterial("groundMaterial", this.scene);
+    ground.mesh.material = new BABYLON.StandardMaterial(
+      "groundMaterial",
+      this.scene
+    );
     ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
     ground.mesh.material.alpha = 0.8;
     ground.mesh.material.wireframe = true;
@@ -162,9 +195,17 @@ export default class Scene {
       }
     };
 
-    window.addEventListener("keydown", (event) => changeInputState(event.key, true), false);
+    window.addEventListener(
+      "keydown",
+      (event) => changeInputState(event.key, true),
+      false
+    );
 
-    window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
+    window.addEventListener(
+      "keyup",
+      (event) => changeInputState(event.key, false),
+      false
+    );
   }
 
   async initLevel() {
@@ -176,10 +217,26 @@ export default class Scene {
         for (let y = line.length - 1; y >= 0; y--) {
           let column = line[y];
           const offset = {
-            front: { x: plan.origin.x + x, y: plan.origin.y + y, z: plan.origin.z },
-            right: { x: plan.origin.x, y: plan.origin.y + y, z: plan.origin.z - x },
-            back: { x: plan.origin.x - x, y: plan.origin.y + y, z: plan.origin.z },
-            left: { x: plan.origin.x, y: plan.origin.y + y, z: plan.origin.z + x },
+            front: {
+              x: plan.origin.x + x,
+              y: plan.origin.y + y,
+              z: plan.origin.z,
+            },
+            right: {
+              x: plan.origin.x,
+              y: plan.origin.y + y,
+              z: plan.origin.z - x,
+            },
+            back: {
+              x: plan.origin.x - x,
+              y: plan.origin.y + y,
+              z: plan.origin.z,
+            },
+            left: {
+              x: plan.origin.x,
+              y: plan.origin.y + y,
+              z: plan.origin.z + x,
+            },
           };
 
           const position = offset[plan.orientation];
@@ -196,18 +253,28 @@ export default class Scene {
             (eight) => new RotatorRF(position.x, position.y, position.z, this),
             (nine) => new RotatorRB(position.x, position.y, position.z, this),
             (ten) => new Jump(position.x, position.y, position.z, this),
-            (eleven) => new Checkpoint(position.x, position.y, position.z, this),
+            (eleven) =>
+              new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => {},
-            (thirteen) => new Collectible(position.x, position.y, position.z, this),
+            (thirteen) =>
+              new Collectible(position.x, position.y, position.z, this),
             (fourteen) => new End(position.x, position.y, position.z, this),
-            (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
-            (sixteen) => new SpikesTop(position.x, position.y, position.z, this),
-            (seventeen) => new SpikesFront(position.x, position.y, position.z, this),
-            (eigthteen) => new SpikesBack(position.x, position.y, position.z, this),
-            (nineteeen) => new SpikesLeft(position.x, position.y, position.z, this),
-            (twenty) => new SpikesRight(position.x, position.y, position.z, this),
-            (twentyone) => new DecreaseSpeed(position.x, position.y, position.z, this),
-            (twentytwo) => new IncreaseSpeed(position.x, position.y, position.z, this),
+            (fifthteen) =>
+              new SpikesBottom(position.x, position.y, position.z, this),
+            (sixteen) =>
+              new SpikesTop(position.x, position.y, position.z, this),
+            (seventeen) =>
+              new SpikesFront(position.x, position.y, position.z, this),
+            (eigthteen) =>
+              new SpikesBack(position.x, position.y, position.z, this),
+            (nineteeen) =>
+              new SpikesLeft(position.x, position.y, position.z, this),
+            (twenty) =>
+              new SpikesRight(position.x, position.y, position.z, this),
+            (twentyone) =>
+              new DecreaseSpeed(position.x, position.y, position.z, this),
+            (twentytwo) =>
+              new IncreaseSpeed(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
@@ -244,8 +311,12 @@ export default class Scene {
   resume() {
     this.player.mesh.physicsImpostor.wakeUp();
 
-    this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
-    this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
+    this.player.mesh.physicsImpostor.setAngularVelocity(
+      this.player.oldVelocity.angular
+    );
+    this.player.mesh.physicsImpostor.setLinearVelocity(
+      this.player.oldVelocity.linear
+    );
   }
 
   switchMenu(bool) {
@@ -284,7 +355,10 @@ export default class Scene {
 
       if (
         this.player.mesh.position.y <=
-        this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
+        this.ground.getHeightFromMap(
+          this.player.mesh.position.x,
+          this.player.mesh.position.z
+        )
       ) {
         this.assetsManager.Audio["hit"].play();
         this.player.respawn();
