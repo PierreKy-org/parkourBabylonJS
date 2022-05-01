@@ -27,8 +27,8 @@ window.onload = () => {
             jump: { path: "../../assets/audio/jump.wav", loop: false },
             hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
             music: { path: "../../assets/audio/music.wav", loop: true },
-            bounce: { path: "../../assets/audio/bounce.wav", loop: false },
             end: { path: "../../assets/audio/end.wav", loop: false },
+            collected: { path: "../../assets/audio/collected.wav", loop: false },
           },
         },
         "levelTest.json"
