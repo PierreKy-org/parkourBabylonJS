@@ -1,6 +1,6 @@
 {
-  "name": "reducespeed",
-  "id": "reducespeed",
+  "name": "decreaseSpeed",
+  "id": "decreaseSpeed",
   "capacity": 2000,
   "disposeOnStop": false,
   "manualEmitCount": -1,

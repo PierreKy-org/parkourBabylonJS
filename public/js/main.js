@@ -21,6 +21,14 @@ window.onload = () => {
               name: "Simple #NJXV5A#12",
               path: "../../assets/materials/simple.json",
             },
+            {
+              name: "Increase Speed #NJXV5A#17",
+              path: "../../assets/materials/increaseSpeed.json",
+            },
+            {
+              name: "Decrease Speed #NJXV5A#19",
+              path: "../../assets/materials/decreaseSpeed.json",
+            },
           ],
           textures: ["../../assets/textures/end.json"],
           audio: {
@@ -29,8 +37,8 @@ window.onload = () => {
             music: { path: "../../assets/audio/music.wav", loop: true },
             end: { path: "../../assets/audio/end.wav", loop: false },
             collected: { path: "../../assets/audio/collected.wav", loop: false },
-            reducespeed: { path: "../../assets/audio/reducespeed.wav", loop: false },
-            increasespeed: { path: "../../assets/audio/increasespeed.mp3", loop: false },
+            decreaseSpeed: { path: "../../assets/audio/decreaseSpeed.wav", loop: false },
+            increaseSpeed: { path: "../../assets/audio/increaseSpeed.mp3", loop: false },
           },
         },
         "levelTest.json"

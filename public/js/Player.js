@@ -6,8 +6,7 @@ export default class Player {
     this.mesh = this.model.meshes[0];
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
-    this.maxSpeed = 15;
-    this.valueJump = 8;
+
     this.initTrail();
     this.initPhisics();
     this.initGui();
@@ -64,6 +63,8 @@ export default class Player {
 
   spawn() {
     this.respawn();
+    this.maxSpeed = 15;
+    this.jumpHeight = 8;
     this.speed = 0;
     this.jump = 2;
     this.normalCamera = true;
@@ -172,16 +173,16 @@ export default class Player {
     var vector;
     switch (this.orientation) {
       case "front":
-        vector = new BABYLON.Vector3(-this.speed, this.valueJump, 0);
+        vector = new BABYLON.Vector3(-this.speed, this.jumpHeight, 0);
         break;
       case "right":
-        vector = new BABYLON.Vector3(0, this.valueJump, this.speed);
+        vector = new BABYLON.Vector3(0, this.jumpHeight, this.speed);
         break;
       case "back":
-        vector = new BABYLON.Vector3(this.speed, this.valueJump, 0);
+        vector = new BABYLON.Vector3(this.speed, this.jumpHeight, 0);
         break;
       case "left":
-        vector = new BABYLON.Vector3(0, this.valueJump, -this.speed);
+        vector = new BABYLON.Vector3(0, this.jumpHeight, -this.speed);
         break;
     }
     this.mesh.physicsImpostor.setLinearVelocity(vector);
@@ -252,7 +253,9 @@ export default class Player {
     }
     this.speed = 0;
     this.maxSpeed = 15;
-    this.valueJump = 8;
+    this.jumpHeight = 8;
+    this.scene.player.accelerated = false;
+    this.scene.player.slowed = false;
     this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.resetRotation();
