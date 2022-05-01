@@ -35,7 +35,6 @@ export default class MenuScene {
           //button position
           var pos= parseInt(button.textBlock.text.split("_")[1]) * window.innerHeight /json.length - (window.innerHeight /json.length)
           button.top = pos.toString() + "px";
-          console.log(button.top);
           button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
           button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
           //attach button1 to advancedTexture
