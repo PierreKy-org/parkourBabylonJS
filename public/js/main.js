@@ -29,6 +29,8 @@ window.onload = () => {
             music: { path: "../../assets/audio/music.wav", loop: true },
             end: { path: "../../assets/audio/end.wav", loop: false },
             collected: { path: "../../assets/audio/collected.wav", loop: false },
+            reducespeed: { path: "../../assets/audio/reducespeed.wav", loop: false },
+            increasespeed: { path: "../../assets/audio/increasespeed.mp3", loop: false },
           },
         },
         "levelTest.json"

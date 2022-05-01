@@ -66,6 +66,8 @@ export default class ReduceSpeed {
             "../../assets/particles/reducespeed.json",
             this.scene.scene
           ).then((sys) => (sys.emitter = this.scene.player.mesh.position));
+        
+        this.scene.assetsManager.Audio["reducespeed"].play();
       }
     }
   }

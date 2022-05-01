@@ -66,6 +66,8 @@ export default class IncreaseSpeed {
           "../../assets/particles/increasespeed.json",
           this.scene.scene
         ).then((sys) => (sys.emitter = this.scene.player.mesh.position));
+        this.scene.assetsManager.Audio["increasespeed"].play();
+
       }
     }
   }
