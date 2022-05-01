@@ -41,8 +41,8 @@ export default class Scene {
         true,
         this.scene
       );
-    this.advancedTexture.parseFromURLAsync("../../assets/guis/guiMenu.json");
-    setTimeout(() => {
+    this.advancedTexture.parseFromURLAsync("../../assets/guis/guiMenu.json").then(
+      () => {
       this.advancedTexture.menu =
         this.advancedTexture.getControlByName("Rectangle");
       this.advancedTexture.menu.isVisible = false;
@@ -52,7 +52,7 @@ export default class Scene {
       this.advancedTexture.resume =
         this.advancedTexture.getControlByName("Continue");
       this.advancedTexture.resume.isVisible = false;
-    }, 500);
+      });
 
     this.initScene();
   }
