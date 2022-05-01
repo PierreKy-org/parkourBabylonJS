@@ -14,6 +14,7 @@ window.onload = () => {
           models: {
             baseball: { path: "../../assets/models/baseball/", gltf: "scene.gltf" },
             pumpkin: { path: "../../assets/models/pumpkin/", gltf: "pumpkin.gltf" },
+            trampoline: { path: "../../assets/models/trampoline/", gltf: "trampoline.obj" },
           },
           materials: [
             { name: "Spike #NJXV5A#14", path: "../../assets/materials/spike.json" },
@@ -39,6 +40,7 @@ window.onload = () => {
             collected: { path: "../../assets/audio/collected.wav", loop: false },
             decreaseSpeed: { path: "../../assets/audio/decreaseSpeed.wav", loop: false },
             increaseSpeed: { path: "../../assets/audio/increaseSpeed.mp3", loop: false },
+            bounce: { path: "../../assets/audio/bounce.wav", loop: false },
           },
         },
         "levelTest.json"

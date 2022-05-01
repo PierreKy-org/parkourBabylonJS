@@ -12,26 +12,41 @@ export default class Jump {
     }
 
     if (!Jump.builder) {
-      Jump.builder = BABYLON.MeshBuilder.CreateBox("box", {
-        height: 1,
-        width: 1,
-        depth: 1,
-      });
+      Jump.builder = this.createModel();
       Jump.builder.name = `jump_${pX}_${pY}_${pZ}`;
-
-      Jump.builder.material = new BABYLON.GradientMaterial("grad", this.scene.scene);
-      Jump.builder.material.topColor = new BABYLON.Color3(1, 1, 1);
-      Jump.builder.material.bottomColor = new BABYLON.Color3(0, 0, 0);
-      Jump.builder.material.offset = 0.6;
-
-      Jump.builder.material.disableLighting = true;
 
       this.box = Jump.builder;
     } else {
       this.box = Jump.builder.createInstance(`jump_${pX}_${pY}_${pZ}`);
+      this.scene.assetsManager.Assets["trampoline"].meshes.forEach((mesh) => {
+        let instance = mesh.createInstance(mesh.name);
+        instance.parent = this.box;
+      });
     }
     this.box.alwaysSelectAsActiveMesh = true;
-    this.box.position = new BABYLON.Vector3(pX, pY, pZ);
+    this.box.position = new BABYLON.Vector3(pX, pY - 0.21, pZ);
+  }
+
+  createModel() {
+    let disc = BABYLON.MeshBuilder.CreateDisc("jump", { radius: 0.4 });
+    disc.rotation.x = Math.PI / 2;
+
+    this.scene.assetsManager.Assets["trampoline"].meshes.forEach((mesh) => {
+      mesh.parent = disc;
+      mesh.scaling = new BABYLON.Vector3(0.009, 0.009, 0.009);
+      mesh.rotation.x = (3 * Math.PI) / 2;
+      mesh.position.z = 0.28;
+    });
+
+    disc.material = new BABYLON.GridMaterial("jump_material", this.scene.scene);
+    disc.material.majorUnitFrequency = 0;
+    disc.material.minorUnitVisibility = 0.45;
+    disc.material.gridRatio = 0.05;
+    disc.material.backFaceCulling = false;
+    disc.material.mainColor = new BABYLON.Color3(0.8, 0.8, 0.8);
+    disc.material.lineColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+
+    return disc;
   }
 
   setPhysics() {
@@ -60,5 +75,6 @@ export default class Jump {
   onPlayerCollision() {
     let al = this.scene.player.mesh.physicsImpostor.getLinearVelocity();
     this.scene.player.mesh.physicsImpostor.setLinearVelocity(new BABYLON.Vector3(al.x, 13, al.z));
+    this.scene.assetsManager.Audio["bounce"].play();
   }
 }
