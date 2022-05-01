@@ -6,7 +6,8 @@ export default class Player {
     this.mesh = this.model.meshes[0];
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
-
+    this.maxSpeed = 15;
+    this.valueJump = 8;
     this.initTrail();
     this.initPhisics();
     this.initGui();
@@ -137,13 +138,7 @@ export default class Player {
         this.setAngularVelocity();
       }
       if (this.scene.inputStates.r && this.lastCheckPointData) {
-        this.mesh.position = this.lastCheckPointData.position;
-        this.orientation = this.lastCheckPointData.orientation;
-        this.speed = 0;
-        this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-        this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-        this.resetRotation();
-        this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
+        this.respawn();
       }
     }
 
@@ -177,16 +172,16 @@ export default class Player {
     var vector;
     switch (this.orientation) {
       case "front":
-        vector = new BABYLON.Vector3(-this.speed, 8, 0);
+        vector = new BABYLON.Vector3(-this.speed, this.valueJump, 0);
         break;
       case "right":
-        vector = new BABYLON.Vector3(0, 8, this.speed);
+        vector = new BABYLON.Vector3(0, this.valueJump, this.speed);
         break;
       case "back":
-        vector = new BABYLON.Vector3(this.speed, 8, 0);
+        vector = new BABYLON.Vector3(this.speed, this.valueJump, 0);
         break;
       case "left":
-        vector = new BABYLON.Vector3(0, 8, -this.speed);
+        vector = new BABYLON.Vector3(0, this.valueJump, -this.speed);
         break;
     }
     this.mesh.physicsImpostor.setLinearVelocity(vector);
@@ -213,9 +208,8 @@ export default class Player {
 
   updateSpeed(increase) {
     let delta = increase ? 0.1 : -0.1;
-    const maxSpeed = 15;
 
-    if (this.speed >= -maxSpeed && this.speed <= maxSpeed) {
+    if (this.speed >= -this.maxSpeed && this.speed <= this.maxSpeed) {
       if (this.speed > -1 && this.speed < 1) {
         this.speed += delta * 1;
         return;
@@ -226,10 +220,10 @@ export default class Player {
         this.speed += delta * 5;
       }
     }
-    if (this.speed > maxSpeed) {
-      this.speed = maxSpeed;
-    } else if (this.speed < -maxSpeed) {
-      this.speed = -maxSpeed;
+    if (this.speed > this.maxSpeed) {
+      this.speed = this.maxSpeed;
+    } else if (this.speed < -this.maxSpeed) {
+      this.speed = -this.maxSpeed;
     }
   }
 
@@ -257,6 +251,8 @@ export default class Player {
       this.mesh.position = BABYLON.Vector3.Zero();
     }
     this.speed = 0;
+    this.maxSpeed = 15;
+    this.valueJump = 8;
     this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.resetRotation();
