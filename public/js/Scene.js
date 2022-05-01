@@ -18,6 +18,7 @@ import Collectible from "./elements/Collectible.js";
 import AssetsManager from "./AssetManager.js";
 import End from "./elements/End.js";
 import ReduceSpeed from "./elements/ReduceSpeed.js";
+import IncreaseSpeed from "./elements/IncreaseSpeed.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
@@ -206,6 +207,7 @@ export default class Scene {
             (nineteeen) => new SpikesLeft(position.x, position.y, position.z, this),
             (twenty) => new SpikesRight(position.x, position.y, position.z, this),
             (twentyone) => new ReduceSpeed(position.x, position.y, position.z, this),
+            (twentytwo) => new IncreaseSpeed(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
