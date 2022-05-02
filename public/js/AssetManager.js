@@ -16,19 +16,32 @@ export default class AssetsManager {
     //Assets
     var keys = Object.keys(models);
     keys.forEach((key) => {
-      this.assetsManager.addMeshTask(key, "", models[key].path, models[key].gltf);
+      this.assetsManager.addMeshTask(
+        key,
+        "",
+        models[key].path,
+        models[key].gltf
+      );
     });
 
     //Materials
-    this.materials = materials.map((mat) => BABYLON.NodeMaterial.ParseFromFileAsync(mat.name, mat.path, scene.scene));
+    this.materials = materials.map((mat) =>
+      BABYLON.NodeMaterial.ParseFromFileAsync(mat.name, mat.path, scene.scene)
+    );
 
     //Textures
     this.textures = textures;
 
-    //Audiosjson
+    //Audios
     var keys = Object.keys(audio);
     keys.forEach((key) => {
-      this.Audio[key] = new BABYLON.Sound(key, audio[key].path, scene.scene, null, { loop: audio[key].loop });
+      this.Audio[key] = new BABYLON.Sound(
+        key,
+        audio[key].path,
+        scene.scene,
+        null,
+        { loop: audio[key].loop }
+      );
     });
   }
 

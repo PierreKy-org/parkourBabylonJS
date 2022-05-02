@@ -14,18 +14,15 @@ export default class MenuScene {
 
   async initScene() {
     this.advancedTexture =
-          BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
-            "UIMenu",
-            true,
-            this.scene
-          );
-    //ajax request to the nodejs server
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8000/levels", true);
-    xhr.onreadystatechange =  ()  => {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        var json = JSON.parse(xhr.responseText);
-        
+      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+        "UIMenu",
+        true,
+        this.scene
+      );
+
+    fetch("http://localhost:8000/levels")
+      .then((res) => res.json())
+      .then((json) => {
         json.forEach((level) => {
           var button = BABYLON.GUI.Button.CreateSimpleButton(level, level);
           button.width = 0.2;
@@ -33,10 +30,15 @@ export default class MenuScene {
           button.color = "white";
           button.background = "green";
           //button position
-          var pos= parseInt(button.textBlock.text.split("_")[1]) * window.innerHeight /json.length - (window.innerHeight /json.length)
+          var pos =
+            (parseInt(button.textBlock.text.split("_")[1]) *
+              window.innerHeight) /
+              json.length -
+            window.innerHeight / json.length;
           button.top = pos.toString() + "px";
           button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-          button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+          button.horizontalAlignment =
+            BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
           //attach button1 to advancedTexture
           this.advancedTexture.addControl(button);
           var buttons = this.advancedTexture.getChildren()[0].children;
@@ -46,9 +48,7 @@ export default class MenuScene {
             );
           });
         });
-      }
-    };
-    xhr.send();
+      });
   }
 
   render() {

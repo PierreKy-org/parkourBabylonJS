@@ -12,12 +12,24 @@ window.onload = () => {
       new Scene(
         {
           models: {
-            baseball: { path: "../../assets/models/baseball/", gltf: "scene.gltf" },
-            pumpkin: { path: "../../assets/models/pumpkin/", gltf: "pumpkin.gltf" },
-            trampoline: { path: "../../assets/models/trampoline/", gltf: "trampoline.obj" },
+            baseball: {
+              path: "../../assets/models/baseball/",
+              gltf: "scene.gltf",
+            },
+            pumpkin: {
+              path: "../../assets/models/pumpkin/",
+              gltf: "pumpkin.gltf",
+            },
+            trampoline: {
+              path: "../../assets/models/trampoline/",
+              gltf: "trampoline.obj",
+            },
           },
           materials: [
-            { name: "Spike #NJXV5A#14", path: "../../assets/materials/spike.json" },
+            {
+              name: "Spike #NJXV5A#14",
+              path: "../../assets/materials/spike.json",
+            },
             {
               name: "Simple #NJXV5A#12",
               path: "../../assets/materials/simple.json",
@@ -31,15 +43,27 @@ window.onload = () => {
               path: "../../assets/materials/decreaseSpeed.json",
             },
           ],
-          textures: ["../../assets/textures/end.json"],
+          textures: [
+            "../../assets/textures/end.json",
+            "../../assets/textures/esc.json",
+          ],
           audio: {
             jump: { path: "../../assets/audio/jump.wav", loop: false },
             hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
             music: { path: "../../assets/audio/music.wav", loop: true },
             end: { path: "../../assets/audio/end.wav", loop: false },
-            collected: { path: "../../assets/audio/collected.wav", loop: false },
-            decreaseSpeed: { path: "../../assets/audio/decreaseSpeed.wav", loop: false },
-            increaseSpeed: { path: "../../assets/audio/increaseSpeed.mp3", loop: false },
+            collected: {
+              path: "../../assets/audio/collected.wav",
+              loop: false,
+            },
+            decreaseSpeed: {
+              path: "../../assets/audio/decreaseSpeed.wav",
+              loop: false,
+            },
+            increaseSpeed: {
+              path: "../../assets/audio/increaseSpeed.mp3",
+              loop: false,
+            },
             bounce: { path: "../../assets/audio/bounce.wav", loop: false },
           },
         },

@@ -9,13 +9,11 @@ app.use(cors());
 
 app.use("/", express.static("public"));
 
-app.listen(port);
-console.log("express running at http://localhost:%d", port);
-
 //receive a request from client
 app.get("/levels", (req, res) => {
-    //send a response to client
-    res.send(
-        fs.readdirSync(path.join(__dirname, "public/assets/levels"))
-    );
-    });
+  //send a response to client
+  res.send(fs.readdirSync(path.join(__dirname, "public/assets/levels")));
+});
+
+app.listen(port);
+console.log("express running at http://localhost:%d", port);

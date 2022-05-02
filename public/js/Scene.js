@@ -37,22 +37,10 @@ export default class Scene {
 
     this.advancedTexture =
       BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
-        "GUI",
+        "Esc UI",
         true,
         this.scene
       );
-    this.advancedTexture.parseFromURLAsync("../../assets/guis/guiMenu.json").then(
-      () => {
-      this.advancedTexture.menu =
-        this.advancedTexture.getControlByName("Rectangle");
-      this.advancedTexture.menu.isVisible = false;
-      this.advancedTexture.leave =
-        this.advancedTexture.getControlByName("Leave");
-      this.advancedTexture.leave.isVisible = false;
-      this.advancedTexture.resume =
-        this.advancedTexture.getControlByName("Continue");
-      this.advancedTexture.resume.isVisible = false;
-      });
 
     this.initScene();
   }
@@ -63,7 +51,6 @@ export default class Scene {
 
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
     this.scene.enablePhysics(this.gravityVector, physicsPlugin);
-    this.pause = false;
 
     //this.gui = new Gui(this);
 
@@ -71,6 +58,7 @@ export default class Scene {
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
+    this.initGui();
     this.initFog();
     this.initSkyBox();
 
@@ -109,6 +97,20 @@ export default class Scene {
     );
     light.diffuse = new BABYLON.Color3(1, 1, 1);
     return light;
+  }
+
+  initGui() {
+    this.advancedTexture.parseContent(this.assetsManager.Textures["Esc"]);
+    this.menu = this.advancedTexture.getChildren()[0];
+    this.menu.isVisible = false;
+
+    this.menu._children[1].onPointerClickObservable.add(() => {
+      this.menu._isVisible = false;
+    });
+
+    this.menu._children[2].onPointerClickObservable.add(() => {
+      window.changeScene(0);
+    });
   }
 
   initSkyBox() {
@@ -189,7 +191,13 @@ export default class Scene {
       } else if (key === "r") {
         this.inputStates.r = state;
       } else if (key === "Escape") {
-        this.inputStates.escape = state;
+        if (state) {
+          if (this.menu.isVisible) {
+            this.menu.isVisible = false;
+          } else {
+            this.menu.isVisible = true;
+          }
+        }
       } else if (key === " ") {
         this.inputStates.space = state;
       }
@@ -319,40 +327,9 @@ export default class Scene {
     );
   }
 
-  switchMenu(bool) {
-    this.advancedTexture.menu.isVisible = bool;
-    this.advancedTexture.leave.isVisible = bool;
-    this.advancedTexture.resume.isVisible = bool;
-  }
-
   render() {
     //TODO :  le vecteur vitesse change
     if (this.loaded) {
-      if (this.inputStates.escape) {
-        if (!this.pause) {
-          this.pausex();
-          this.switchMenu(true);
-
-          this.advancedTexture.resume.onPointerClickObservable.add(() => {
-            this.switchMenu(false);
-            this.resume();
-            this.pause = false;
-          });
-
-          this.advancedTexture.leave.onPointerClickObservable.add(() => {
-            this.switchMenu(false);
-            window.changeScene(0);
-            this.pause = false;
-          });
-
-          setTimeout(() => (this.pause = true), 200);
-        } else {
-          this.switchMenu(false);
-          this.resume();
-          setTimeout(() => (this.pause = false), 100);
-        }
-      }
-
       if (
         this.player.mesh.position.y <=
         this.ground.getHeightFromMap(
