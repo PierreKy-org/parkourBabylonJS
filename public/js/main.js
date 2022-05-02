@@ -31,7 +31,7 @@ window.onload = () => {
               path: "../../assets/materials/decreaseSpeed.json",
             },
           ],
-          textures: ["../../assets/textures/end.json"],
+          textures: ["../../assets/textures/end.json", "../../assets/textures/guiMenu.json"],
           audio: {
             jump: { path: "../../assets/audio/jump.wav", loop: false },
             hit: { path: "../../assets/audio/gameOver.mp3", loop: false },

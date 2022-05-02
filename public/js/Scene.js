@@ -41,7 +41,7 @@ export default class Scene {
         true,
         this.scene
       );
-    this.advancedTexture.parseFromURLAsync("../../assets/guis/guiMenu.json").then(
+    this.advancedTexture.parseFromURLAsync(this.assetsManager.textures[1]).then(
       () => {
       this.advancedTexture.menu =
         this.advancedTexture.getControlByName("Rectangle");
