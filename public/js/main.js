@@ -49,8 +49,8 @@ window.onload = () => {
           ],
           textures: [
             "../../assets/textures/end.json",
-            "../../assets/textures/esc.json",
             "../../assets/textures/arrow.json",
+            "../../assets/textures/game.json",
           ],
           audio: {
             jump: { path: "../../assets/audio/jump.wav", loop: false },

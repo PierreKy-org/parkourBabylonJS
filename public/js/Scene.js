@@ -12,7 +12,6 @@ import {
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
 import { SpikesBottom, SpikesTop, SpikesFront, SpikesBack, SpikesLeft, SpikesRight } from "./elements/Spikes.js";
-import Gui from "./Gui.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
 import AssetsManager from "./AssetManager.js";
@@ -28,11 +27,9 @@ export default class Scene {
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
 
-    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Esc UI", true, this.scene);
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Game GUI", true, this.scene);
 
     this.initScene();
-
-    this.scene.debugLayer.show();
   }
 
   async initScene() {
@@ -41,8 +38,6 @@ export default class Scene {
 
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
     this.scene.enablePhysics(this.gravityVector, physicsPlugin);
-
-    //this.gui = new Gui(this);
 
     this.player = new Player(this);
     this.camera = this.initCamera();
@@ -65,6 +60,7 @@ export default class Scene {
 
     this.loaded = true;
     window.engine.hideLoadingUI();
+
     this.startTimer = Date.now();
   }
 
@@ -79,15 +75,30 @@ export default class Scene {
   }
 
   initGui() {
-    this.advancedTexture.parseContent(this.assetsManager.Textures["Esc"]);
-    this.menu = this.advancedTexture.getChildren()[0];
+    this.advancedTexture.parseContent(this.assetsManager.Textures["Game"]);
+    let gui = this.advancedTexture.getChildren()[0]._children[0];
+    let fps = gui._children[0]._children[0];
+
+    let death = gui._children[1]._children[0]._children[0]._children[0];
+    let timer = gui._children[1]._children[0]._children[1]._children[0];
+
+    this.menu = gui._children[2]._children[0];
+    let leave = this.menu._children[0]._children[0];
+    let resume = this.menu._children[1]._children[0];
+
+    this.updateGui = () => {
+      fps.text = `${window.engine.getFps().toFixed()}FPS`;
+      timer.text = this.getTimer();
+      death.text = `${this.player.deaths} × 💀`;
+    };
+
     this.menu.isVisible = false;
 
-    this.menu._children[1].onPointerClickObservable.add(() => {
+    resume.onPointerClickObservable.add(() => {
       this.menu._isVisible = false;
     });
 
-    this.menu._children[2].onPointerClickObservable.add(() => {
+    leave.onPointerClickObservable.add(() => {
       window.changeScene(0);
     });
   }
@@ -128,6 +139,11 @@ export default class Scene {
     ground.mesh.material.wireframe = true;
 
     return ground;
+  }
+
+  getTimer() {
+    let duration = Date.now() - this.startTimer;
+    return `${new Date(duration).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}:${duration % 1000}`;
   }
 
   getNoiseMap(mapSubX, mapSubZ, scale, amp) {
@@ -278,7 +294,6 @@ export default class Scene {
   }
 
   render() {
-    //TODO :  le vecteur vitesse change
     if (this.loaded) {
       if (
         this.player.mesh.position.y <=
@@ -290,7 +305,7 @@ export default class Scene {
 
       this.ground.mesh.position.x -= 0.05;
 
-      //this.gui.update();
+      this.updateGui();
       this.scene.render();
     }
   }

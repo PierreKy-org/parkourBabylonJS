@@ -60,14 +60,6 @@ export default class Checkpoint {
         () => this.onPlayerCollision()
       )
     );
-
-    //this.box.showBoundingBox = true;
-    this.box.setBoundingInfo(
-      new BABYLON.BoundingInfo(
-        BABYLON.Vector3.Minimize(this.box.getBoundingInfo().boundingBox.minimum, new BABYLON.Vector3(0, 0, 0)),
-        BABYLON.Vector3.Maximize(this.box.getBoundingInfo().boundingBox.maximum, new BABYLON.Vector3(0, 3, 0))
-      )
-    );
   }
 
   onPlayerCollision() {
@@ -101,7 +93,7 @@ export default class Checkpoint {
 
     this.scene.player.lastCheckPointData = {
       checkpoint: this,
-      position: this.box.position.add(new BABYLON.Vector3(0, 0.8, 0)),
+      position: this.box.position.add(new BABYLON.Vector3(0, 0.3, 0)),
       orientation: this.scene.player.orientation || "front",
       cameraAlpha: this.scene.camera.alpha,
     };
