@@ -24,6 +24,10 @@ window.onload = () => {
               path: "../../assets/models/trampoline/",
               gltf: "trampoline.obj",
             },
+            flag: {
+              path: "../../assets/models/flag/",
+              gltf: "flag.obj",
+            },
           },
           materials: [
             {

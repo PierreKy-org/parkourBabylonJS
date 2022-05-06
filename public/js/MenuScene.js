@@ -1,11 +1,7 @@
 export default class MenuScene {
   constructor() {
     this.scene = new BABYLON.Scene(window.engine);
-    this.camera = new BABYLON.FreeCamera(
-      "camera1",
-      new BABYLON.Vector3(0, 5, -10),
-      this.scene
-    );
+    this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
     this.camera.setTarget(BABYLON.Vector3.Zero());
     this.camera.attachControl(window.canvas, true);
 
@@ -13,12 +9,7 @@ export default class MenuScene {
   }
 
   async initScene() {
-    this.advancedTexture =
-      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
-        "UIMenu",
-        true,
-        this.scene
-      );
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
 
     fetch("http://localhost:8000/levels")
       .then((res) => res.json())
@@ -31,21 +22,22 @@ export default class MenuScene {
           button.background = "green";
           //button position
           var pos =
-            (parseInt(button.textBlock.text.split("_")[1]) *
-              window.innerHeight) /
-              json.length -
+            (parseInt(button.textBlock.text.split("_")[1]) * window.innerHeight) / json.length -
             window.innerHeight / json.length;
           button.top = pos.toString() + "px";
           button.verticalAlignment = BABYLON.GUI.Control.VERTICAL_ALIGNMENT_TOP;
-          button.horizontalAlignment =
-            BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
+          button.horizontalAlignment = BABYLON.GUI.Control.HORIZONTAL_ALIGNMENT_CENTER;
           //attach button1 to advancedTexture
           this.advancedTexture.addControl(button);
           var buttons = this.advancedTexture.getChildren()[0].children;
           buttons.forEach((button) => {
-            button.onPointerUpObservable.add(() =>
-              window.changeScene(parseInt(button.textBlock.text.split("_")[1]))
-            );
+            button.lastClick = Date.now();
+            button.onPointerUpObservable.add(() => {
+              if (Date.now() - button.lastClick > 200) {
+                button.lastClick = Date.now();
+                window.changeScene(parseInt(button.textBlock.text.split("_")[1]));
+              }
+            });
           });
         });
       });
