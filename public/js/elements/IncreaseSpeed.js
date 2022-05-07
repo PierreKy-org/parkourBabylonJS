@@ -55,6 +55,12 @@ export default class IncreaseSpeed {
       this.scene.player.maxSpeed += 10;
       this.scene.player.jumpHeight += 2;
 
+      if (this.scene.player.speed > 0) {
+        this.scene.player.speed = this.scene.player.maxSpeed;
+      } else {
+        this.scene.player.speed = -this.scene.player.maxSpeed;
+      }
+
       BABYLON.ParticleHelper.ParseFromFileAsync(
         "reducespeed",
         "../../assets/particles/increaseSpeed.json",
