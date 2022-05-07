@@ -2,7 +2,7 @@ export default class Player {
   constructor(scene) {
     this.scene = scene;
 
-    this.model = this.scene.assetsManager.Assets["baseball"];
+    this.model = this.scene.assetsManager.Models["baseball"];
     this.mesh = this.model.meshes[0];
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);

@@ -18,7 +18,7 @@ export default class Jump {
       this.box = Jump.builder;
     } else {
       this.box = Jump.builder.createInstance(`jump_${pX}_${pY}_${pZ}`);
-      this.scene.assetsManager.Assets["trampoline"].meshes.forEach((mesh) => {
+      this.scene.assetsManager.Models["trampoline"].meshes.forEach((mesh) => {
         let instance = mesh.createInstance(mesh.name);
         instance.parent = this.box;
       });
@@ -31,7 +31,7 @@ export default class Jump {
     let disc = BABYLON.MeshBuilder.CreateDisc("jump", { radius: 0.4 });
     disc.rotation.x = Math.PI / 2;
 
-    this.scene.assetsManager.Assets["trampoline"].meshes.forEach((mesh) => {
+    this.scene.assetsManager.Models["trampoline"].meshes.forEach((mesh) => {
       mesh.parent = disc;
       mesh.scaling = new BABYLON.Vector3(0.009, 0.009, 0.009);
       mesh.rotation.x = (3 * Math.PI) / 2;

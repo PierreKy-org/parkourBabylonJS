@@ -19,7 +19,7 @@ export default class Checkpoint {
       this.box = Checkpoint.builder;
     } else {
       this.box = Checkpoint.builder.createInstance(`checkpoint_${pX}_${pY}_${pZ}`);
-      this.flag = this.scene.assetsManager.Assets["flag"].meshes[1].createInstance("Flag");
+      this.flag = this.scene.assetsManager.Models["flag"].meshes[1].createInstance("Flag");
       this.flag.parent = this.box;
     }
     this.box.alwaysSelectAsActiveMesh = true;
@@ -31,8 +31,8 @@ export default class Checkpoint {
   }
 
   createModel() {
-    let pole = this.scene.assetsManager.Assets["flag"].meshes[0];
-    this.flag = this.scene.assetsManager.Assets["flag"].meshes[1];
+    let pole = this.scene.assetsManager.Models["flag"].meshes[0];
+    this.flag = this.scene.assetsManager.Models["flag"].meshes[1];
     this.flag.parent = pole;
     this.flag.material.backFaceCulling = false;
     this.flag.material.emissiveColor = new BABYLON.Color3.White();
