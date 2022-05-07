@@ -260,7 +260,7 @@
                 "disabledColorItem": "#6a6a6a",
                 "name": "Death",
                 "className": "TextBlock",
-                "fontFamily": "Arial",
+                "fontFamily": "monospace",
                 "fontSize": "24px",
                 "fontWeight": "900",
                 "fontStyle": ""
@@ -318,7 +318,7 @@
                 "disabledColorItem": "#6a6a6a",
                 "name": "Timer",
                 "className": "TextBlock",
-                "fontFamily": "Arial",
+                "fontFamily": "monospace",
                 "fontSize": "24px",
                 "fontWeight": "900",
                 "fontStyle": ""
