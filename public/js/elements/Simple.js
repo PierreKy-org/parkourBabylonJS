@@ -24,11 +24,15 @@ export default class Simple {
       );
       Simple.builder.name = `simple_${pX}_${pY}_${pZ}`;
 
-      Simple.builder.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
+      Simple.builder.material =
+        this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
       this.box = Simple.builder;
     } else {
-      this.box = Simple.builder.createInstance(`simple_${pX}_${pY}_${pZ}`, this.scene.scene);
+      this.box = Simple.builder.createInstance(
+        `simple_${pX}_${pY}_${pZ}`,
+        this.scene.scene
+      );
     }
     this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);

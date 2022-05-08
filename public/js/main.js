@@ -24,6 +24,10 @@ window.onload = () => {
         path: "../../assets/models/flag/",
         gltf: "flag.obj",
       },
+      enemy: {
+        path: "../../assets/models/enemy/",
+        gltf: "scene.gltf",
+      },
     },
     materials: [
       {
@@ -43,7 +47,11 @@ window.onload = () => {
         path: "../../assets/materials/decreaseSpeed.json",
       },
     ],
-    textures: ["../../assets/textures/end.json", "../../assets/textures/arrow.json", "../../assets/textures/game.json"],
+    textures: [
+      "../../assets/textures/end.json",
+      "../../assets/textures/arrow.json",
+      "../../assets/textures/game.json",
+    ],
     audio: {
       jump: { path: "../../assets/audio/jump.wav", loop: false },
       hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
