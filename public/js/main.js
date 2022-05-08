@@ -4,7 +4,6 @@ import MenuScene from "./MenuScene.js";
 window.onload = () => {
   window.canvas = document.querySelector("#myCanvas");
   window.engine = new BABYLON.Engine(window.canvas, true);
-  window.engine.enableOfflineSupport = false;
 
   var assets = {
     models: {
@@ -47,11 +46,7 @@ window.onload = () => {
         path: "../../assets/materials/decreaseSpeed.json",
       },
     ],
-    textures: [
-      "../../assets/textures/end.json",
-      "../../assets/textures/arrow.json",
-      "../../assets/textures/game.json",
-    ],
+    textures: ["../../assets/textures/end.json", "../../assets/textures/arrow.json", "../../assets/textures/game.json"],
     audio: {
       jump: { path: "../../assets/audio/jump.wav", loop: false },
       hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
@@ -81,6 +76,34 @@ window.onload = () => {
       currentScene.scene.dispose();
     }
     currentScene = Scenes[index]();
+  };
+
+  BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
+    if (document.getElementById("customLoadingScreenDiv")) {
+      document.getElementById("customLoadingScreenDiv").style.display = "initial";
+      return;
+    }
+    this._loadingDiv = document.createElement("div");
+    this._loadingDiv.id = "customLoadingScreenDiv";
+    this._loadingDiv.innerHTML = `<img src="assets/loading.gif" alt="this slowpoke moves"  width="100%" />`;
+
+    var customLoadingScreenCss = document.createElement("style");
+    customLoadingScreenCss.innerHTML = `
+    #customLoadingScreenDiv{
+        background-color: black;
+        overflow: hidden;
+    }
+    `;
+
+    this._resizeLoadingUI();
+    document.body.appendChild(this._loadingDiv);
+    document.body.appendChild(customLoadingScreenCss);
+  };
+
+  BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
+    if (currentScene.loaded) {
+      document.getElementById("customLoadingScreenDiv").style.display = "none";
+    }
   };
 
   window.changeScene(0);
