@@ -11,7 +11,14 @@ import {
 } from "./elements/Rotator.js";
 import Checkpoint from "./elements/Checkpoint.js";
 import Jump from "./elements/Jump.js";
-import { SpikesBottom, SpikesTop, SpikesFront, SpikesBack, SpikesLeft, SpikesRight } from "./elements/Spikes.js";
+import {
+  SpikesBottom,
+  SpikesTop,
+  SpikesFront,
+  SpikesBack,
+  SpikesLeft,
+  SpikesRight,
+} from "./elements/Spikes.js";
 import Player from "./Player.js";
 import Collectible from "./elements/Collectible.js";
 import AssetsManager from "./AssetManager.js";
@@ -28,7 +35,12 @@ export default class Scene {
     this.map = map;
     this.assetsManager = new AssetsManager(this.scene, assets);
 
-    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Game GUI", true, this.scene);
+    this.advancedTexture =
+      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
+        "Game GUI",
+        true,
+        this.scene
+      );
 
     this.initScene();
   }
@@ -66,11 +78,22 @@ export default class Scene {
   }
 
   initCamera() {
-    return new BABYLON.ArcFollowCamera("FollowCam", BABYLON.Tools.ToRadians(270), 57, 15, this.player.mesh, this.scene);
+    return new BABYLON.ArcFollowCamera(
+      "FollowCam",
+      BABYLON.Tools.ToRadians(270),
+      57,
+      15,
+      this.player.mesh,
+      this.scene
+    );
   }
 
   initLight() {
-    var light = new BABYLON.HemisphericLight("hemiLight", new BABYLON.Vector3(0, 1, -1), this.scene);
+    var light = new BABYLON.HemisphericLight(
+      "hemiLight",
+      new BABYLON.Vector3(0, 1, -1),
+      this.scene
+    );
     light.diffuse = new BABYLON.Color3(1, 1, 1);
     return light;
   }
@@ -87,6 +110,12 @@ export default class Scene {
     let leave = this.menu._children[0]._children[0];
     let resume = this.menu._children[1]._children[0];
 
+    let sound = this.menu._children[2]._children[0];
+    let musicButton = sound._children[0]._children[0];
+    let musicIcon = sound._children[1]._children[0];
+
+    musicButton.isChecked = true;
+
     this.updateGui = () => {
       fps.text = `${window.engine.getFps().toFixed()}FPS`;
       timer.text = this.getTimer();
@@ -102,10 +131,24 @@ export default class Scene {
     leave.onPointerClickObservable.add(() => {
       window.changeScene(0);
     });
+
+    musicButton.onIsCheckedChangedObservable.add((value) => {
+      musicIcon.text = value ? "🔊" : "🔈";
+
+      if (value) {
+        this.assetsManager.Audio["music"].setVolume(0.3);
+      } else {
+        this.assetsManager.Audio["music"].setVolume(0);
+      }
+    });
   }
 
   initSkyBox() {
-    const skybox = BABYLON.MeshBuilder.CreateBox("skyBox", { size: 1000.0 }, this.scene);
+    const skybox = BABYLON.MeshBuilder.CreateBox(
+      "skyBox",
+      { size: 1000.0 },
+      this.scene
+    );
     skybox.material = new BABYLON.StandardMaterial("skyBox", this.scene);
     skybox.material.emissiveColor = new BABYLON.Color3(0, 0, 0);
     skybox.position.y = 490;
@@ -134,7 +177,10 @@ export default class Scene {
       },
       this.scene
     );
-    ground.mesh.material = new BABYLON.StandardMaterial("groundMaterial", this.scene);
+    ground.mesh.material = new BABYLON.StandardMaterial(
+      "groundMaterial",
+      this.scene
+    );
     ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
     ground.mesh.material.alpha = 0.8;
     ground.mesh.material.wireframe = true;
@@ -144,7 +190,9 @@ export default class Scene {
 
   getTimer() {
     let duration = Date.now() - this.startTimer;
-    return `${new Date(duration).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}:${(duration % 1000)
+    return `${new Date(duration).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}:${(
+      duration % 1000
+    )
       .toString()
       .padStart(3, "0")}`;
   }
@@ -194,9 +242,17 @@ export default class Scene {
       }
     };
 
-    window.addEventListener("keydown", (event) => changeInputState(event.key, true), false);
+    window.addEventListener(
+      "keydown",
+      (event) => changeInputState(event.key, true),
+      false
+    );
 
-    window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
+    window.addEventListener(
+      "keyup",
+      (event) => changeInputState(event.key, false),
+      false
+    );
   }
 
   async initLevel() {
@@ -244,18 +300,28 @@ export default class Scene {
             (eight) => new RotatorRF(position.x, position.y, position.z, this),
             (nine) => new RotatorRB(position.x, position.y, position.z, this),
             (ten) => new Jump(position.x, position.y, position.z, this),
-            (eleven) => new Checkpoint(position.x, position.y, position.z, this),
+            (eleven) =>
+              new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => new Enemy(position.x, position.y, position.z, this),
-            (thirteen) => new Collectible(position.x, position.y, position.z, this),
+            (thirteen) =>
+              new Collectible(position.x, position.y, position.z, this),
             (fourteen) => new End(position.x, position.y, position.z, this),
-            (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
-            (sixteen) => new SpikesTop(position.x, position.y, position.z, this),
-            (seventeen) => new SpikesFront(position.x, position.y, position.z, this),
-            (eigthteen) => new SpikesBack(position.x, position.y, position.z, this),
-            (nineteeen) => new SpikesLeft(position.x, position.y, position.z, this),
-            (twenty) => new SpikesRight(position.x, position.y, position.z, this),
-            (twentyone) => new DecreaseSpeed(position.x, position.y, position.z, this),
-            (twentytwo) => new IncreaseSpeed(position.x, position.y, position.z, this),
+            (fifthteen) =>
+              new SpikesBottom(position.x, position.y, position.z, this),
+            (sixteen) =>
+              new SpikesTop(position.x, position.y, position.z, this),
+            (seventeen) =>
+              new SpikesFront(position.x, position.y, position.z, this),
+            (eigthteen) =>
+              new SpikesBack(position.x, position.y, position.z, this),
+            (nineteeen) =>
+              new SpikesLeft(position.x, position.y, position.z, this),
+            (twenty) =>
+              new SpikesRight(position.x, position.y, position.z, this),
+            (twentyone) =>
+              new DecreaseSpeed(position.x, position.y, position.z, this),
+            (twentytwo) =>
+              new IncreaseSpeed(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();
@@ -292,15 +358,22 @@ export default class Scene {
   resume() {
     this.player.mesh.physicsImpostor.wakeUp();
 
-    this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);
-    this.player.mesh.physicsImpostor.setLinearVelocity(this.player.oldVelocity.linear);
+    this.player.mesh.physicsImpostor.setAngularVelocity(
+      this.player.oldVelocity.angular
+    );
+    this.player.mesh.physicsImpostor.setLinearVelocity(
+      this.player.oldVelocity.linear
+    );
   }
 
   render() {
     if (this.loaded) {
       if (
         this.player.mesh.position.y <=
-        this.ground.getHeightFromMap(this.player.mesh.position.x, this.player.mesh.position.z)
+        this.ground.getHeightFromMap(
+          this.player.mesh.position.x,
+          this.player.mesh.position.z
+        )
       ) {
         this.assetsManager.Audio["hit"].play();
         this.player.respawn();
