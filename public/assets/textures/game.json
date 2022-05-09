@@ -333,7 +333,7 @@
             ]
           },
           {
-            "tags": ["1:1", "0:1", "1:2", "1:2"],
+            "tags": ["1:1", "0:1", "1:2"],
             "renderToIntermediateTexture": false,
             "maxLayoutCycle": 3,
             "adaptHeightToChildren": false,

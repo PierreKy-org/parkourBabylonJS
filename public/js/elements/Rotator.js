@@ -1,4 +1,13 @@
-export { RotatorFR, RotatorFL, RotatorBR, RotatorBL, RotatorLF, RotatorLB, RotatorRF, RotatorRB };
+export {
+  RotatorFR,
+  RotatorFL,
+  RotatorBR,
+  RotatorBL,
+  RotatorLF,
+  RotatorLB,
+  RotatorRF,
+  RotatorRB,
+};
 class Rotator {
   constructor(pX, pY, pZ, scene) {
     this.scene = scene;
@@ -13,26 +22,37 @@ class Rotator {
     }
 
     if (!Rotator.builder) {
-      Rotator.builder = BABYLON.MeshBuilder.CreateTorus("torus", { tessellation: 6, thickness: 0.5, diameter: 2 });
+      Rotator.builder = BABYLON.MeshBuilder.CreateTorus("torus", {
+        tessellation: 6,
+        thickness: 0.5,
+        diameter: 2,
+      });
       Rotator.builder.rotation.z = Math.PI / 2;
 
-      Rotator.builder.name = `rotator_${pX}_${pY}_${pZ}`;
+      Rotator.builder.name = `${this.constructor.name}_${pX}_${pY}_${pZ}`;
 
-      Rotator.builder.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
-
-      this.plane = BABYLON.Mesh.CreatePlane("rotator_arrow", 1.5);
-      this.plane.parent = Rotator.builder;
-      this.plane.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-      this.plane.position.y = 1.5;
-
-      var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.plane);
-
-      advancedTexture.parseContent(this.scene.assetsManager.Textures["Arrow"]);
+      Rotator.builder.material =
+        this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
       this.box = Rotator.builder;
     } else {
-      this.box = Rotator.builder.createInstance(`rotator_${pX}_${pY}_${pZ}`);
+      this.box = Rotator.builder.createInstance(
+        `${this.constructor.name}_${pX}_${pY}_${pZ}`
+      );
     }
+    this.plane = BABYLON.Mesh.CreatePlane("rotator_arrow", 1.5);
+    this.plane.parent = this.box;
+    this.plane.position.x = 1.5;
+    this.plane.renderingGroupId = 2;
+
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(
+      this.plane
+    );
+
+    advancedTexture.parseContent(this.scene.assetsManager.Textures["Arrow"]);
+
+    this.setRotation();
+
     this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY + 0.1, pZ);
   }
@@ -52,16 +72,10 @@ class Rotator {
         () => this.onPlayerCollision()
       )
     );
-    /*
-    this.box.setBoundingInfo(
-      new BABYLON.BoundingInfo(
-        BABYLON.Vector3.Minimize(this.box.getBoundingInfo().boundingBox.minimum, new BABYLON.Vector3(0, 0, 0)),
-        BABYLON.Vector3.Maximize(this.box.getBoundingInfo().boundingBox.maximum, new BABYLON.Vector3(0, 10, 0))
-      )
-    );*/
   }
 
   rotate(orientation, from, to, angular, linear) {
+    this.scene.assetsManager.Audio["glitch"].play();
     this.scene.player.orientation = orientation;
     BABYLON.Animation.CreateAndStartAnimation(
       this.constructor.name,
@@ -73,6 +87,8 @@ class Rotator {
       BABYLON.Tools.ToRadians(to),
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
+
+    this.scene.changeFogColor();
 
     this.scene.player.resetRotation();
     let av = this.scene.player.mesh.physicsImpostor.getAngularVelocity();
@@ -87,81 +103,159 @@ class Rotator {
 }
 
 class RotatorFR extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.x = this.box.position.x + 1;
+    this.rotate(
+      "right",
+      270,
+      180,
+      new BABYLON.Vector3(1, 0, 1),
+      new BABYLON.Vector3(-1, 1, -1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("right", 270, 180, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, -1));
+  setRotation() {
+    this.plane.rotation = new BABYLON.Vector3(
+      Math.PI / 2,
+      0,
+      3 * (Math.PI / 2)
+    );
   }
 }
 
 class RotatorFL extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.x = this.box.position.x + 1;
+    this.rotate(
+      "left",
+      270,
+      360,
+      new BABYLON.Vector3(-1, 0, 1),
+      new BABYLON.Vector3(1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("left", 270, 360, new BABYLON.Vector3(-1, 0, 1), new BABYLON.Vector3(1, 1, 1));
+  setRotation() {
+    this.plane.rotation = new BABYLON.Vector3(Math.PI / 2, 0, Math.PI / 2);
   }
 }
 
 class RotatorBR extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.x = this.box.position.x - 1;
+    this.rotate(
+      "right",
+      90,
+      180,
+      new BABYLON.Vector3(-1, 0, 1),
+      new BABYLON.Vector3(1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("right", 90, 180, new BABYLON.Vector3(-1, 0, 1), new BABYLON.Vector3(1, 1, 1));
+  setRotation() {
+    this.plane.rotation = new BABYLON.Vector3(
+      3 * (Math.PI / 2),
+      0,
+      Math.PI / 2
+    );
   }
 }
 
 class RotatorBL extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.x = this.box.position.x - 1;
+    this.rotate(
+      "left",
+      90,
+      180,
+      new BABYLON.Vector3(1, 0, 1),
+      new BABYLON.Vector3(1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("left", 90, 180, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(1, 1, 1));
+  setRotation() {
+    this.plane.rotation = new BABYLON.Vector3(
+      3 * (Math.PI / 2),
+      0,
+      Math.PI / 2
+    );
   }
 }
 
 class RotatorRF extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.z = this.box.position.z - 1;
+    this.rotate(
+      "front",
+      180,
+      270,
+      new BABYLON.Vector3(1, 0, 1),
+      new BABYLON.Vector3(-1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("front", 180, 270, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, 1));
+  setRotation() {
+    this.box.rotation.y = Math.PI / 2;
+    this.plane.rotation = new BABYLON.Vector3(
+      3 * (Math.PI / 2),
+      0,
+      3 * (Math.PI / 2)
+    );
   }
 }
 
 class RotatorRB extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.z = this.box.position.z + 1;
+    this.rotate(
+      "back",
+      180,
+      90,
+      new BABYLON.Vector3(1, 0, -1),
+      new BABYLON.Vector3(1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("back", 180, 90, new BABYLON.Vector3(1, 0, -1), new BABYLON.Vector3(1, 1, 1));
+  setRotation() {
+    this.box.rotation.y = Math.PI / 2;
   }
 }
 
 class RotatorLF extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.z = this.box.position.z - 1;
+    this.rotate(
+      "front",
+      360,
+      270,
+      new BABYLON.Vector3(1, 0, -1),
+      new BABYLON.Vector3(1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("front", 360, 270, new BABYLON.Vector3(1, 0, -1), new BABYLON.Vector3(1, 1, 1));
+  setRotation() {
+    this.box.rotation.y = Math.PI / 2;
   }
 }
 
 class RotatorLB extends Rotator {
-  constructor(pX, pY, pZ, scene) {
-    super(pX, pY, pZ, scene);
+  onPlayerCollision() {
+    this.scene.player.mesh.position.z = this.box.position.z + 1;
+    this.rotate(
+      "back",
+      0,
+      90,
+      new BABYLON.Vector3(1, 0, 1),
+      new BABYLON.Vector3(-1, 1, 1)
+    );
   }
 
-  onPlayerCollision() {
-    this.rotate("back", 0, 90, new BABYLON.Vector3(1, 0, 1), new BABYLON.Vector3(-1, 1, 1));
+  setRotation() {
+    this.box.rotation.y = Math.PI / 2;
+    this.plane.rotation = new BABYLON.Vector3(
+      3 * (Math.PI / 2),
+      0,
+      Math.PI / 2
+    );
   }
 }

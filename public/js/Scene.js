@@ -57,7 +57,6 @@ export default class Scene {
     this.light = this.initLight();
     this.ground = this.initGround();
     this.initGui();
-    this.initFog();
     this.initSkyBox();
 
     this.collectable = 0;
@@ -66,6 +65,7 @@ export default class Scene {
     this.initEvents();
 
     await this.initLevel();
+    this.initFog();
     this.player.spawn();
 
     this.assetsManager.Audio["music"].play();
@@ -158,8 +158,20 @@ export default class Scene {
 
   initFog() {
     this.scene.fogMode = BABYLON.Scene.FOGMODE_EXP2;
-    this.scene.fogColor = new BABYLON.Color3(0.79, 0.34, 0.04);
     this.scene.fogDensity = 0.01;
+
+    let colors = {
+      front: new BABYLON.Color3(0.79, 0.34, 0.04),
+      right: new BABYLON.Color3(0, 0.33, 0.02),
+      back: new BABYLON.Color3(0, 0.43, 0.51),
+      left: new BABYLON.Color3(0.43, 0, 0.34),
+    };
+
+    this.changeFogColor = () => {
+      this.scene.fogColor = colors[this.player.orientation];
+    };
+
+    this.changeFogColor();
   }
 
   initGround() {
@@ -287,6 +299,10 @@ export default class Scene {
           };
 
           const position = offset[plan.orientation];
+
+          if (!this.player.orientation) {
+            this.player.orientation = plan.orientation;
+          }
 
           let callBacks = [
             (zero) => {},

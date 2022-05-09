@@ -9,23 +9,23 @@ window.onload = () => {
     models: {
       baseball: {
         path: "../../assets/models/baseball/",
-        gltf: "scene.gltf",
+        model: "scene.gltf",
       },
       pumpkin: {
         path: "../../assets/models/pumpkin/",
-        gltf: "pumpkin.gltf",
+        model: "pumpkin.gltf",
       },
       trampoline: {
         path: "../../assets/models/trampoline/",
-        gltf: "trampoline.obj",
+        model: "trampoline.obj",
       },
       flag: {
         path: "../../assets/models/flag/",
-        gltf: "flag.obj",
+        model: "flag.obj",
       },
       enemy: {
         path: "../../assets/models/enemy/",
-        gltf: "scene.gltf",
+        model: "scene.gltf",
       },
     },
     materials: [
@@ -46,7 +46,11 @@ window.onload = () => {
         path: "../../assets/materials/decreaseSpeed.json",
       },
     ],
-    textures: ["../../assets/textures/end.json", "../../assets/textures/arrow.json", "../../assets/textures/game.json"],
+    textures: [
+      "../../assets/textures/end.json",
+      "../../assets/textures/arrow.json",
+      "../../assets/textures/game.json",
+    ],
     audio: {
       jump: { path: "../../assets/audio/jump.wav", loop: false },
       hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
@@ -65,11 +69,13 @@ window.onload = () => {
         loop: false,
       },
       bounce: { path: "../../assets/audio/bounce.wav", loop: false },
+      checkpoint: { path: "../../assets/audio/checkpoint.wav", loop: false },
+      glitch: { path: "../../assets/audio/glitch.wav", loop: false },
     },
   };
 
   var currentScene;
-  var Scenes = [() => new MenuScene(), () => new Scene(assets, "level_1.json")];
+  var Scenes = [() => new MenuScene(), () => new Scene(assets, "level_2.json")];
 
   window.changeScene = (index) => {
     if (currentScene) {
@@ -80,7 +86,8 @@ window.onload = () => {
 
   BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
     if (document.getElementById("customLoadingScreenDiv")) {
-      document.getElementById("customLoadingScreenDiv").style.display = "initial";
+      document.getElementById("customLoadingScreenDiv").style.display =
+        "initial";
       return;
     }
     this._loadingDiv = document.createElement("div");

@@ -18,8 +18,13 @@ export default class Checkpoint {
 
       this.box = Checkpoint.builder;
     } else {
-      this.box = Checkpoint.builder.createInstance(`checkpoint_${pX}_${pY}_${pZ}`);
-      this.flag = this.scene.assetsManager.Models["flag"].meshes[1].createInstance("Flag");
+      this.box = Checkpoint.builder.createInstance(
+        `checkpoint_${pX}_${pY}_${pZ}`
+      );
+      this.flag =
+        this.scene.assetsManager.Models["flag"].meshes[1].createInstance(
+          "Flag"
+        );
       this.flag.parent = this.box;
     }
     this.box.alwaysSelectAsActiveMesh = true;
@@ -68,7 +73,7 @@ export default class Checkpoint {
         `${this.box.name}_flagUp`,
         this.flag,
         "position.y",
-        0.8,
+        1,
         1,
         -20,
         0,
@@ -79,11 +84,12 @@ export default class Checkpoint {
     }
 
     if (this.scene.player.lastCheckPointData?.checkpoint != this) {
+      this.scene.assetsManager.Audio["checkpoint"].play();
       BABYLON.Animation.CreateAndStartAnimation(
         `${this.box.name}_flagRotate`,
         this.flag,
         "rotation.y",
-        0.8,
+        1,
         1,
         0,
         BABYLON.Tools.ToRadians(360 * 2),
