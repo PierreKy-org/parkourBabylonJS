@@ -1,20 +1,11 @@
 export default class MenuScene {
   constructor() {
     this.scene = new BABYLON.Scene(window.engine);
-    this.camera = new BABYLON.FreeCamera(
-      "camera1",
-      new BABYLON.Vector3(0, 5, -10),
-      this.scene
-    );
+    this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
     this.camera.setTarget(BABYLON.Vector3.Zero());
     this.camera.attachControl(window.canvas, true);
 
-    this.advancedTexture =
-      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
-        "UIMenu",
-        true,
-        this.scene
-      );
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
 
     this.initScene();
   }
@@ -23,9 +14,7 @@ export default class MenuScene {
     let file = await fetch("/getScore");
     let scores = await file.json();
 
-    await this.advancedTexture.parseFromURLAsync(
-      "../assets/materials/guilevel.json"
-    );
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
     for (let i = 1; i < 10; i++) {
       let level = this.advancedTexture.getControlByName("level" + i);
       let score = scores[`level_${i}.json`];
@@ -46,20 +35,15 @@ export default class MenuScene {
     }
 
     //Mode facile
-    this.advancedTexture
-      .getControlByName("facile")
-      .onIsCheckedChangedObservable.add(() => {
-        this.scene.checked =
-          this.advancedTexture.getControlByName("facile").isChecked;
-        console.log(this.scene.checked);
-      });
+    this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
+      this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked;
+      console.log(this.scene.checked);
+    });
 
     //Bouton help
-    this.advancedTexture
-      .getControlByName("help")
-      .onPointerUpObservable.add(() => {
-        window.changeScene(10);
-      });
+    this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
+      window.changeScene(10);
+    });
 
     /*/ fetch("http://localhost:8000/levels")
       .then((res) => res.json())

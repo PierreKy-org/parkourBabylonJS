@@ -76,7 +76,7 @@ export default class Scene {
   }
 
   initGui() {
-    this.advancedTexture.parseContent(this.assetsManager.Textures["Game"]);
+    this.advancedTexture.parseContent(this.assetsManager.Guis["Game"]);
     let gui = this.advancedTexture.getChildren()[0]._children[0];
     let fps = gui._children[0]._children[0];
 

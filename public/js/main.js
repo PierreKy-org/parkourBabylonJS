@@ -47,7 +47,7 @@ window.onload = () => {
         path: "../../assets/materials/decreaseSpeed.json",
       },
     ],
-    textures: ["../../assets/textures/end.json", "../../assets/textures/arrow.json", "../../assets/textures/game.json"],
+    guis: ["../../assets/gui/end.json", "../../assets/gui/arrow.json", "../../assets/gui/game.json"],
     audio: {
       jump: { path: "../../assets/audio/jump.wav", loop: false },
       hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
@@ -72,8 +72,8 @@ window.onload = () => {
   };
 
   var currentScene;
-  var Scenes = [()=> new PresentationScene(), () => new MenuScene(), () => new Scene(assets, "level_2.json")];
-  
+  var Scenes = [() => new PresentationScene(), () => new MenuScene(), () => new Scene(assets, "level_2.json")];
+
   window.changeScene = (index) => {
     if (currentScene) {
       currentScene.scene.dispose();
