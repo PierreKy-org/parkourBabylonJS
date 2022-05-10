@@ -212,11 +212,11 @@ export default class Scene {
       } else if (key === "Escape") {
         if (state) {
           if (this.menu.isVisible) {
-            this.scene.resume();
+            this.resume();
             this.menu.isVisible = false;
           } else {
             this.menu.isVisible = true;
-            this.scene.pausex();
+            this.pausex();
           }
         }
       } else if (key === " ") {
