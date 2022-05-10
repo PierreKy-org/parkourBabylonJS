@@ -6,6 +6,13 @@ export default class MenuScene {
     this.camera.attachControl(window.canvas, true);
 
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
+    fetch("http://localhost:8000/getScore")
+    .then((res) => res.json())
+    .then((json) => {
+      console.log(json)
+      this.scores = json;
+    })
+
     this.initScene();
   }
 
@@ -17,7 +24,8 @@ export default class MenuScene {
         window.changeScene(i+1);
       });
       this.advancedTexture.getControlByName("level" + i).onPointerEnterObservable.add(() => {
-        this.advancedTexture.getControlByName("level" + i).textBlock.text = i+ "\ntimer\ncollected"
+        //take the time of the level
+        this.advancedTexture.getControlByName("level" + i).textBlock.text = i+ "\ntimer : "+ this.scores[i].time +"\ncollected : " +this.scores[i].collected;
       })
       this.advancedTexture.getControlByName("level" + i).onPointerOutObservable.add(() => {
         this.advancedTexture.getControlByName("level" + i).alpha = 1;
