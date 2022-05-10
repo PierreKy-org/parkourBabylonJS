@@ -102,7 +102,8 @@ export default class Scene {
     this.menu.isVisible = false;
 
     resume.onPointerClickObservable.add(() => {
-      this.menu._isVisible = false;
+      this.menu.isVisible = false;
+      this.resume();
     });
 
     leave.onPointerClickObservable.add(() => {
