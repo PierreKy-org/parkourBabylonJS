@@ -88,7 +88,7 @@ window.onload = () => {
     }
     this._loadingDiv = document.createElement("div");
     this._loadingDiv.id = "customLoadingScreenDiv";
-    this._loadingDiv.innerHTML = `<img src="assets/loading.gif" alt="this slowpoke moves"  width="100%" />`;
+    this._loadingDiv.innerHTML = `<img src="assets/images/loading.gif" alt="this slowpoke moves"  width="100%" />`;
 
     var customLoadingScreenCss = document.createElement("style");
     customLoadingScreenCss.innerHTML = `

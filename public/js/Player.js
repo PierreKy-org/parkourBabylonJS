@@ -20,24 +20,13 @@ export default class Player {
   }
 
   initTrail() {
-    this.trail = new BABYLON.TrailMesh(
-      "trail",
-      this.mesh,
-      this.scene.scene,
-      0.35,
-      30,
-      true
-    );
-    this.trail.material = new BABYLON.StandardMaterial(
-      "cell",
-      this.scene.scene
-    );
+    this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, true);
+    this.trail.material = new BABYLON.StandardMaterial("cell", this.scene.scene);
     this.trail.material.computeHighLevel = true;
   }
 
   initPhisics() {
-    var { minimum, maximum } =
-      this.model.meshes[1].getBoundingInfo().boundingBox;
+    var { minimum, maximum } = this.model.meshes[1].getBoundingInfo().boundingBox;
     this.mesh.setBoundingInfo(new BABYLON.BoundingInfo(minimum, maximum));
 
     this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -55,14 +44,8 @@ export default class Player {
       width: 0.3,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    this.indicator.material = new BABYLON.StandardMaterial(
-      "indicator_mat",
-      this.scene.scene,
-      true
-    );
-    this.indicator.material.diffuseTexture = new BABYLON.Texture(
-      "../assets/indicator.png"
-    );
+    this.indicator.material = new BABYLON.StandardMaterial("indicator_mat", this.scene.scene, true);
+    this.indicator.material.diffuseTexture = new BABYLON.Texture("../assets/images/indicator.png");
     this.indicator.material.emissiveColor = BABYLON.Color3.White();
     this.indicator.material.diffuseTexture.hasAlpha = true;
     this.indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
@@ -70,15 +53,11 @@ export default class Player {
   }
 
   updateIndicator() {
-    this.indicator.position = this.mesh.position.add(
-      new BABYLON.Vector3(0, 0.6, 0)
-    );
+    this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.6, 0));
 
     this.indicator.rotation = BABYLON.Vector3.RotationFromAxis(
       BABYLON.Vector3.Zero(),
-      this.indicator.position.subtract(
-        this.scene.endPosition || BABYLON.Vector3.Zero()
-      ),
+      this.indicator.position.subtract(this.scene.endPosition || BABYLON.Vector3.Zero()),
       BABYLON.Vector3.Zero()
     );
     this.indicator.rotation.z -= Math.PI / 2;
@@ -128,21 +107,14 @@ export default class Player {
       this.rays = [];
       vectors.forEach((vector) => {
         let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[8]) * 0.6;
-        var ray = new BABYLON.Ray(
-          vector,
-          new BABYLON.Vector3(0, -1, 0),
-          length
-        );
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
         this.rays.push(ray);
       });
     }
   }
 
   move() {
-    if (
-      this.scene.inputStates.space &&
-      Date.now() - this.LastKeyDown.space > 300
-    ) {
+    if (this.scene.inputStates.space && Date.now() - this.LastKeyDown.space > 300) {
       this.scene.distanceCamera(this.normalCamera);
       this.normalCamera = !this.normalCamera;
       this.LastKeyDown.space = Date.now();
@@ -168,11 +140,7 @@ export default class Player {
         this.updateSpeed(false);
         this.setAngularVelocity();
       }
-      if (
-        this.scene.inputStates.r &&
-        this.lastCheckPointData &&
-        Date.now() - this.LastKeyDown.r > 300
-      ) {
+      if (this.scene.inputStates.r && this.lastCheckPointData && Date.now() - this.LastKeyDown.r > 300) {
         this.respawn();
         this.LastKeyDown.r = Date.now();
       }
@@ -201,10 +169,7 @@ export default class Player {
   }
 
   resetRotation() {
-    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(
-      BABYLON.Vector3.Zero(),
-      0
-    );
+    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
   }
 
   setLinearVelocity() {
