@@ -1,5 +1,6 @@
 import Scene from "./Scene.js";
 import MenuScene from "./MenuScene.js";
+import PresentationScene from "./PresentationScene.js";
 
 window.onload = () => {
   window.canvas = document.querySelector("#myCanvas");
@@ -75,7 +76,7 @@ window.onload = () => {
   };
 
   var currentScene;
-  var Scenes = [() => new MenuScene(), () => new Scene(assets, "level_2.json")];
+  var Scenes = [()=> new PresentationScene(), () => new MenuScene(), () => new Scene(assets, "level_2.json")];
 
   window.changeScene = (index) => {
     if (currentScene) {

@@ -5,13 +5,39 @@ export default class MenuScene {
     this.camera.setTarget(BABYLON.Vector3.Zero());
     this.camera.attachControl(window.canvas, true);
 
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
     this.initScene();
   }
 
   async initScene() {
-    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
+    for(let i = 1; i < 10; i++) {
+      this.advancedTexture.getControlByName("level" + i).textBlock.text = i
+      this.advancedTexture.getControlByName("level" + i).onPointerUpObservable.add(() => {
+        window.changeScene(i+1);
+      });
+      this.advancedTexture.getControlByName("level" + i).onPointerEnterObservable.add(() => {
+        this.advancedTexture.getControlByName("level" + i).textBlock.text = i+ "\ntimer\ncollected"
+      })
+      this.advancedTexture.getControlByName("level" + i).onPointerOutObservable.add(() => {
+        this.advancedTexture.getControlByName("level" + i).alpha = 1;
+        this.advancedTexture.getControlByName("level" + i).textBlock.text = i
 
-    fetch("http://localhost:8000/levels")
+      })
+    }
+
+    //Mode facile
+    this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
+    this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked
+    console.log(this.scene.checked)
+      })
+
+    //Bouton help
+    this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
+      window.changeScene(10);
+    });
+    
+   /*/ fetch("http://localhost:8000/levels")
       .then((res) => res.json())
       .then((json) => {
         json.forEach((level) => {
@@ -40,7 +66,9 @@ export default class MenuScene {
             });
           });
         });
-      });
+      });*/
+
+
   }
 
   render() {
