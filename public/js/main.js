@@ -46,11 +46,7 @@ window.onload = () => {
         path: "../../assets/materials/decreaseSpeed.json",
       },
     ],
-    textures: [
-      "../../assets/textures/end.json",
-      "../../assets/textures/arrow.json",
-      "../../assets/textures/game.json",
-    ],
+    textures: ["../../assets/textures/end.json", "../../assets/textures/arrow.json", "../../assets/textures/game.json"],
     audio: {
       jump: { path: "../../assets/audio/jump.wav", loop: false },
       hit: { path: "../../assets/audio/gameOver.mp3", loop: false },
@@ -75,7 +71,7 @@ window.onload = () => {
   };
 
   var currentScene;
-  var Scenes = [() => new MenuScene(), () => new Scene(assets, "level_2.json")];
+  var Scenes = [() => new MenuScene(), () => new Scene(assets, "level_1.json")];
 
   window.changeScene = (index) => {
     if (currentScene) {
@@ -86,8 +82,7 @@ window.onload = () => {
 
   BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
     if (document.getElementById("customLoadingScreenDiv")) {
-      document.getElementById("customLoadingScreenDiv").style.display =
-        "initial";
+      document.getElementById("customLoadingScreenDiv").style.display = "initial";
       return;
     }
     this._loadingDiv = document.createElement("div");

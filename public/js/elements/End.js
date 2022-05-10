@@ -97,6 +97,7 @@ export default class End {
       completion.text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
 
       button.onPointerClickObservable.add(() => {
+        fetch(`/addScore?level=${this.scene.map}&time=${time.text}&collected=${this.scene.collected}`);
         window.changeScene(0);
       });
     }, 2400);
