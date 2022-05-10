@@ -1,4 +1,6 @@
-export default class Enemy {
+export { XEnemy, YEnemy, ZEnemy };
+
+class Enemy {
   static builder;
 
   constructor(pX, pY, pZ, scene) {
@@ -51,7 +53,7 @@ export default class Enemy {
     );
 
     this.lastPos = this.mesh.position.clone();
-    this.direction = new BABYLON.Vector3(0.05, 0, 0);
+    this.direction = this.getInitialDirection();
     this.scene.scene.registerBeforeRender(() => {
       if (this.scene.loaded) {
         this.mesh.moveWithCollisions(this.direction);
@@ -61,5 +63,23 @@ export default class Enemy {
         this.lastPos = this.mesh.position.clone();
       }
     });
+  }
+}
+
+class XEnemy extends Enemy {
+  getInitialDirection() {
+    return new BABYLON.Vector3(0.05, 0, 0);
+  }
+}
+
+class YEnemy extends Enemy {
+  getInitialDirection() {
+    return new BABYLON.Vector3(0, 0.05, 0);
+  }
+}
+
+class ZEnemy extends Enemy {
+  getInitialDirection() {
+    return new BABYLON.Vector3(0, 0, 0.05);
   }
 }

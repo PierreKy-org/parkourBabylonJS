@@ -262,6 +262,7 @@ export default class Player {
     this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.resetRotation();
+    this.scene.changeFogColor();
     this.deaths++;
   }
 }
