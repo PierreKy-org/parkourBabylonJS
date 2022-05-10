@@ -11,7 +11,7 @@ export default class MenuScene {
   async initScene() {
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
 
-    fetch("http://localhost:8000/levels")
+    fetch("levels")
       .then((res) => res.json())
       .then((json) => {
         json.forEach((level) => {
