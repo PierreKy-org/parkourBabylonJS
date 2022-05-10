@@ -65,6 +65,7 @@ export default class End {
   }
 
   onPlayerCollision() {
+    let endTime = this.scene.getTimer();
     this.scene.pausex();
     this.scene.assetsManager.Audio["music"].stop();
     this.scene.assetsManager.Audio["end"].play();
@@ -92,12 +93,11 @@ export default class End {
       let time = grid._children[1]._children[0];
       let completion = grid._children[2]._children[0];
 
-      time.text = this.scene.getTimer();
-
+      time.text = endTime;
       completion.text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
 
       button.onPointerClickObservable.add(() => {
-        fetch(`/addScore?level=${this.scene.map}&time=${time.text}&collected=${this.scene.collected}`);
+        fetch(`/addScore?level=${this.scene.map}&time=${endTime}&collected=${this.scene.collected}`);
         window.changeScene(0);
       });
     }, 2400);

@@ -73,7 +73,7 @@ window.onload = () => {
 
   var currentScene;
   var Scenes = [()=> new PresentationScene(), () => new MenuScene(), () => new Scene(assets, "level_2.json")];
-
+  
   window.changeScene = (index) => {
     if (currentScene) {
       currentScene.scene.dispose();
