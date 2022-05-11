@@ -39,28 +39,21 @@ export default class Player {
   }
 
   initGui() {
-    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
-      height: 0.3,
-      width: 0.3,
+    let indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
+      height: 1,
+      width: 1,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    this.indicator.material = new BABYLON.StandardMaterial("indicator_mat", this.scene.scene, true);
-    this.indicator.material.diffuseTexture = new BABYLON.Texture("../assets/images/indicator.png");
-    this.indicator.material.emissiveColor = BABYLON.Color3.White();
-    this.indicator.material.diffuseTexture.hasAlpha = true;
-    this.indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-    this.indicator.renderingGroupId = 2;
-  }
+    indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    indicator.renderingGroupId = 2;
 
-  updateIndicator() {
-    this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.6, 0));
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(indicator);
+    advancedTexture.parseContent(this.scene.assetsManager.Guis["Speed"]);
 
-    this.indicator.rotation = BABYLON.Vector3.RotationFromAxis(
-      BABYLON.Vector3.Zero(),
-      this.indicator.position.subtract(this.scene.endPosition || BABYLON.Vector3.Zero()),
-      BABYLON.Vector3.Zero()
-    );
-    this.indicator.rotation.z -= Math.PI / 2;
+    this.updateIndicator = () => {
+      indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
+      advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / this.maxSpeed) * -1).toFixed(0)}%`;
+    };
   }
 
   spawn() {

@@ -39,7 +39,12 @@
       "path": "../../assets/materials/decreaseSpeed.json"
     }
   ],
-  "guis": ["../../assets/gui/end.json", "../../assets/gui/arrow.json", "../../assets/gui/game.json"],
+  "guis": [
+    "../../assets/gui/end.json",
+    "../../assets/gui/arrow.json",
+    "../../assets/gui/game.json",
+    "../../assets/gui/speed.json"
+  ],
   "audio": {
     "jump": { "path": "../../assets/audio/jump.wav", "loop": false },
     "hit": { "path": "../../assets/audio/gameOver.mp3", "loop": false },
