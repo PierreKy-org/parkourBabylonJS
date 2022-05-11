@@ -33,7 +33,6 @@ export default class End {
     this.box.name = `end_${pX}_${pY}_${pZ}`;
 
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
-    this.scene.endPosition = this.box.position.add(new BABYLON.Vector3(0, 2, 0));
 
     this.box.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
