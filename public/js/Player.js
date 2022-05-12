@@ -20,24 +20,13 @@ export default class Player {
   }
 
   initTrail() {
-    this.trail = new BABYLON.TrailMesh(
-      "trail",
-      this.mesh,
-      this.scene.scene,
-      0.35,
-      30,
-      true
-    );
-    this.trail.material = new BABYLON.StandardMaterial(
-      "cell",
-      this.scene.scene
-    );
+    this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, true);
+    this.trail.material = new BABYLON.StandardMaterial("cell", this.scene.scene);
     this.trail.material.computeHighLevel = true;
   }
 
   initPhisics() {
-    var { minimum, maximum } =
-      this.model.meshes[1].getBoundingInfo().boundingBox;
+    var { minimum, maximum } = this.model.meshes[1].getBoundingInfo().boundingBox;
     this.mesh.setBoundingInfo(new BABYLON.BoundingInfo(minimum, maximum));
 
     this.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(
@@ -50,38 +39,21 @@ export default class Player {
   }
 
   initGui() {
-    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
-      height: 0.3,
-      width: 0.3,
+    let indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
+      height: 1,
+      width: 1,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    this.indicator.material = new BABYLON.StandardMaterial(
-      "indicator_mat",
-      this.scene.scene,
-      true
-    );
-    this.indicator.material.diffuseTexture = new BABYLON.Texture(
-      "../assets/indicator.png"
-    );
-    this.indicator.material.emissiveColor = BABYLON.Color3.White();
-    this.indicator.material.diffuseTexture.hasAlpha = true;
-    this.indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-    this.indicator.renderingGroupId = 2;
-  }
+    indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    indicator.renderingGroupId = 2;
 
-  updateIndicator() {
-    this.indicator.position = this.mesh.position.add(
-      new BABYLON.Vector3(0, 0.6, 0)
-    );
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(indicator);
+    advancedTexture.parseContent(this.scene.assetsManager.Guis["Speed"]);
 
-    this.indicator.rotation = BABYLON.Vector3.RotationFromAxis(
-      BABYLON.Vector3.Zero(),
-      this.indicator.position.subtract(
-        this.scene.endPosition || BABYLON.Vector3.Zero()
-      ),
-      BABYLON.Vector3.Zero()
-    );
-    this.indicator.rotation.z -= Math.PI / 2;
+    this.updateIndicator = () => {
+      indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
+      advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / this.maxSpeed) * -1).toFixed(0)}%`;
+    };
   }
 
   spawn() {
@@ -128,21 +100,14 @@ export default class Player {
       this.rays = [];
       vectors.forEach((vector) => {
         let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[8]) * 0.6;
-        var ray = new BABYLON.Ray(
-          vector,
-          new BABYLON.Vector3(0, -1, 0),
-          length
-        );
+        var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
         this.rays.push(ray);
       });
     }
   }
 
   move() {
-    if (
-      this.scene.inputStates.space &&
-      Date.now() - this.LastKeyDown.space > 300
-    ) {
+    if (this.scene.inputStates.space && Date.now() - this.LastKeyDown.space > 300) {
       this.scene.distanceCamera(this.normalCamera);
       this.normalCamera = !this.normalCamera;
       this.LastKeyDown.space = Date.now();
@@ -168,11 +133,7 @@ export default class Player {
         this.updateSpeed(false);
         this.setAngularVelocity();
       }
-      if (
-        this.scene.inputStates.r &&
-        this.lastCheckPointData &&
-        Date.now() - this.LastKeyDown.r > 300
-      ) {
+      if (this.scene.inputStates.r && this.lastCheckPointData && Date.now() - this.LastKeyDown.r > 300) {
         this.respawn();
         this.LastKeyDown.r = Date.now();
       }
@@ -201,10 +162,7 @@ export default class Player {
   }
 
   resetRotation() {
-    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(
-      BABYLON.Vector3.Zero(),
-      0
-    );
+    this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
   }
 
   setLinearVelocity() {
@@ -297,6 +255,7 @@ export default class Player {
     this.mesh.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
     this.mesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
     this.resetRotation();
+    this.scene.changeFogColor();
     this.deaths++;
   }
 }

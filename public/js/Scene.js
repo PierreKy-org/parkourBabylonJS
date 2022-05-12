@@ -18,7 +18,7 @@ import AssetsManager from "./AssetManager.js";
 import End from "./elements/End.js";
 import DecreaseSpeed from "./elements/DecreaseSpeed.js";
 import IncreaseSpeed from "./elements/IncreaseSpeed.js";
-import Enemy from "./elements/Enemy.js";
+import { XEnemy, YEnemy, ZEnemy } from "./elements/Enemy.js";
 
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
@@ -76,7 +76,7 @@ export default class Scene {
   }
 
   initGui() {
-    this.advancedTexture.parseContent(this.assetsManager.Textures["Game"]);
+    this.advancedTexture.parseContent(this.assetsManager.Guis["Game"]);
     let gui = this.advancedTexture.getChildren()[0]._children[0];
     let fps = gui._children[0]._children[0];
 
@@ -144,8 +144,6 @@ export default class Scene {
     this.changeFogColor = () => {
       this.scene.fogColor = colors[this.player.orientation];
     };
-
-    this.changeFogColor();
   }
 
   initGround() {
@@ -280,7 +278,7 @@ export default class Scene {
             (nine) => new RotatorRB(position.x, position.y, position.z, this),
             (ten) => new Jump(position.x, position.y, position.z, this),
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
-            (twelve) => new Enemy(position.x, position.y, position.z, this),
+            (twelve) => new XEnemy(position.x, position.y, position.z, this),
             (thirteen) => new Collectible(position.x, position.y, position.z, this),
             (fourteen) => new End(position.x, position.y, position.z, this),
             (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
@@ -291,6 +289,8 @@ export default class Scene {
             (twenty) => new SpikesRight(position.x, position.y, position.z, this),
             (twentyone) => new DecreaseSpeed(position.x, position.y, position.z, this),
             (twentytwo) => new IncreaseSpeed(position.x, position.y, position.z, this),
+            (twentythree) => new YEnemy(position.x, position.y, position.z, this),
+            (twentyfour) => new ZEnemy(position.x, position.y, position.z, this),
           ];
 
           callBacks[column]();

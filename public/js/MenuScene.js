@@ -6,46 +6,46 @@ export default class MenuScene {
     this.camera.attachControl(window.canvas, true);
 
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
-    fetch("/getScore")
-    .then((res) => res.json())
-    .then((json) => {
-      console.log(json)
-      this.scores = json;
-    }).then(
 
-    this.initScene());
+    this.initScene();
   }
 
   async initScene() {
-    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
-    for(let i = 1; i < 10; i++) {
-      this.advancedTexture.getControlByName("level" + i).textBlock.text = i
-      this.advancedTexture.getControlByName("level" + i).onPointerUpObservable.add(() => {
-        window.changeScene(i+1);
-      });
-      this.advancedTexture.getControlByName("level" + i).onPointerEnterObservable.add(() => {
-        //take the time of the level
-        this.advancedTexture.getControlByName("level" + i).textBlock.text = i+ "\ntimer : "+ this.scores[`level_${i}.json`].time +"\ncollected : " +this.scores[`level_${i}.json`].collected;
-      })
-      this.advancedTexture.getControlByName("level" + i).onPointerOutObservable.add(() => {
-        this.advancedTexture.getControlByName("level" + i).alpha = 1;
-        this.advancedTexture.getControlByName("level" + i).textBlock.text = i
+    let file = await fetch("/getScore");
+    let scores = await file.json();
 
-      })
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
+    for (let i = 1; i < 10; i++) {
+      let level = this.advancedTexture.getControlByName("level" + i);
+      let score = scores[`level_${i}.json`];
+
+      level.textBlock.text = i;
+      level.onPointerUpObservable.add(() => {
+        window.changeScene(i + 1);
+      });
+      if (score) {
+        level.onPointerEnterObservable.add(() => {
+          level.textBlock.text = `timer : ${score.time}\ncollected : ${score.collected}`;
+        });
+        level.onPointerOutObservable.add(() => {
+          level.alpha = 1;
+          level.textBlock.text = i;
+        });
+      }
     }
 
     //Mode facile
     this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
-    this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked
-    console.log(this.scene.checked)
-      })
+      this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked;
+      console.log(this.scene.checked);
+    });
 
     //Bouton help
     this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
       window.changeScene(10);
     });
-    
-   /*/ fetch("http://localhost:8000/levels")
+
+    /*/ fetch("http://localhost:8000/levels")
       .then((res) => res.json())
       .then((json) => {
         json.forEach((level) => {
@@ -75,8 +75,6 @@ export default class MenuScene {
           });
         });
       });*/
-
-
   }
 
   render() {

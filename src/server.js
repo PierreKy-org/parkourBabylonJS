@@ -39,7 +39,7 @@ app.get("/addScore", (req, res) => {
 });
 
 app.get("/getScore", (req, res) => {
-  res.json(scores[req.ip]);
+  res.json(scores[req.ip] || "{}");
 });
 
 app.listen(port);

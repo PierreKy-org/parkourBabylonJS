@@ -33,7 +33,6 @@ export default class End {
     this.box.name = `end_${pX}_${pY}_${pZ}`;
 
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
-    this.scene.endPosition = this.box.position.add(new BABYLON.Vector3(0, 2, 0));
 
     this.box.material = this.scene.assetsManager.Materials["Simple #NJXV5A#12"];
 
@@ -80,7 +79,7 @@ export default class End {
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
 
-    this.scene.advancedTexture.parseContent(this.scene.assetsManager.Textures["End"]);
+    this.scene.advancedTexture.parseContent(this.scene.assetsManager.Guis["End"]);
     this.scene.advancedTexture.idealWidth = 1500;
     this.scene.advancedTexture.idealHeight = 1200;
     this.scene.advancedTexture.getChildren()[0].isVisible = false;

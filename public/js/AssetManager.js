@@ -2,10 +2,10 @@ export default class AssetsManager {
   Models = {};
   Materials = {};
   Audio = {};
-  Textures = {};
+  Guis = {};
 
   constructor(scene, assets) {
-    var { models, materials, textures, audio } = assets;
+    var { models, materials, guis, audio } = assets;
 
     this.assetsManager = new BABYLON.AssetsManager(scene);
 
@@ -16,32 +16,19 @@ export default class AssetsManager {
     //Models
     var keys = Object.keys(models);
     keys.forEach((key) => {
-      this.assetsManager.addMeshTask(
-        key,
-        "",
-        models[key].path,
-        models[key].model
-      );
+      this.assetsManager.addMeshTask(key, "", models[key].path, models[key].model);
     });
 
     //Materials
-    this.materials = materials.map((mat) =>
-      BABYLON.NodeMaterial.ParseFromFileAsync(mat.name, mat.path, scene.scene)
-    );
+    this.materials = materials.map((mat) => BABYLON.NodeMaterial.ParseFromFileAsync(mat.name, mat.path, scene.scene));
 
-    //Textures
-    this.textures = textures;
+    //Gui
+    this.guis = guis;
 
     //Audios
     var keys = Object.keys(audio);
     keys.forEach((key) => {
-      this.Audio[key] = new BABYLON.Sound(
-        key,
-        audio[key].path,
-        scene.scene,
-        null,
-        { loop: audio[key].loop }
-      );
+      this.Audio[key] = new BABYLON.Sound(key, audio[key].path, scene.scene, null, { loop: audio[key].loop });
     });
   }
 
@@ -53,10 +40,10 @@ export default class AssetsManager {
       this.Materials[mat.name] = mat;
     });
 
-    let res = await Promise.all(this.textures.map((path) => fetch(path)));
+    let res = await Promise.all(this.guis.map((path) => fetch(path)));
     let jsons = await Promise.all(res.map((r) => r.json()));
     jsons.forEach((txt) => {
-      this.Textures[txt.root.name] = txt;
+      this.Guis[txt.root.name] = txt;
     });
   }
 }
