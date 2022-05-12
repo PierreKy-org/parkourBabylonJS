@@ -172,7 +172,9 @@ export default class Scene {
     ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
     ground.mesh.material.alpha = 0.8;
     ground.mesh.material.wireframe = true;
+
     ground.isPickable = false;
+    ground._terrain.isPickable = false;
 
     return ground;
   }
