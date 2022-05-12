@@ -36,6 +36,7 @@ export default class Jump {
       mesh.scaling = new BABYLON.Vector3(0.009, 0.009, 0.009);
       mesh.rotation.x = (3 * Math.PI) / 2;
       mesh.position.z = 0.28;
+      mesh.setEnabled(true);
     });
 
     disc.material = new BABYLON.GridMaterial("jump_material", this.scene.scene);

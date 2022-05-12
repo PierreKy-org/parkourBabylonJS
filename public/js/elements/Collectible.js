@@ -20,6 +20,7 @@ export default class Collectible {
     this.mesh = Collectible.model.meshes[1].createInstance(`collectible_${pX}_${pY}_${pZ}`);
     this.mesh.alwaysSelectAsActiveMesh = true;
     this.mesh.position = new BABYLON.Vector3(pX, pY, pZ);
+    this.mesh.isPickable = false;
     this.scene.collectable += 1;
     this.setPhysics();
     this.startAnimation();

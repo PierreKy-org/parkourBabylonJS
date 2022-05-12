@@ -18,26 +18,21 @@ export default class Checkpoint {
 
       this.box = Checkpoint.builder;
     } else {
-      this.box = Checkpoint.builder.createInstance(
-        `checkpoint_${pX}_${pY}_${pZ}`
-      );
-      this.flag =
-        this.scene.assetsManager.Models["flag"].meshes[1].createInstance(
-          "Flag"
-        );
+      this.box = Checkpoint.builder.createInstance(`checkpoint_${pX}_${pY}_${pZ}`);
+      this.flag = this.scene.assetsManager.Models["flag"].meshes[1].createInstance("Flag");
       this.flag.parent = this.box;
     }
     this.box.alwaysSelectAsActiveMesh = true;
     this.box.position = new BABYLON.Vector3(pX, pY - 0.49, pZ);
-
-    if (!this.scene.player.lastCheckPointData) {
-      this.onPlayerCollision();
-    }
   }
 
   createModel() {
     let pole = this.scene.assetsManager.Models["flag"].meshes[0];
+    pole.setEnabled(true);
+    pole.isPickable = false;
     this.flag = this.scene.assetsManager.Models["flag"].meshes[1];
+    this.flag.setEnabled(true);
+    this.flag.isPickable = false;
     this.flag.parent = pole;
     this.flag.material.backFaceCulling = false;
     this.flag.material.emissiveColor = new BABYLON.Color3.White();

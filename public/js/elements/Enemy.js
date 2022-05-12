@@ -23,6 +23,7 @@ class Enemy {
     this.mesh.enableEdgesRendering();
     this.mesh.edgesWidth = 4.0;
     this.mesh.edgesColor = new BABYLON.Color4(1, 0, 0, 1);
+    this.mesh.isPickable = false;
 
     this.mesh.alwaysSelectAsActiveMesh = true;
     this.mesh.position = new BABYLON.Vector3(pX, pY, pZ);

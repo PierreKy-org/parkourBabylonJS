@@ -41,6 +41,7 @@ class Spikes {
       Spikes.builder.material = this.scene.assetsManager.Materials["Spike #NJXV5A#14"];
 
       Spikes.builder.name = `spikes_${pX}_${pY}_${pZ}`;
+      Spikes.builder.isPickable = false;
 
       spike = Spikes.builder;
     } else {

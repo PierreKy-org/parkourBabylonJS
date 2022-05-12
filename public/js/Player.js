@@ -57,7 +57,7 @@ export default class Player {
 
     this.updateIndicator = () => {
       indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
-      advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / this.maxSpeed) * -1).toFixed(0)}%`;
+      advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / 15) * -1).toFixed(0)}%`;
     };
   }
 
@@ -139,7 +139,7 @@ export default class Player {
         this.updateSpeed(false);
         this.setAngularVelocity();
       }
-      if (this.scene.inputStates.r && this.lastCheckPointData && Date.now() - this.LastKeyDown.r > 300) {
+      if (this.scene.inputStates.r && Date.now() - this.LastKeyDown.r > 300) {
         this.respawn();
         this.LastKeyDown.r = Date.now();
       }

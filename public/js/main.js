@@ -7,13 +7,21 @@ window.onload = async () => {
   window.engine = new BABYLON.Engine(window.canvas, true);
 
   var currentScene;
-  var Scenes = [() => new PresentationScene(), () => new MenuScene(), () => new Scene("level_4.json")];
 
   window.changeScene = (index) => {
     if (currentScene) {
       currentScene.scene.dispose();
     }
-    currentScene = Scenes[index]();
+    switch (index) {
+      case 0:
+        currentScene = new PresentationScene();
+        break;
+      case 1:
+        currentScene = new MenuScene();
+        break;
+      default:
+        currentScene = new Scene(`level_${index - 1}.json`);
+    }
   };
 
   BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
@@ -44,7 +52,7 @@ window.onload = async () => {
     }
   };
 
-  window.changeScene(0);
+  window.changeScene(3);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();
