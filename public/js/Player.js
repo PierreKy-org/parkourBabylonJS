@@ -3,6 +3,10 @@ export default class Player {
     this.scene = scene;
 
     this.model = this.scene.assetsManager.Models["baseball"];
+    this.model.meshes.forEach((mesh) => {
+      mesh.setEnabled(true);
+      mesh.isPickable = false;
+    });
     this.mesh = this.model.meshes[0];
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
@@ -23,6 +27,7 @@ export default class Player {
     this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, true);
     this.trail.material = new BABYLON.StandardMaterial("cell", this.scene.scene);
     this.trail.material.computeHighLevel = true;
+    this.trail.isPickable = false;
   }
 
   initPhisics() {
@@ -99,8 +104,9 @@ export default class Player {
     } else {
       this.rays = [];
       vectors.forEach((vector) => {
-        let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[8]) * 0.6;
+        let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[vectors.length - 1]) * 0.6;
         var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
+        ray.isPickable = false;
         this.rays.push(ray);
       });
     }
@@ -144,13 +150,8 @@ export default class Player {
 
   checkGroundDistance() {
     for (let ray of this.rays) {
-      let distance = this.scene.scene.pickWithRay(ray, (mesh) => {
-        return (
-          ![this.model.meshes[1].name, "ray"].includes(mesh.name) &&
-          ![this.scene.ground.mesh, this.trail].includes(mesh)
-        );
-      }).distance;
-      if (distance != 0) {
+      let pick = this.scene.scene.pickWithRay(ray);
+      if (pick.distance != 0) {
         this.jump = 2;
         break;
       }
@@ -245,7 +246,7 @@ export default class Player {
       this.orientation = this.lastCheckPointData.orientation;
       this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
     } else {
-      this.mesh.position = BABYLON.Vector3.Zero();
+      this.mesh.position = this.scene.spawnPoint;
     }
     this.speed = 0;
     this.maxSpeed = 15;

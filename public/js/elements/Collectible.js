@@ -12,7 +12,6 @@ export default class Collectible {
 
     if (!Collectible.model) {
       Collectible.model = this.scene.assetsManager.Models["pumpkin"];
-      Collectible.model.meshes[0].setEnabled(false);
       Collectible.model.meshes[0].name = "collectible model";
 
       Collectible.model.meshes[1].outlineWidth = 0.1;

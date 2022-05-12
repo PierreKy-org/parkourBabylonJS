@@ -6,11 +6,8 @@ window.onload = async () => {
   window.canvas = document.querySelector("#myCanvas");
   window.engine = new BABYLON.Engine(window.canvas, true);
 
-  let file = await fetch("assets/assets.json");
-  let assets = await file.json();
-
   var currentScene;
-  var Scenes = [() => new PresentationScene(), () => new MenuScene(), () => new Scene(assets, "level_1.json")];
+  var Scenes = [() => new PresentationScene(), () => new MenuScene(), () => new Scene("level_4.json")];
 
   window.changeScene = (index) => {
     if (currentScene) {

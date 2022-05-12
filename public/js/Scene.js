@@ -23,10 +23,9 @@ import { XEnemy, YEnemy, ZEnemy } from "./elements/Enemy.js";
 const physicsPlugin = new BABYLON.CannonJSPlugin();
 
 export default class Scene {
-  constructor(assets, map) {
+  constructor(file) {
     this.scene = new BABYLON.Scene(window.engine);
-    this.map = map;
-    this.assetsManager = new AssetsManager(this.scene, assets);
+    this.file = file;
 
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Game GUI", true, this.scene);
 
@@ -35,6 +34,11 @@ export default class Scene {
 
   async initScene() {
     window.engine.displayLoadingUI();
+
+    let file = await fetch(`./assets/levels/${this.file}`);
+    let json = await file.json();
+
+    this.assetsManager = new AssetsManager(this.scene, json.assets);
     await this.assetsManager.load();
 
     this.gravityVector = new BABYLON.Vector3(0, -9.81, 0);
@@ -50,9 +54,11 @@ export default class Scene {
     this.collectable = 0;
     this.collected = 0;
 
+    this.spawnPoint = new BABYLON.Vector3(json.spawn.x, json.spawn.y, json.spawn.z);
+
     this.initEvents();
 
-    await this.initLevel();
+    this.initLevel(json.level);
     this.initFog();
     this.player.spawn();
 
@@ -228,11 +234,8 @@ export default class Scene {
     window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
   }
 
-  async initLevel() {
-    let file = await fetch(`./assets/levels/${this.map}`);
-    this.level = await file.json();
-
-    this.level.forEach((plan) => {
+  initLevel(level) {
+    level.forEach((plan) => {
       plan.map.forEach((line, x) => {
         for (let y = line.length - 1; y >= 0; y--) {
           let column = line[y];

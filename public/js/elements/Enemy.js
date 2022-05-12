@@ -16,7 +16,6 @@ class Enemy {
 
     if (!Enemy.model) {
       Enemy.model = this.scene.assetsManager.Models["enemy"];
-      Enemy.model.meshes[0].setEnabled(false);
       Enemy.model.meshes[0].name = "enemy model";
     }
     this.mesh = Enemy.model.meshes[1].createInstance(`enemy_${pX}_${pY}_${pZ}`);

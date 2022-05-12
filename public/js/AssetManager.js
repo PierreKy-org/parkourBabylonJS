@@ -11,6 +11,7 @@ export default class AssetsManager {
 
     this.assetsManager.onTaskSuccessObservable.add((task) => {
       this.Models[task.name] = { name: task.name, meshes: task.loadedMeshes };
+      task.loadedMeshes.forEach((mesh) => mesh.setEnabled(false));
     });
 
     //Models
