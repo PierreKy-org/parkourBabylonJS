@@ -134,6 +134,7 @@ export default class Scene {
     skybox.position.y = 490;
     skybox.material.backFaceCulling = false;
     skybox.material.disableLighting = true;
+    skybox.isPickable = false;
   }
 
   initFog() {
@@ -171,6 +172,7 @@ export default class Scene {
     ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
     ground.mesh.material.alpha = 0.8;
     ground.mesh.material.wireframe = true;
+    ground.isPickable = false;
 
     return ground;
   }
@@ -319,6 +321,7 @@ export default class Scene {
   }
 
   pausex() {
+    this.player.indicator.setEnabled(false);
     this.player.oldVelocity = {
       angular: this.player.mesh.physicsImpostor.getAngularVelocity(),
       linear: this.player.mesh.physicsImpostor.getLinearVelocity(),
@@ -328,6 +331,7 @@ export default class Scene {
   }
 
   resume() {
+    this.player.indicator.setEnabled(true);
     this.player.mesh.physicsImpostor.wakeUp();
 
     this.player.mesh.physicsImpostor.setAngularVelocity(this.player.oldVelocity.angular);

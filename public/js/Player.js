@@ -44,19 +44,19 @@ export default class Player {
   }
 
   initGui() {
-    let indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
+    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
       height: 1,
       width: 1,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-    indicator.renderingGroupId = 2;
+    this.indicator.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    this.indicator.renderingGroupId = 2;
 
-    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(indicator);
+    var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.indicator);
     advancedTexture.parseContent(this.scene.assetsManager.Guis["Speed"]);
 
     this.updateIndicator = () => {
-      indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
+      this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
       advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / 15) * -1).toFixed(0)}%`;
     };
   }
