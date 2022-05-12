@@ -52,7 +52,7 @@ window.onload = async () => {
     }
   };
 
-  window.changeScene(3);
+  window.changeScene(0);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();
