@@ -21,7 +21,7 @@ export default class MenuScene {
 
       level.textBlock.text = i;
       level.onPointerUpObservable.add(() => {
-        window.changeScene(i);
+        window.changeScene(i + 1);
       });
       if (score) {
         level.onPointerEnterObservable.add(() => {

@@ -45,7 +45,7 @@ export default class Player {
   }
 
   initGui() {
-    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator", {
+    this.indicator = BABYLON.MeshBuilder.CreatePlane("indicator_speed", {
       height: 1,
       width: 1,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
@@ -56,12 +56,11 @@ export default class Player {
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.indicator);
     advancedTexture.parseContent(this.scene.assetsManager.Guis["Speed"]);
 
-    let arrow = BABYLON.MeshBuilder.CreatePlane("indicator", {
+    let arrow = BABYLON.MeshBuilder.CreatePlane("indicator_arrow", {
       height: 1,
       width: 1,
       sideOrientation: BABYLON.Mesh.DOUBLESIDE,
     });
-    arrow.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
     arrow.renderingGroupId = 2;
     arrow.parent = this.indicator;
     arrow.position = new BABYLON.Vector3(0, -0.7, 0);
@@ -74,7 +73,7 @@ export default class Player {
       this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
       advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / 15) * -1).toFixed(0)}%`;
 
-      let axis1 = this.getLinearVelocity();
+      let axis1 = new BABYLON.Vector3(-this.speed, this.jumpHeight, 0);
       let axis3 = BABYLON.Vector3.Cross(new BABYLON.Vector3.Zero(), axis1);
       let axis2 = BABYLON.Vector3.Cross(axis3, axis1);
       arrow.rotation = BABYLON.Vector3.RotationFromAxis(axis1, axis2, axis3);
@@ -203,7 +202,7 @@ export default class Player {
     this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
   }
 
-  getLinearVelocity() {
+  setLinearVelocity() {
     var vector;
     switch (this.orientation) {
       case "front":
@@ -219,11 +218,7 @@ export default class Player {
         vector = new BABYLON.Vector3(0, this.jumpHeight, -this.speed);
         break;
     }
-    return vector;
-  }
-
-  setLinearVelocity() {
-    this.mesh.physicsImpostor.setLinearVelocity(this.getLinearVelocity());
+    this.mesh.physicsImpostor.setLinearVelocity(vector);
   }
 
   setAngularVelocity() {
