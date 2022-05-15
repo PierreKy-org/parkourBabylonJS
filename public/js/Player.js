@@ -109,10 +109,10 @@ export default class Player {
     const height = y + minimum.y * scale;
 
     var vectors = [
-      new BABYLON.Vector3(topLeft, height, 0),
+      new BABYLON.Vector3(topLeft, height, z),
       new BABYLON.Vector3(topLeft, height, topRight),
       new BABYLON.Vector3(topLeft, height, bottomRight),
-      new BABYLON.Vector3(bottomLeft, height, 0),
+      new BABYLON.Vector3(bottomLeft, height, z),
       new BABYLON.Vector3(bottomLeft, height, topRight),
       new BABYLON.Vector3(bottomLeft, height, bottomRight),
       new BABYLON.Vector3(x, height, topRight),

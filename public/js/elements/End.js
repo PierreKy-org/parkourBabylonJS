@@ -97,7 +97,7 @@ export default class End {
 
       button.onPointerClickObservable.add(() => {
         fetch(`/addScore?level=${this.scene.map}&time=${endTime}&collected=${this.scene.collected}`);
-        window.changeScene(0);
+        window.changeScene(-1);
       });
     }, 2400);
   }
