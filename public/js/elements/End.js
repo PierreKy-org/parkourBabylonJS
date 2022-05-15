@@ -88,10 +88,11 @@ export default class End {
       this.scene.advancedTexture.getChildren()[0].isVisible = true;
 
       let grid = this.scene.advancedTexture.getChildren()[0].children[0];
+      let level = grid._children[0]._children[0];
       let button = grid._children[3]._children[0];
       let time = grid._children[1]._children[0];
       let completion = grid._children[2]._children[0];
-
+      level.text = "Level completed";
       time.text = endTime;
       completion.text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
 
