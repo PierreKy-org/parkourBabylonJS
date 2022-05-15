@@ -52,9 +52,9 @@ window.onload = async () => {
     }
   };
 
-  window.addEventListener("keydown", (event) => currentScene.changeInputState(event.key, true), false);
+  window.addEventListener("keydown", (event) => currentScene?.changeInputState(event.key, true), false);
 
-  window.addEventListener("keyup", (event) => currentScene.changeInputState(event.key, false), false);
+  window.addEventListener("keyup", (event) => currentScene?.changeInputState(event.key, false), false);
 
   window.addEventListener("resize", () => {
     window.engine.resize();
