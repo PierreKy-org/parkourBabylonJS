@@ -54,7 +54,7 @@ export default class Scene {
     this.collectable = 0;
     this.collected = 0;
 
-    this.spawnPoint = new BABYLON.Vector3(json.spawn.x, json.spawn.y, json.spawn.z);
+    this.player.lastCheckPointData.position = new BABYLON.Vector3(json.spawn.x, json.spawn.y, json.spawn.z);
 
     this.initEvents();
 

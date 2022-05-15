@@ -50,6 +50,19 @@ class Rotator {
     this.box.actionManager.registerAction(
       new BABYLON.ExecuteCodeAction(
         {
+          trigger: BABYLON.ActionManager.OnIntersectionEnterTrigger,
+          parameter: {
+            mesh: this.scene.player.mesh,
+          },
+        },
+        () => {
+          this.scene.camera.inRotator = true;
+        }
+      )
+    );
+    this.box.actionManager.registerAction(
+      new BABYLON.ExecuteCodeAction(
+        {
           trigger: BABYLON.ActionManager.OnIntersectionExitTrigger,
           parameter: {
             mesh: this.scene.player.mesh,
@@ -63,7 +76,8 @@ class Rotator {
   rotate(orientation, from, to, angular, linear) {
     this.scene.assetsManager.Audio["glitch"].play();
     this.scene.player.orientation = orientation;
-    BABYLON.Animation.CreateAndStartAnimation(
+
+    this.scene.camera.currentAnimation = BABYLON.Animation.CreateAndStartAnimation(
       this.constructor.name,
       this.scene.camera,
       "alpha",
@@ -71,9 +85,16 @@ class Rotator {
       1,
       BABYLON.Tools.ToRadians(from),
       BABYLON.Tools.ToRadians(to),
-      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+      BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+      null,
+      () => {
+        if (!this.scene.camera.inRotator) {
+          this.scene.camera.alpha = BABYLON.Tools.ToRadians(to);
+          this.scene.player.lastCheckPointData.checkpoint.setCheckpointData();
+        }
+        this.scene.camera.inRotator = false;
+      }
     );
-    this.scene.camera.toAlpha = BABYLON.Tools.ToRadians(to);
 
     this.scene.changeFogColor();
 

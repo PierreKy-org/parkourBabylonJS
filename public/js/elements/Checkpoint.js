@@ -92,11 +92,19 @@ export default class Checkpoint {
       );
     }
 
+    this.setCheckpointData();
+
+    if (this.scene.camera.inRotator) {
+      this.scene.camera.inRotator = false;
+    }
+  }
+
+  setCheckpointData() {
     this.scene.player.lastCheckPointData = {
       checkpoint: this,
       position: this.box.position.add(new BABYLON.Vector3(0, 0.3, 0)),
-      orientation: this.scene.player.orientation || "front",
-      cameraAlpha: this.scene.camera.toAlpha,
+      orientation: this.scene.player.orientation,
+      cameraAlpha: this.scene.camera.alpha,
     };
   }
 }

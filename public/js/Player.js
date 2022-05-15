@@ -12,6 +12,8 @@ export default class Player {
     this.mesh.name = "baseball";
     this.mesh.scaling = new BABYLON.Vector3(0.8, 0.8, 0.8);
 
+    this.lastCheckPointData = {};
+
     this.initTrail();
     this.initPhisics();
     this.initGui();
@@ -81,6 +83,8 @@ export default class Player {
   }
 
   spawn() {
+    this.lastCheckPointData.orientation = this.orientation;
+    this.lastCheckPointData.cameraAlpha = this.scene.camera.alpha;
     this.respawn();
     this.maxSpeed = 15;
     this.jumpHeight = 8;
@@ -125,6 +129,7 @@ export default class Player {
       vectors.forEach((vector) => {
         let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[vectors.length - 1]) * 0.6;
         var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
+        BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
         ray.isPickable = false;
         this.rays.push(ray);
       });
@@ -278,13 +283,10 @@ export default class Player {
   }
 
   respawn() {
-    if (this.lastCheckPointData) {
-      this.mesh.position = this.lastCheckPointData.position;
-      this.orientation = this.lastCheckPointData.orientation;
-      this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
-    } else {
-      this.mesh.position = this.scene.spawnPoint;
-    }
+    this.scene.camera.currentAnimation?.stop();
+    this.mesh.position = this.lastCheckPointData.position;
+    this.orientation = this.lastCheckPointData.orientation;
+    this.scene.camera.alpha = this.lastCheckPointData.cameraAlpha;
     this.speed = 0;
     this.maxSpeed = 15;
     this.jumpHeight = 8;
