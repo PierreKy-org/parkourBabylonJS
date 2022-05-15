@@ -4,7 +4,7 @@ export default class PresentationScene {
     this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
     this.camera.setTarget(BABYLON.Vector3.Zero());
     this.camera.attachControl(window.canvas, true);
-
+    this.ground = this.initGround();
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
     this.initScene();
   }
@@ -23,16 +23,16 @@ export default class PresentationScene {
 
     keys.push({
       frame: 0,
-      value: 0.12,
+      value: 0.1,
     });
 
     keys.push({
       frame: 30,
-      value: 0.1,
+      value: 0.07,
     });
     keys.push({
       frame: 60,
-      value: 0.12,
+      value: 0.1,
     });
 
     var animationshowText = new BABYLON.Animation(
@@ -69,11 +69,93 @@ export default class PresentationScene {
     );
     //Mode facile
     this.advancedTexture.getControlByName("bouton").onPointerUpObservable.add(() => {
-      window.changeScene(-2);
+      this.initSceneLevel();
     });
   }
 
+  initGround() {
+    var mapSubX = 1000;
+    var mapSubZ = 1000;
+    var mapData = this.getNoiseMap(mapSubX, mapSubZ, 0.03, 5);
+
+    var ground = new BABYLON.DynamicTerrain(
+      "ground",
+      {
+        mapData: mapData,
+        mapSubX: mapSubX,
+        mapSubZ: mapSubZ,
+        terrainSub: 150,
+      },
+      this.scene
+    );
+    ground.mesh.material = new BABYLON.StandardMaterial("groundMaterial", this.scene);
+    ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
+    ground.mesh.material.alpha = 0.8;
+    ground.mesh.material.wireframe = true;
+
+    ground.isPickable = false;
+    ground._terrain.isPickable = false;
+
+    return ground;
+  }
+
+  getNoiseMap(mapSubX, mapSubZ, scale, amp) {
+    noise.seed(Math.random());
+    var mapData = new Float32Array(mapSubX * mapSubZ * 3);
+
+    for (var l = 0; l < mapSubZ; l++) {
+      for (var w = 0; w < mapSubX; w++) {
+        var x = (w - mapSubX * 0.5) * 2.0;
+        var z = (l - mapSubZ * 0.5) * 2.0;
+        var y = noise.simplex2(x * scale, z * scale) * amp - amp;
+
+        mapData[3 * (l * mapSubX + w)] = x;
+        mapData[3 * (l * mapSubX + w) + 1] = y;
+        mapData[3 * (l * mapSubX + w) + 2] = z;
+      }
+    }
+    return mapData;
+  }
+
+
+  async initSceneLevel() {
+    let file = await fetch("/getScore");
+    let scores = await file.json();
+
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
+    for (let i = 1; i < 10; i++) {
+      let level = this.advancedTexture.getControlByName("level" + i);
+      let score = scores[`level_${i}.json`];
+
+      level.textBlock.text = i;
+      level.onPointerUpObservable.add(() => {
+        window.changeScene(i);
+      });
+      if (score) {
+        level.onPointerEnterObservable.add(() => {
+          level.textBlock.text = `timer : ${score.time}\ncollected : ${score.collected}`;
+          level.background = "#707070FF";
+        });
+        level.onPointerOutObservable.add(() => {
+          level.background = "#333333FF";
+          level.textBlock.text = i;
+        });
+      }
+    }
+
+    //Mode facile
+    this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
+      this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked;
+      console.log(this.scene.checked);
+    });
+
+    //Bouton help
+    this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
+      window.changeScene(-2);
+    });
+  }
   render() {
+    this.ground.mesh.position.x -= 0.05;
     this.scene.render();
   }
 }
