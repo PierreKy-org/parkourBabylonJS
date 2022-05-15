@@ -1,6 +1,7 @@
 export default class End {
-  constructor(pX, pY, pZ, scene) {
+  constructor(pX, pY, pZ, file, scene) {
     this.scene = scene;
+    this.nb = file;
     this.initInstance(pX, pY, pZ);
   }
 
@@ -97,7 +98,7 @@ export default class End {
       completion.text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
 
       button.onPointerClickObservable.add(() => {
-        fetch(`/addScore?level=${this.scene.map}&time=${endTime}&collected=${this.scene.collected}`);
+        fetch(`/addScore?level=${this.nb}&time=${endTime}&collected=${this.scene.collected}`);
         window.changeScene(-1);
       });
     }, 2400);

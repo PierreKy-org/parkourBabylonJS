@@ -26,7 +26,6 @@ export default class Scene {
   constructor(file) {
     this.scene = new BABYLON.Scene(window.engine);
     this.file = file;
-
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("Game GUI", true, this.scene);
 
     this.initScene();
@@ -271,7 +270,6 @@ export default class Scene {
           if (!this.player.orientation) {
             this.player.orientation = plan.orientation;
           }
-
           let callBacks = [
             (zero) => {},
             (one) => new Simple(position.x, position.y, position.z, this),
@@ -287,7 +285,7 @@ export default class Scene {
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => new XEnemy(position.x, position.y, position.z, this),
             (thirteen) => new Collectible(position.x, position.y, position.z, this),
-            (fourteen) => new End(position.x, position.y, position.z, this),
+            (fourteen) => new End(position.x, position.y, position.z, this.file, this),
             (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
             (sixteen) => new SpikesTop(position.x, position.y, position.z, this),
             (seventeen) => new SpikesFront(position.x, position.y, position.z, this),

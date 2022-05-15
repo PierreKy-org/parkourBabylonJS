@@ -140,7 +140,6 @@ export default class PresentationScene {
   async initSceneLevel() {
     let file = await fetch("/getScore");
     let scores = await file.json();
-
     await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
     for (let i = 1; i < 10; i++) {
       let level = this.advancedTexture.getControlByName("level" + i);

@@ -21,16 +21,19 @@ app.get("/levels", (req, res) => {
 app.get("/addScore", (req, res) => {
   var time = req.query.time;
   var collected = req.query.collected;
-
   if (!scores[req.ip]) {
     scores[req.ip] = {};
   }
 
   if (scores[req.ip][req.query.level]) {
-    if (parseInt(time.replaceAll(":", "")) > parseInt(scores[req.ip][req.query.level].time.replaceAll(":", ""))) {
+    console.log("a");
+    if (time > scores[req.ip][req.query.level].time) {
+      console.log("b");
       time = scores[req.ip][req.query.level].time;
     }
-    if (parseInt(collected) < parseInt(scores[req.ip][req.query.level].collected)) {
+    if (
+      parseInt(collected) < parseInt(scores[req.ip][req.query.level].collected)
+    ) {
       collected = scores[req.ip][req.query.level].collected;
     }
   }
@@ -53,4 +56,4 @@ setInterval(() => {
     }
     console.log("Saving scores...");
   });
-}, 60000);
+}, 30000);
