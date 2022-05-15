@@ -1,5 +1,4 @@
 import Scene from "./Scene.js";
-import MenuScene from "./MenuScene.js";
 import PresentationScene from "./PresentationScene.js";
 import HelpScene from "./HelpScene.js";
 
@@ -18,13 +17,10 @@ window.onload = async () => {
         currentScene = new PresentationScene();
         break;
       case -2:
-        currentScene = new MenuScene();
-        break;
-      case -3:
         currentScene = new HelpScene();
         break;
       default:
-        currentScene = new Scene(`level_${index - 1}.json`);
+        currentScene = new Scene(`level_${index-1}.json`);
     }
   };
 
