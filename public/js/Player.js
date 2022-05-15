@@ -188,6 +188,7 @@ export default class Player {
     for (let ray of this.rays) {
       let pick = this.scene.scene.pickWithRay(ray);
       if (pick.distance != 0) {
+        window.pick = pick;
         this.jump = 2;
         break;
       }

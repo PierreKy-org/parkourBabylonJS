@@ -96,7 +96,7 @@ export default class Checkpoint {
       checkpoint: this,
       position: this.box.position.add(new BABYLON.Vector3(0, 0.3, 0)),
       orientation: this.scene.player.orientation || "front",
-      cameraAlpha: this.scene.camera.alpha,
+      cameraAlpha: this.scene.camera.toAlpha,
     };
   }
 }

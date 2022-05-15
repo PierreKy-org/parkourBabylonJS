@@ -73,6 +73,7 @@ class Rotator {
       BABYLON.Tools.ToRadians(to),
       BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
     );
+    this.scene.camera.toAlpha = BABYLON.Tools.ToRadians(to);
 
     this.scene.changeFogColor();
 
