@@ -324,7 +324,7 @@
             "tags": null,
             "resizeToFit": true,
             "textWrapping": 1,
-            "text": "Switch between the 2 camera modes",
+            "text": "Switch between the 2 camera modes.\nWith the free camera you can zoom IN/OUT and rotate the level with the arrow keys.",
             "textHorizontalAlignment": 2,
             "textVerticalAlignment": 2,
             "lineSpacing": "0px",

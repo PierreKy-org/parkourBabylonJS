@@ -20,7 +20,7 @@ window.onload = async () => {
         currentScene = new HelpScene();
         break;
       default:
-        currentScene = new Scene(`level_${index-1}.json`);
+        currentScene = new Scene(`level_${index - 1}.json`);
     }
   };
 
@@ -52,13 +52,17 @@ window.onload = async () => {
     }
   };
 
+  window.addEventListener("keydown", (event) => currentScene.changeInputState(event.key, true), false);
+
+  window.addEventListener("keyup", (event) => currentScene.changeInputState(event.key, false), false);
+
+  window.addEventListener("resize", () => {
+    window.engine.resize();
+  });
+
   window.changeScene(-1);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();
   });
 };
-
-window.addEventListener("resize", () => {
-  window.engine.resize();
-});

@@ -14,6 +14,12 @@ export default class HelpScene {
     await this.advancedTexture.parseFromURLAsync("../assets/gui/help.json");
   }
 
+  changeInputState(key) {
+    if (key == "Escape") {
+      window.changeScene(-1);
+    }
+  }
+
   render() {
     this.scene.render();
   }

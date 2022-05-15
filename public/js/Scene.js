@@ -55,7 +55,7 @@ export default class Scene {
 
     this.player.lastCheckPointData.position = new BABYLON.Vector3(json.spawn.x, json.spawn.y, json.spawn.z);
 
-    this.initEvents();
+    this.inputStates = {};
 
     this.initLevel(json.level);
     this.initFog();
@@ -112,7 +112,7 @@ export default class Scene {
     });
 
     leave.onPointerClickObservable.add(() => {
-      window.changeScene(0);
+      window.changeScene(-1);
     });
 
     musicButton.onIsCheckedChangedObservable.add((value) => {
@@ -203,38 +203,30 @@ export default class Scene {
     return mapData;
   }
 
-  initEvents() {
-    this.inputStates = {};
-
-    const changeInputState = (key, state) => {
-      if (key === "ArrowLeft") {
-        this.inputStates.left = state;
-      } else if (key === "ArrowUp") {
-        this.inputStates.up = state;
-      } else if (key === "ArrowRight") {
-        this.inputStates.right = state;
-      } else if (key === "ArrowDown") {
-        this.inputStates.down = state;
-      } else if (key === "r") {
-        this.inputStates.r = state;
-      } else if (key === "Escape") {
-        if (state) {
-          if (this.menu.isVisible) {
-            this.resume();
-            this.menu.isVisible = false;
-          } else {
-            this.menu.isVisible = true;
-            this.pausex();
-          }
+  changeInputState(key, state) {
+    if (key === "ArrowLeft") {
+      this.inputStates.left = state;
+    } else if (key === "ArrowUp") {
+      this.inputStates.up = state;
+    } else if (key === "ArrowRight") {
+      this.inputStates.right = state;
+    } else if (key === "ArrowDown") {
+      this.inputStates.down = state;
+    } else if (key === "r") {
+      this.inputStates.r = state;
+    } else if (key === "Escape") {
+      if (state) {
+        if (this.menu.isVisible) {
+          this.resume();
+          this.menu.isVisible = false;
+        } else {
+          this.menu.isVisible = true;
+          this.pausex();
         }
-      } else if (key === " ") {
-        this.inputStates.space = state;
       }
-    };
-
-    window.addEventListener("keydown", (event) => changeInputState(event.key, true), false);
-
-    window.addEventListener("keyup", (event) => changeInputState(event.key, false), false);
+    } else if (key === " ") {
+      this.inputStates.space = state;
+    }
   }
 
   initLevel(level) {

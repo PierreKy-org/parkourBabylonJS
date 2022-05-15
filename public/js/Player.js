@@ -129,7 +129,6 @@ export default class Player {
       vectors.forEach((vector) => {
         let length = 0.5 - BABYLON.Vector3.Distance(vector, vectors[vectors.length - 1]) * 0.6;
         var ray = new BABYLON.Ray(vector, new BABYLON.Vector3(0, -1, 0), length);
-        BABYLON.RayHelper.CreateAndShow(ray, this.scene.scene, new BABYLON.Color3(0, 0, 1));
         ray.isPickable = false;
         this.rays.push(ray);
       });
@@ -146,7 +145,9 @@ export default class Player {
       if (this.scene.inputStates.up && this.canJump()) {
         this.setLinearVelocity();
         this.scene.assetsManager.Audio["jump"].play();
-        this.jump--;
+        if (!window.easyMode) {
+          this.jump--;
+        }
         this.LastKeyDown.up = Date.now();
       }
       if (this.scene.inputStates.down) {

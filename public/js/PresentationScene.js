@@ -9,7 +9,6 @@ export default class PresentationScene {
 
     this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
     this.initScene();
-    
   }
 
   async initScene() {
@@ -72,7 +71,7 @@ export default class PresentationScene {
     );
     //Mode facile
     this.advancedTexture.getControlByName("bouton").onPointerUpObservable.add(() => {
-      this.sound.play()
+      this.sound.play();
       this.initSceneLevel();
     });
   }
@@ -147,7 +146,7 @@ export default class PresentationScene {
 
       level.textBlock.text = i;
       level.onPointerUpObservable.add(() => {
-        this.sound.play()
+        this.sound.play();
         window.changeScene(i + 1);
       });
       if (score) {
@@ -164,14 +163,13 @@ export default class PresentationScene {
 
     //Mode facile
     this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
-      this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked;
-      this.sound.play()
-      console.log(this.scene.checked);
+      window.easyMode = this.advancedTexture.getControlByName("facile").isChecked;
+      this.sound.play();
     });
 
     //Bouton help
     this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
-      this.sound.play()
+      this.sound.play();
       window.changeScene(-2);
     });
   }
