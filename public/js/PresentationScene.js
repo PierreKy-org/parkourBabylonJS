@@ -1,27 +1,16 @@
 export default class PresentationScene {
   constructor() {
     this.scene = new BABYLON.Scene(window.engine);
-    this.camera = new BABYLON.FreeCamera(
-      "camera1",
-      new BABYLON.Vector3(0, 5, -10),
-      this.scene
-    );
+    this.camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), this.scene);
     this.camera.setTarget(BABYLON.Vector3.Zero());
     this.ground = this.initGround();
     this.initFog();
-    this.advancedTexture =
-      BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI(
-        "UIMenu",
-        true,
-        this.scene
-      );
+    this.advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateFullscreenUI("UIMenu", true, this.scene);
     this.initScene();
   }
 
   async initScene() {
-    await this.advancedTexture.parseFromURLAsync(
-      "../assets/materials/guiPresentation.json"
-    );
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guiPresentation.json");
 
     var animationHideText = new BABYLON.Animation(
       "myAnimation",
@@ -79,11 +68,9 @@ export default class PresentationScene {
       true
     );
     //Mode facile
-    this.advancedTexture
-      .getControlByName("bouton")
-      .onPointerUpObservable.add(() => {
-        this.initSceneLevel();
-      });
+    this.advancedTexture.getControlByName("bouton").onPointerUpObservable.add(() => {
+      this.initSceneLevel();
+    });
   }
 
   initFog() {
@@ -117,10 +104,7 @@ export default class PresentationScene {
       },
       this.scene
     );
-    ground.mesh.material = new BABYLON.StandardMaterial(
-      "groundMaterial",
-      this.scene
-    );
+    ground.mesh.material = new BABYLON.StandardMaterial("groundMaterial", this.scene);
     ground.mesh.material.diffuseColor = new BABYLON.Color3(1, 0.84, 0);
     ground.mesh.material.alpha = 0.8;
     ground.mesh.material.wireframe = true;
@@ -153,16 +137,14 @@ export default class PresentationScene {
     let file = await fetch("/getScore");
     let scores = await file.json();
 
-    await this.advancedTexture.parseFromURLAsync(
-      "../assets/materials/guilevel.json"
-    );
+    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
     for (let i = 1; i < 10; i++) {
       let level = this.advancedTexture.getControlByName("level" + i);
       let score = scores[`level_${i}.json`];
 
       level.textBlock.text = i;
       level.onPointerUpObservable.add(() => {
-        window.changeScene(i);
+        window.changeScene(i + 1);
       });
       if (score) {
         level.onPointerEnterObservable.add(() => {
@@ -177,20 +159,15 @@ export default class PresentationScene {
     }
 
     //Mode facile
-    this.advancedTexture
-      .getControlByName("facile")
-      .onIsCheckedChangedObservable.add(() => {
-        this.scene.checked =
-          this.advancedTexture.getControlByName("facile").isChecked;
-        console.log(this.scene.checked);
-      });
+    this.advancedTexture.getControlByName("facile").onIsCheckedChangedObservable.add(() => {
+      this.scene.checked = this.advancedTexture.getControlByName("facile").isChecked;
+      console.log(this.scene.checked);
+    });
 
     //Bouton help
-    this.advancedTexture
-      .getControlByName("help")
-      .onPointerUpObservable.add(() => {
-        window.changeScene(-2);
-      });
+    this.advancedTexture.getControlByName("help").onPointerUpObservable.add(() => {
+      window.changeScene(-2);
+    });
   }
   render() {
     this.ground.mesh.position.x -= 0.05;
