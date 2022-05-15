@@ -1,6 +1,7 @@
 import Scene from "./Scene.js";
 import MenuScene from "./MenuScene.js";
 import PresentationScene from "./PresentationScene.js";
+import HelpScene from "./HelpScene.js";
 
 window.onload = async () => {
   window.canvas = document.querySelector("#myCanvas");
@@ -13,11 +14,14 @@ window.onload = async () => {
       currentScene.scene.dispose();
     }
     switch (index) {
-      case 0:
+      case -1:
         currentScene = new PresentationScene();
         break;
-      case 1:
+      case -2:
         currentScene = new MenuScene();
+        break;
+      case -3:
+        currentScene = new HelpScene();
         break;
       default:
         currentScene = new Scene(`level_${index - 1}.json`);
@@ -52,7 +56,7 @@ window.onload = async () => {
     }
   };
 
-  window.changeScene(0);
+  window.changeScene(-1);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();
