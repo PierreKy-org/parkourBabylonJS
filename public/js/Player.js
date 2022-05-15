@@ -6,6 +6,7 @@ export default class Player {
     this.model.meshes.forEach((mesh) => {
       mesh.setEnabled(true);
       mesh.isPickable = false;
+      mesh.applyFog = false;
     });
     this.mesh = this.model.meshes[0];
     this.mesh.name = "baseball";
@@ -55,9 +56,28 @@ export default class Player {
     var advancedTexture = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(this.indicator);
     advancedTexture.parseContent(this.scene.assetsManager.Guis["Speed"]);
 
+    let arrow = BABYLON.MeshBuilder.CreatePlane("indicator", {
+      height: 1,
+      width: 1,
+      sideOrientation: BABYLON.Mesh.DOUBLESIDE,
+    });
+    arrow.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+    arrow.renderingGroupId = 2;
+    arrow.parent = this.indicator;
+    arrow.position = new BABYLON.Vector3(0, -0.7, 0);
+
+    var advancedTexture2 = BABYLON.GUI.AdvancedDynamicTexture.CreateForMesh(arrow);
+    advancedTexture2.parseContent(this.scene.assetsManager.Guis["Speed"]);
+    advancedTexture2.getChildren()[0]._children[0].text = "➡";
+
     this.updateIndicator = () => {
       this.indicator.position = this.mesh.position.add(new BABYLON.Vector3(0, 0.7, 0));
       advancedTexture.getChildren()[0]._children[0].text = `${(((this.speed * 100) / 15) * -1).toFixed(0)}%`;
+
+      let axis1 = this.getLinearVelocity();
+      let axis3 = BABYLON.Vector3.Cross(new BABYLON.Vector3.Zero(), axis1);
+      let axis2 = BABYLON.Vector3.Cross(axis3, axis1);
+      arrow.rotation = BABYLON.Vector3.RotationFromAxis(axis1, axis2, axis3);
     };
   }
 
@@ -143,6 +163,23 @@ export default class Player {
         this.respawn();
         this.LastKeyDown.r = Date.now();
       }
+    } else {
+      if (this.scene.inputStates.up) {
+        if (this.scene.camera.radius > 5) {
+          this.scene.camera.radius -= 1;
+        }
+      }
+      if (this.scene.inputStates.down) {
+        if (this.scene.camera.radius < 400) {
+          this.scene.camera.radius += 1;
+        }
+      }
+      if (this.scene.inputStates.left) {
+        this.scene.camera.alpha -= 0.01;
+      }
+      if (this.scene.inputStates.right) {
+        this.scene.camera.alpha += 0.01;
+      }
     }
 
     this.updateColor();
@@ -166,7 +203,7 @@ export default class Player {
     this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
   }
 
-  setLinearVelocity() {
+  getLinearVelocity() {
     var vector;
     switch (this.orientation) {
       case "front":
@@ -182,7 +219,11 @@ export default class Player {
         vector = new BABYLON.Vector3(0, this.jumpHeight, -this.speed);
         break;
     }
-    this.mesh.physicsImpostor.setLinearVelocity(vector);
+    return vector;
+  }
+
+  setLinearVelocity() {
+    this.mesh.physicsImpostor.setLinearVelocity(this.getLinearVelocity());
   }
 
   setAngularVelocity() {

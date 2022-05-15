@@ -310,12 +310,14 @@ export default class Scene {
     if (on) {
       this.pausex();
       this.camera.radius = 100;
+      this.camera.oldAlpha = this.camera.alpha;
       if (Collectible.model) {
         Collectible.model.meshes[1].renderOutline = true;
       }
     } else {
       this.resume();
       this.camera.radius = 15;
+      this.camera.alpha = this.camera.oldAlpha;
       if (Collectible.model) {
         Collectible.model.meshes[1].renderOutline = false;
       }
