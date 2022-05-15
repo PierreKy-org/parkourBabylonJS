@@ -5,7 +5,9 @@ Pierre KOUYOUMDJIAN <br>
 
 <a href="https://power-of-rotations.herokuapp.com/"><h1>Lien du jeu</h1></a>
 
-[![Watch the video](https://img.youtube.com/vi/HzAEGsJKKqI/maxresdefault.jpg)](https://www.youtube.com/watch?v=HzAEGsJKKqI)
+<h1>DEMO</h1>
+
+[![DEMO](https://img.youtube.com/vi/HzAEGsJKKqI/maxresdefault.jpg)](https://www.youtube.com/watch?v=HzAEGsJKKqI)
 
 <h1>Les points forts</h1>
 
