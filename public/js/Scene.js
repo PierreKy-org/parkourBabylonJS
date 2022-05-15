@@ -112,7 +112,7 @@ export default class Scene {
     });
 
     leave.onPointerClickObservable.add(() => {
-      window.changeScene(0);
+      window.changeScene(-1);
     });
 
     musicButton.onIsCheckedChangedObservable.add((value) => {
