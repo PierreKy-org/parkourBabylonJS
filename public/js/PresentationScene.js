@@ -12,7 +12,7 @@ export default class PresentationScene {
   }
 
   async initScene() {
-    await this.advancedTexture.parseFromURLAsync("../assets/materials/guiPresentation.json");
+    await this.advancedTexture.parseFromURLAsync("../assets/gui/guiPresentation.json");
 
     var animationHideText = new BABYLON.Animation(
       "myAnimation",
@@ -139,7 +139,7 @@ export default class PresentationScene {
   async initSceneLevel() {
     let file = await fetch("/getScore");
     let scores = await file.json();
-    await this.advancedTexture.parseFromURLAsync("../assets/materials/guilevel.json");
+    await this.advancedTexture.parseFromURLAsync("../assets/gui/guilevel.json");
     for (let i = 1; i < 10; i++) {
       let level = this.advancedTexture.getControlByName("level" + i);
       let score = scores[`level_${i}.json`];
