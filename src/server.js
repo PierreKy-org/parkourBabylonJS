@@ -26,14 +26,10 @@ app.get("/addScore", (req, res) => {
   }
 
   if (scores[req.ip][req.query.level]) {
-    console.log("a");
     if (time > scores[req.ip][req.query.level].time) {
-      console.log("b");
       time = scores[req.ip][req.query.level].time;
     }
-    if (
-      parseInt(collected) < parseInt(scores[req.ip][req.query.level].collected)
-    ) {
+    if (parseInt(collected) < parseInt(scores[req.ip][req.query.level].collected)) {
       collected = scores[req.ip][req.query.level].collected;
     }
   }
