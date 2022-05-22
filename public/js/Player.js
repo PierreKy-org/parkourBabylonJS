@@ -27,10 +27,11 @@ export default class Player {
   }
 
   initTrail() {
-    this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, true);
-    this.trail.material = new BABYLON.StandardMaterial("cell", this.scene.scene);
-    this.trail.material.computeHighLevel = true;
+    this.trail = new BABYLON.TrailMesh("trail", this.mesh, this.scene.scene, 0.35, 30, false);
     this.trail.isPickable = false;
+
+    this.trail.material = new BABYLON.StandardMaterial("trailMaterial", this.scene.scene);
+    this.trail.material.wireframe = true;
   }
 
   initPhisics() {
@@ -92,6 +93,7 @@ export default class Player {
     this.jump = 2;
     this.normalCamera = true;
     this.deaths = 0;
+    this.trail.start();
     let time = Date.now();
     this.LastKeyDown = { space: time, enter: time, r: time };
   }
@@ -207,6 +209,7 @@ export default class Player {
 
   resetRotation() {
     this.mesh.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(BABYLON.Vector3.Zero(), 0);
+    this.mesh.rotation.x = Math.PI / 2;
   }
 
   setLinearVelocity() {
