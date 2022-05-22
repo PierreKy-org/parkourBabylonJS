@@ -1,26 +1,26 @@
 import Scene from "./Scene.js";
-import PresentationScene from "./PresentationScene.js";
-import HelpScene from "./HelpScene.js";
+import MainMenu from "./MainMenu.js";
 
 window.onload = async () => {
   window.canvas = document.querySelector("#myCanvas");
   window.engine = new BABYLON.Engine(window.canvas, true);
 
-  var currentScene;
+  var menu = new MainMenu();
+  var currentScene = menu;
 
   window.changeScene = (index) => {
-    if (currentScene) {
+    if (currentScene == menu) {
+      currentScene.pause();
+    } else {
       currentScene.scene.dispose();
     }
     switch (index) {
       case -1:
-        currentScene = new PresentationScene();
-        break;
-      case -2:
-        currentScene = new HelpScene();
+        currentScene = menu;
+        currentScene.resume();
         break;
       default:
-        currentScene = new Scene(`level_${index - 1}.json`);
+        currentScene = new Scene(`level_${index}.json`);
     }
   };
 
@@ -59,8 +59,6 @@ window.onload = async () => {
   window.addEventListener("resize", () => {
     window.engine.resize();
   });
-
-  window.changeScene(-1);
 
   window.engine.runRenderLoop(() => {
     currentScene.render();

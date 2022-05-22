@@ -93,7 +93,7 @@ export default class Player {
     this.normalCamera = true;
     this.deaths = 0;
     let time = Date.now();
-    this.LastKeyDown = { up: time, space: time, r: time };
+    this.LastKeyDown = { space: time, enter: time, r: time };
   }
 
   updateRays() {
@@ -136,19 +136,19 @@ export default class Player {
   }
 
   move() {
-    if (this.scene.inputStates.space && Date.now() - this.LastKeyDown.space > 300) {
+    if (this.scene.inputStates.enter && Date.now() - this.LastKeyDown.enter > 300) {
       this.scene.distanceCamera(this.normalCamera);
       this.normalCamera = !this.normalCamera;
-      this.LastKeyDown.space = Date.now();
+      this.LastKeyDown.enter = Date.now();
     }
     if (this.normalCamera) {
-      if (this.scene.inputStates.up && this.canJump()) {
+      if (this.scene.inputStates.space && this.canJump()) {
         this.setLinearVelocity();
         this.scene.assetsManager.Audio["jump"].play();
         if (!window.easyMode) {
           this.jump--;
         }
-        this.LastKeyDown.up = Date.now();
+        this.LastKeyDown.space = Date.now();
       }
       if (this.scene.inputStates.down) {
         this.speed = 0;
@@ -202,7 +202,7 @@ export default class Player {
   }
 
   canJump() {
-    return this.jump > 0 && Date.now() - this.LastKeyDown.up > 300;
+    return this.jump > 0 && Date.now() - this.LastKeyDown.space > 300;
   }
 
   resetRotation() {

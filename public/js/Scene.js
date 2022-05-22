@@ -35,6 +35,12 @@ export default class Scene {
     window.engine.displayLoadingUI();
 
     let file = await fetch(`./assets/levels/${this.file}`);
+    if (file.status == 404) {
+      this.loaded = true;
+      window.engine.hideLoadingUI();
+      window.changeScene(-1);
+      return;
+    }
     let json = await file.json();
 
     this.assetsManager = new AssetsManager(this.scene, json.assets);
@@ -180,7 +186,10 @@ export default class Scene {
 
   getTimer() {
     let duration = Date.now() - this.startTimer;
-    return `${new Date(duration).toUTCString().match(/(\d\d:\d\d:\d\d)/)[0]}:${(duration % 1000)
+    let date = new Date(duration);
+    return `${date.getMinutes().toString().padStart(2, "0")}:${date.getSeconds().toString().padStart(2, "0")}:${(
+      duration % 1000
+    )
       .toString()
       .padStart(3, "0")}`;
   }
@@ -226,6 +235,8 @@ export default class Scene {
       }
     } else if (key === " ") {
       this.inputStates.space = state;
+    } else if (key === "Enter") {
+      this.inputStates.enter = state;
     }
   }
 
@@ -277,7 +288,7 @@ export default class Scene {
             (eleven) => new Checkpoint(position.x, position.y, position.z, this),
             (twelve) => new XEnemy(position.x, position.y, position.z, this),
             (thirteen) => new Collectible(position.x, position.y, position.z, this),
-            (fourteen) => new End(position.x, position.y, position.z, this.file, this),
+            (fourteen) => new End(position.x, position.y, position.z, this),
             (fifthteen) => new SpikesBottom(position.x, position.y, position.z, this),
             (sixteen) => new SpikesTop(position.x, position.y, position.z, this),
             (seventeen) => new SpikesFront(position.x, position.y, position.z, this),
