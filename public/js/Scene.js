@@ -37,7 +37,7 @@ export default class Scene {
     let file = await fetch(`./assets/levels/${this.file}`);
     if (file.status == 404) {
       this.loaded = true;
-      window.engine.hideLoadingUI();
+      //window.engine.hideLoadingUI();
       window.changeScene(-1);
       return;
     }

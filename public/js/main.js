@@ -24,31 +24,20 @@ window.onload = async () => {
     }
   };
 
+  let iframe = document.createElement("iframe");
+  iframe.src = "https://editor.isf.video/shaders/5e7a7fe17c113618206de63b/embed?embed_controls_state=1";
+  iframe.setAttribute("frameborder", "0");
+  document.body.appendChild(iframe);
+
   BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
-    if (document.getElementById("customLoadingScreenDiv")) {
-      document.getElementById("customLoadingScreenDiv").style.display = "initial";
-      return;
-    }
-    this._loadingDiv = document.createElement("div");
-    this._loadingDiv.id = "customLoadingScreenDiv";
-    this._loadingDiv.innerHTML = `<img src="assets/images/loading.gif" alt="LOADING..."  width="100%" />`;
-
-    var customLoadingScreenCss = document.createElement("style");
-    customLoadingScreenCss.innerHTML = `
-    #customLoadingScreenDiv{
-        background-color: black;
-        overflow: hidden;
-    }
-    `;
-
+    iframe.style.visibility = "visible";
+    this._loadingDiv = iframe;
     this._resizeLoadingUI();
-    document.body.appendChild(this._loadingDiv);
-    document.body.appendChild(customLoadingScreenCss);
   };
 
   BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
     if (currentScene.loaded) {
-      document.getElementById("customLoadingScreenDiv").style.display = "none";
+      iframe.style.visibility = "hidden";
     }
   };
 
