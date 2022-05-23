@@ -70,6 +70,7 @@ export default class MainMenu {
     this.scene.beginDirectAnimation(start, [animationWidth, animationHeigth], 0, 60, true);
 
     start.onPointerUpObservable.add(() => {
+      BABYLON.Engine.audioEngine.unlock();
       this.click.play();
       window.canvas.requestFullscreen();
       this.initLevelsGui();
