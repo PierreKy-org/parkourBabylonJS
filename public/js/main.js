@@ -41,6 +41,8 @@ window.onload = async () => {
     }
   };
 
+  window.test = () => console.log(iframe.style.width, iframe.style.height);
+
   window.addEventListener("keydown", (event) => currentScene?.changeInputState(event.key, true), false);
 
   window.addEventListener("keyup", (event) => currentScene?.changeInputState(event.key, false), false);

@@ -71,6 +71,7 @@ export default class MainMenu {
 
     start.onPointerUpObservable.add(() => {
       this.click.play();
+      window.canvas.requestFullscreen();
       this.initLevelsGui();
     });
 
