@@ -1,14 +1,22 @@
 import Scene from "./Scene.js";
 import MainMenu from "./MainMenu.js";
 
+const refreshScores = async () => {
+  let file = await fetch("/getScore");
+  window.scores = await file.json();
+};
+
 window.onload = async () => {
   window.canvas = document.querySelector("#myCanvas");
   window.engine = new BABYLON.Engine(window.canvas, true);
 
   var menu = new MainMenu();
   var currentScene = menu;
+  await refreshScores();
 
-  window.changeScene = (index) => {
+  window.changeScene = async (index) => {
+    await refreshScores();
+
     if (currentScene == menu) {
       currentScene.pause();
     } else {
@@ -41,11 +49,9 @@ window.onload = async () => {
     }
   };
 
-  window.test = () => console.log(iframe.style.width, iframe.style.height);
+  window.addEventListener("keydown", (event) => currentScene.changeInputState(event.key, true), false);
 
-  window.addEventListener("keydown", (event) => currentScene?.changeInputState(event.key, true), false);
-
-  window.addEventListener("keyup", (event) => currentScene?.changeInputState(event.key, false), false);
+  window.addEventListener("keyup", (event) => currentScene.changeInputState(event.key, false), false);
 
   window.addEventListener("resize", () => {
     window.engine.resize();

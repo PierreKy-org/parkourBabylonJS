@@ -25,13 +25,22 @@ app.get("/addScore", (req, res) => {
     scores[req.ip] = {};
   }
 
+  let better = false;
   if (scores[req.ip][req.query.level]) {
     if (time > scores[req.ip][req.query.level].time) {
       time = scores[req.ip][req.query.level].time;
+      better = true;
     }
     if (parseInt(collected) < parseInt(scores[req.ip][req.query.level].collected)) {
       collected = scores[req.ip][req.query.level].collected;
+      better = true;
     }
+  } else {
+    better = true;
+  }
+
+  if (better) {
+    console.log(`New Score from ${req.ip} in ${req.query.level} -> time: ${time}, collected: ${collected}`);
   }
 
   scores[req.ip][req.query.level] = { time, collected };

@@ -76,11 +76,8 @@ export default class MainMenu {
       this.initLevelsGui();
     });
 
-    let fileS = await fetch("/getScore");
-    this.scores = await fileS.json();
-
-    let fileL = await fetch("/levels");
-    this.levels = await fileL.json();
+    let file = await fetch("/levels");
+    this.levels = await file.json();
   }
 
   async initLevelsGui() {
@@ -138,7 +135,7 @@ export default class MainMenu {
   }
 
   hideScoreButton(button) {
-    let score = this.scores[`level_${button.num}.json`];
+    let score = window.scores[`level_${button.num}.json`];
     if (score) {
       button.textBlock.text = `${button.num}`;
       button.textBlock.fontSize = button.oldData.fontSize;
@@ -148,7 +145,7 @@ export default class MainMenu {
   }
 
   showScoreButton(button) {
-    let score = this.scores[`level_${button.num}.json`];
+    let score = window.scores[`level_${button.num}.json`];
     if (score) {
       button.oldData = {
         fontSize: button.textBlock.fontSize,
