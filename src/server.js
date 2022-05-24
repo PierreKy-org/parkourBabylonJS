@@ -43,7 +43,7 @@ app.get("/addScore", (req, res) => {
     console.log(`New Score from ${req.ip} in ${req.query.level} -> time: ${time}, collected: ${collected}`);
   }
 
-  scores[req.ip][req.query.level] = { time, collected };
+  scores[req.ip][req.query.level] = { time, collected, collectable: req.query.collectable };
 });
 
 app.get("/getScore", (req, res) => {

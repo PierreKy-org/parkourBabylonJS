@@ -97,7 +97,9 @@ export default class End {
       completion.text = `${this.scene.collected}/${this.scene.collectable} Pumpkins Collected`;
 
       button.onPointerClickObservable.add(() => {
-        fetch(`/addScore?level=${this.scene.file}&time=${endTime}&collected=${this.scene.collected}`);
+        fetch(
+          `/addScore?level=${this.scene.file}&time=${endTime}&collected=${this.scene.collected}&collectable=${this.scene.collectable}`
+        );
         window.changeScene(1 + parseInt(this.scene.file.replace(/[A-Za-z$-/_]/g, "")));
       });
     }, 2400);

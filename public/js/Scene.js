@@ -53,7 +53,7 @@ export default class Scene {
     this.camera = this.initCamera();
     this.light = this.initLight();
     this.ground = this.initGround();
-    this.initGui();
+    this.initGui(json.title);
     this.initSkyBox();
 
     this.collectable = 0;
@@ -70,6 +70,7 @@ export default class Scene {
     this.assetsManager.Audio["music"].play();
     this.assetsManager.Audio["music"].setVolume(0.3);
 
+    this.showTitle();
     this.loaded = true;
     window.engine.hideLoadingUI();
 
@@ -86,21 +87,19 @@ export default class Scene {
     return light;
   }
 
-  initGui() {
+  initGui(title) {
     this.advancedTexture.parseContent(this.assetsManager.Guis["Game"]);
-    let gui = this.advancedTexture.getChildren()[0]._children[0];
-    let fps = gui._children[0]._children[0];
+    let fps = this.advancedTexture.getControlByName("FPS");
 
-    let death = gui._children[1]._children[0]._children[0]._children[0];
-    let timer = gui._children[1]._children[0]._children[1]._children[0];
+    let death = this.advancedTexture.getControlByName("Death");
+    let timer = this.advancedTexture.getControlByName("Timer");
 
-    this.menu = gui._children[2]._children[0];
-    let leave = this.menu._children[0]._children[0];
-    let resume = this.menu._children[1]._children[0];
+    this.menu = this.advancedTexture.getControlByName("Menu");
+    let leave = this.advancedTexture.getControlByName("Leave");
+    let resume = this.advancedTexture.getControlByName("Resume");
 
-    let sound = this.menu._children[2]._children[0];
-    let musicButton = sound._children[0]._children[0];
-    let musicIcon = sound._children[1]._children[0];
+    let musicButton = this.advancedTexture.getControlByName("Music Button");
+    let musicIcon = this.advancedTexture.getControlByName("Music Icon");
 
     musicButton.isChecked = true;
 
@@ -130,6 +129,36 @@ export default class Scene {
         this.assetsManager.Audio["music"].setVolume(0);
       }
     });
+
+    this.title = this.advancedTexture.getControlByName("Title");
+    this.title.text = title;
+
+    this.showTitle = () => {
+      setTimeout(() => {
+        if (this.title.alpha == 1) {
+          var fade = new BABYLON.Animation(
+            "start",
+            "alpha",
+            30,
+            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+          );
+          var keys = [
+            {
+              frame: 0,
+              value: 1,
+            },
+            {
+              frame: 60,
+              value: 0,
+            },
+          ];
+          fade.setKeys(keys);
+
+          this.scene.beginDirectAnimation(this.title, [fade], 0, 60, true);
+        }
+      }, 3000);
+    };
   }
 
   initSkyBox() {
@@ -230,6 +259,7 @@ export default class Scene {
           this.menu.isVisible = false;
         } else {
           this.menu.isVisible = true;
+          this.title.alpha = 0;
           this.pausex();
         }
       }

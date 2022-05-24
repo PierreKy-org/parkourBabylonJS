@@ -1,1 +1,3 @@
-{"::1":{"level_1.json":{"time":"00:05:236","collected":"2"},"level_9.json":{"time":"01:46:164","collected":"1"},"level_10.json":{"time":"00:05:610","collected":"1"},"level_2.json":{"time":"00:04:145","collected":"2"},"level_4.json":{"time":"00:14:957","collected":"1"},"level_5.json":{"time":"00:09:613","collected":"0"},"level_8.json":{"time":"00:44:696","collected":"1"}}}
+{
+  "::1": {}
+}

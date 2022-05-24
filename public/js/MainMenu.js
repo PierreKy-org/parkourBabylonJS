@@ -160,7 +160,7 @@ export default class MainMenu {
         outlineWidth: button.textBlock.outlineWidth,
         background: button.background,
       };
-      button.textBlock.text = `Timer : ${score.time}\nCollected :\n${score.collected}`;
+      button.textBlock.text = `Timer : ${score.time}\nCollected :\n${score.collected}/${score.collectable}`;
       button.textBlock.fontSize = "15%";
       button.textBlock.outlineWidth = "3";
       button.background = "#707070FF";
