@@ -144,7 +144,7 @@ export default class MainMenu {
 
   hideScoreButton(button) {
     let score = window.scores[`level_${button.num}.json`];
-    if (score?.oldData) {
+    if (score && button.oldData) {
       button.textBlock.text = `${button.num}`;
       button.textBlock.fontSize = button.oldData.fontSize;
       button.textBlock.outlineWidth = button.oldData.outlineWidth;
