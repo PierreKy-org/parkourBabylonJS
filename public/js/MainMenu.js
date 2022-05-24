@@ -72,7 +72,7 @@ export default class MainMenu {
     start.onPointerUpObservable.add(() => {
       BABYLON.Engine.audioEngine.unlock();
       this.click.play();
-      window.canvas.requestFullscreen();
+      //window.canvas.requestFullscreen();
       this.initLevelsGui();
     });
 
@@ -82,13 +82,21 @@ export default class MainMenu {
 
   async initLevelsGui() {
     this.state = "LEVELS";
-    await this.advancedTexture.parseFromURLAsync("../assets/gui/levels.json");
+    await this.advancedTexture.parseFromURLAsync("../assets/gui/menu.json");
+
+    this.LevelsGrid = this.advancedTexture.getControlByName("LevelsGrid");
+    this.HelpGrid = this.advancedTexture.getControlByName("HelpGrid");
 
     let help = this.advancedTexture.getControlByName("Help");
     help.onPointerUpObservable.add(async () => {
-      this.state = "HELP";
       this.click.play();
-      await this.advancedTexture.parseFromURLAsync("../assets/gui/help.json");
+      this.enterHelp();
+    });
+
+    let close = this.advancedTexture.getControlByName("Close");
+    close.onPointerUpObservable.add(async () => {
+      this.click.play();
+      this.exitHelp();
     });
 
     let easy = this.advancedTexture.getControlByName("Easy Mode");
@@ -115,6 +123,7 @@ export default class MainMenu {
   }
 
   initButtons() {
+    console.log("INIT BUTTONS");
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         let button = this.advancedTexture.getControlByName(`${i}_${j}`);
@@ -163,7 +172,7 @@ export default class MainMenu {
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         let button = this.advancedTexture.getControlByName(`${i}_${j}`);
-        button.num = (i + 1) * (j + 1) + this.page * 9;
+        button.num = i * 3 + (j + 1) + this.page * 9;
         button.textBlock.text = `${button.num}`;
         this.showElement(button, button.num <= this.levels.length);
       }
@@ -185,15 +194,27 @@ export default class MainMenu {
     }
   }
 
-  showElement(element, hide) {
-    element.isEnabled = hide;
-    element.isVisible = hide;
+  showElement(element, show) {
+    element.isEnabled = show;
+    element.isVisible = show;
+  }
+
+  exitHelp() {
+    this.state = "LEVEL";
+    this.showElement(this.HelpGrid, false);
+    this.showElement(this.LevelsGrid, true);
+  }
+
+  enterHelp() {
+    this.state = "HELP";
+    this.showElement(this.LevelsGrid, false);
+    this.showElement(this.HelpGrid, true);
   }
 
   async changeInputState(key) {
     if (this.state == "HELP") {
       if (key == "Escape") {
-        this.initLevelsGui();
+        this.exitHelp();
       }
     }
   }
