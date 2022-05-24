@@ -1,6 +1,11 @@
 import Scene from "./Scene.js";
 import MainMenu from "./MainMenu.js";
 
+let iframe = document.createElement("iframe");
+iframe.src = "https://editor.isf.video/shaders/5e7a7f837c113618206ddf11/embed?embed_controls_state=1";
+iframe.setAttribute("frameborder", "0");
+document.body.appendChild(iframe);
+
 const refreshScores = async () => {
   let file = await fetch("/getScore");
   window.scores = await file.json();
@@ -32,19 +37,14 @@ window.onload = async () => {
     }
   };
 
-  let iframe = document.createElement("iframe");
-  iframe.src = "https://editor.isf.video/shaders/5e7a7fe17c113618206de63b/embed?embed_controls_state=1";
-  iframe.setAttribute("frameborder", "0");
-  document.body.appendChild(iframe);
-
   BABYLON.DefaultLoadingScreen.prototype.displayLoadingUI = function () {
     iframe.style.visibility = "visible";
-    this._loadingDiv = iframe;
-    this._resizeLoadingUI();
+    window.canvas.style.display = "none";
   };
 
   BABYLON.DefaultLoadingScreen.prototype.hideLoadingUI = function () {
     if (currentScene.loaded) {
+      window.canvas.style.display = "block";
       iframe.style.visibility = "hidden";
     }
   };

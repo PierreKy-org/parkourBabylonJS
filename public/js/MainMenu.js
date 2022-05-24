@@ -72,7 +72,7 @@ export default class MainMenu {
     start.onPointerUpObservable.add(() => {
       BABYLON.Engine.audioEngine.unlock();
       this.click.play();
-      //window.canvas.requestFullscreen();
+      window.canvas.requestFullscreen();
       this.initLevelsGui();
     });
 
@@ -123,7 +123,6 @@ export default class MainMenu {
   }
 
   initButtons() {
-    console.log("INIT BUTTONS");
     for (let i = 0; i < 3; i++) {
       for (let j = 0; j < 3; j++) {
         let button = this.advancedTexture.getControlByName(`${i}_${j}`);
