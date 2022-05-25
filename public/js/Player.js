@@ -170,6 +170,9 @@ export default class Player {
         this.respawn();
         this.LastKeyDown.r = Date.now();
       }
+      if (Object.keys(this.scene.inputStates).length) {
+        this.scene.hideTitle();
+      }
     } else {
       if (this.scene.inputStates.up) {
         if (this.scene.camera.radius > 5) {

@@ -70,7 +70,6 @@ export default class Scene {
     this.assetsManager.Audio["music"].play();
     this.assetsManager.Audio["music"].setVolume(0.3);
 
-    this.showTitle();
     this.loaded = true;
     window.engine.hideLoadingUI();
 
@@ -133,31 +132,30 @@ export default class Scene {
     this.title = this.advancedTexture.getControlByName("Title");
     this.title.text = title;
 
-    this.showTitle = () => {
-      setTimeout(() => {
-        if (this.title.alpha == 1) {
-          var fade = new BABYLON.Animation(
-            "start",
-            "alpha",
-            30,
-            BABYLON.Animation.ANIMATIONTYPE_FLOAT,
-            BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
-          );
-          var keys = [
-            {
-              frame: 0,
-              value: 1,
-            },
-            {
-              frame: 60,
-              value: 0,
-            },
-          ];
-          fade.setKeys(keys);
+    this.hideTitle = () => {
+      if (!this.title.hidden && this.title.alpha == 1) {
+        this.title.hidden = true;
+        var fade = new BABYLON.Animation(
+          "start",
+          "alpha",
+          30,
+          BABYLON.Animation.ANIMATIONTYPE_FLOAT,
+          BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT
+        );
+        var keys = [
+          {
+            frame: 0,
+            value: 1,
+          },
+          {
+            frame: 60,
+            value: 0,
+          },
+        ];
+        fade.setKeys(keys);
 
-          this.scene.beginDirectAnimation(this.title, [fade], 0, 60, true);
-        }
-      }, 3000);
+        this.scene.beginDirectAnimation(this.title, [fade], 0, 60, true);
+      }
     };
   }
 
