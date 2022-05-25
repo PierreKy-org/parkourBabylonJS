@@ -1,3 +1,1 @@
-{
-  "::1": {}
-}
+{"::1":{"level_1.json":{"time":"00:22:350","collected":"0","collectable":"2"},"level_3.json":{"time":"01:25:576","collected":"1","collectable":"2"},"level_8.json":{"time":"00:43:875","collected":"1","collectable":"3"}}}
