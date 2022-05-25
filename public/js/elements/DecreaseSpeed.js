@@ -25,6 +25,7 @@ export default class DecreaseSpeed {
       this.box = DecreaseSpeed.builder.createInstance(`DecreaseSpeed_${pX}_${pY}_${pZ}`);
     }
     this.box.alwaysSelectAsActiveMesh = true;
+    this.box.isPickable = false;
     this.box.position = new BABYLON.Vector3(pX, pY, pZ);
   }
 
