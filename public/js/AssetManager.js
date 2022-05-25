@@ -28,8 +28,12 @@ export default class AssetsManager {
 
     //Audios
     var keys = Object.keys(audio);
-    keys.forEach((key) => {
-      this.Audio[key] = new BABYLON.Sound(key, audio[key].path, scene.scene, null, { loop: audio[key].loop });
+    this.audios = keys.map((key) => {
+      return new Promise((resolve, reject) => {
+        this.Audio[key] = new BABYLON.Sound(key, audio[key].path, scene.scene, () => resolve(), {
+          loop: audio[key].loop,
+        });
+      });
     });
   }
 
@@ -46,5 +50,7 @@ export default class AssetsManager {
     jsons.forEach((txt) => {
       this.Guis[txt.root.name] = txt;
     });
+
+    await Promise.all(this.audios);
   }
 }
