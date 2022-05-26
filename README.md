@@ -7,51 +7,51 @@ Pierre KOUYOUMDJIAN <br>
 
 <h1>Le jeu</h1>
 
-    Le but du jeu est de finir chaque niveau le plus vite possible, ou pour les collectioneurs de recuperer toutes les citrouilles.
-
-    Les mouvements sont relatifs a la rotation de la balle, donc lorsque l'on veut sauter dans une direction
-    il faut que la balle tourne deja dans celle ci. Le joueur dispose de 3 sauts, la trainée derriere
-    lui sert d'indicateur de combien il lui en reste.
-    Les touches sont decrites en globalité dans le menu d'aide.
-
-    Il y a un mode facile a activer depuis le menu de selection des niveaux qui accorde au joueur un nombre de saut infini.
+>Le but du jeu est de finir chaque niveau le plus vite possible, ou pour les collectioneurs de recuperer toutes les citrouilles.
+>
+>Les mouvements sont relatifs a la rotation de la balle, donc lorsque l'on veut sauter dans une direction
+il faut que la balle tourne deja dans celle ci. Le joueur dispose de 3 sauts, la trainée derriere
+lui sert d'indicateur de combien il lui en reste.
+>Les touches sont decrites en globalité dans le menu d'aide.
+>
+>Il y a un mode facile a activer depuis le menu de selection des niveaux qui accorde au joueur un nombre de saut infini.
 
 <h1>Nos types de blocks</h1>
 
 - <h2>Les checkpoints:</h2>
-    Ils permettent de revenir a un point du niveau lorsque l'on meurt ou on peut le faire manuellement en appuyant sur la touche R.</br>
-    Le checkpoint sauvegardé est le dernier activé par le joueur.</br>
+>Ils permettent de revenir a un point du niveau lorsque l'on meurt ou on peut le faire manuellement en appuyant sur la touche R.</br>
+Le checkpoint sauvegardé est le dernier activé par le joueur.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367782619693077/checkpoint.png" alt="CHECKPOINT" width="80px">
 
 - <h2>La fin du niveau:</h2>
-    <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367783005577306/end.png" alt="END" width="80px">
+><img src="https://cdn.discordapp.com/attachments/324198067089702913/979367783005577306/end.png" alt="END" width="80px">
 
 - <h2>Les collectibles:</h2>
-    Pour ceux qui sont des collectioneurs dans l'ame (le niveau est finissable sans tous les recuperer).</br>
+>Pour ceux qui sont des collectioneurs dans l'ame (le niveau est finissable sans tous les recuperer).</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367783563415582/collectible.png" alt="COLLECTIBLE" width="80px">
 
 - <h2>Les trampolines:</h2>
-    Il font sauter la balle plus haut qu'un saut traditionel.</br>
+>Il font sauter la balle plus haut qu'un saut traditionel.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367783311740988/trampoline.png" alt="TRAMPOLINES" width="80px">
 
 - <h2>Les piques:</h2>
-    Ce sont des obstacles qu'il ne vaut mieux pas toucher sous peine de vous renvoyer au dernier checkpoint.</br>
+>Ce sont des obstacles qu'il ne vaut mieux pas toucher sous peine de vous renvoyer au dernier checkpoint.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367784330969138/spikes.png" alt="PIQUES" width="80px">
 
 - <h2>Les ennemies:</h2>
-    Comme les piques mais ils se deplacent sur un axe jusqu'au premier objstacles puis font demi tour.</br>
+>Comme les piques mais ils se deplacent sur un axe jusqu'au premier objstacles puis font demi tour.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367781785034832/ennemy.png" alt="ENNEMIES" width="80px">
 
 - <h2>Les rotateurs:</h2>
-    De base le joueur ne se deplace que sur un axe, grace a ses blocks, le jeu devient 3d.</br>
+>De base le joueur ne se deplace que sur un axe, grace a ses blocks, le jeu devient 3d.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367782112198686/rotator.png" alt="ROTATEURS" width="80px">
 
 - <h2>Les ralentisseurs:</h2>
-    Ils diminuent la vitesse max du joueur.</br>
+>Ils diminuent la vitesse max du joueur.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367781474639882/decreaseSpeed.png" alt="RALENTISSEURS" width="80px">
 
 - <h2>Les accelerateurs:</h2>
-    Ils augmentent la vitesse max du joueur.</br>
+>Ils augmentent la vitesse max du joueur.</br>
     <img src="https://cdn.discordapp.com/attachments/324198067089702913/979367783806693376/increaseSpeed.png" alt="ACCELERATEURS" width="80px">
 
 <h1>Les points forts</h1>
