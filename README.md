@@ -12,7 +12,7 @@ Pierre KOUYOUMDJIAN <br>
     Les mouvements sont relatifs a la rotation de la balle, donc lorsque l'on veut sauter dans une direction
     il faut que la balle tourne deja dans celle ci. Le joueur dispose de 3 sauts, la trainée derriere
     lui sert d'indicateur de combien il lui en reste.
-    Les touches sont decritent en globalité dans le menu d'aide.
+    Les touches sont decrites en globalité dans le menu d'aide.
 
     Il y a un mode facile a activer depuis le menu de selection des niveaux qui accorde au joueur un nombre de saut infini.
 
@@ -65,7 +65,7 @@ Pierre KOUYOUMDJIAN <br>
 - Le jeu saccade un peu sur les vieux pc portables.
 - Les controles sont un peu long a prendre en main.
 
-<h1>Le devellopement</h1>
+<h1>Le developpement</h1>
 
 <h2><i>La version v0 de notre jeu apres 1 mois de devellopement:</i></h2>
 
