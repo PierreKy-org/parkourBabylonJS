@@ -9,7 +9,9 @@ Pierre KOUYOUMDJIAN <br>
 
     Le but du jeu est de finir chaque niveau le plus vite possible, ou pour les collectioneurs de recuperer toutes les citrouilles.
 
-    Les mouvements sont relatifs a la rotation de la balle, donc lorsque l'on veut sauter dans une direction il faut que la balle tourne deja dans celle ci. Le joueur dispose de 3 sauts, la trainée derriere lui sert d'indicateur de combien il lui en reste.
+    Les mouvements sont relatifs a la rotation de la balle, donc lorsque l'on veut sauter dans une direction
+    il faut que la balle tourne deja dans celle ci. Le joueur dispose de 3 sauts, la trainée derriere
+    lui sert d'indicateur de combien il lui en reste.
     Les touches sont decritent en globalité dans le menu d'aide.
 
     Il y a un mode facile a activer depuis le menu de selection des niveaux qui accorde au joueur un nombre de saut infini.
