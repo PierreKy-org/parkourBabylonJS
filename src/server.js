@@ -44,6 +44,8 @@ app.get("/addScore", (req, res) => {
   }
 
   scores[req.ip][req.query.level] = { time, collected, collectable: req.query.collectable };
+
+  res.sendStatus(200);
 });
 
 app.get("/getScore", (req, res) => {
