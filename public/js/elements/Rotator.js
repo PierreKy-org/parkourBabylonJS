@@ -90,7 +90,7 @@ class Rotator {
       () => {
         if (!this.scene.camera.inRotator) {
           this.scene.camera.alpha = BABYLON.Tools.ToRadians(to);
-          this.scene.player.lastCheckPointData.checkpoint.setCheckpointData();
+          this.scene.player.lastCheckPointData.checkpoint?.setCheckpointData();
         }
         this.scene.camera.inRotator = false;
       }
