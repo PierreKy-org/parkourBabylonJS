@@ -1,0 +1,232 @@
+{
+  "level": [
+    {
+      "map": [
+        [1],
+        [1],
+        [1],
+        [1],
+        [1, 16],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [1, 16],
+        [1],
+        [1],
+        [1],
+        [1, 0, 0, 0, 0, 0, 0, 19],
+        [1, 0, 0, 0, 0, 0, 23, 1, 16],
+        [1, 0, 0, 0, 0, 0, 0, 20],
+        [1],
+        [1],
+        [1],
+        [1, 16],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [19, 0, 0, 0, 0, 0, 0, 19],
+        [1, 16, 0, 0, 0, 0, 23, 1, 16],
+        [20, 0, 0, 0, 0, 0, 0, 20],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [19, 0, 0, 0, 0, 0, 0, 19],
+        [1, 16, 0, 0, 0, 0, 23, 1, 16],
+        [20, 0, 0, 0, 0, 0, 0, 20],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [0, 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [],
+        [0, 0, 0, 0, 0, 0, 19, 0, 0, 0, 19],
+        [0, 0, 0, 0, 0, 15, 1, 16, 0, 15, 1, 16],
+        [1, 16, 0, 0, 0, 0, 12],
+        [1],
+        [1, 11],
+        [1],
+        [1],
+        [0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 19],
+        [
+          0, 0, 0, 0, 0, 15, 1, 16, 0, 15, 1, 16, 0, 0, 1, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 1, 16
+        ],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 15, 1, 16],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 15, 1, 16],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 15, 1, 16],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 15, 1, 16],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 16, 0, 0, 0, 0, 15, 1, 16],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 20],
+        [],
+        [],
+        [],
+        [],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 14]
+      ],
+      "origin": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "orientation": "front"
+    },
+    {
+      "map": [[1], [], [], [], [], [], [], [], [], [24], [], [], [], [], [1]],
+      "origin": {
+        "x": 95,
+        "y": 27,
+        "z": 5
+      },
+      "orientation": "right"
+    },
+    {
+      "map": [[1], [], [], [], [], [], [], [24], [], [], [], [], [], [], [1]],
+      "origin": {
+        "x": 96,
+        "y": 28,
+        "z": 5
+      },
+      "orientation": "right"
+    },
+    {
+      "map": [[1], [], [], [], [], [24], [], [], [], [], [], [], [], [], [1]],
+      "origin": {
+        "x": 97,
+        "y": 29,
+        "z": 5
+      },
+      "orientation": "right"
+    },
+    {
+      "map": [[1], [], [24], [], [], [], [], [], [], [], [], [], [], [], [1]],
+      "origin": {
+        "x": 98,
+        "y": 30,
+        "z": 5
+      },
+      "orientation": "right"
+    }
+  ],
+  "assets": {
+    "models": {
+      "baseball": {
+        "path": "../../assets/models/baseball/",
+        "model": "scene.gltf"
+      },
+      "pumpkin": {
+        "path": "../../assets/models/pumpkin/",
+        "model": "pumpkin.gltf"
+      },
+      "trampoline": {
+        "path": "../../assets/models/trampoline/",
+        "model": "trampoline.obj"
+      },
+      "flag": {
+        "path": "../../assets/models/flag/",
+        "model": "flag.obj"
+      },
+      "enemy": {
+        "path": "../../assets/models/enemy/",
+        "model": "scene.gltf"
+      }
+    },
+    "materials": [
+      {
+        "name": "Spike #NJXV5A#14",
+        "path": "../../assets/materials/spike.json"
+      },
+      {
+        "name": "Simple #NJXV5A#12",
+        "path": "../../assets/materials/simple.json"
+      },
+      {
+        "name": "Increase Speed #NJXV5A#17",
+        "path": "../../assets/materials/increaseSpeed.json"
+      },
+      {
+        "name": "Decrease Speed #NJXV5A#19",
+        "path": "../../assets/materials/decreaseSpeed.json"
+      }
+    ],
+    "guis": [
+      "../../assets/gui/end.json",
+      "../../assets/gui/arrow.json",
+      "../../assets/gui/game.json",
+      "../../assets/gui/speed.json"
+    ],
+    "audio": {
+      "jump": { "path": "../../assets/audio/jump.wav", "loop": false },
+      "hit": { "path": "../../assets/audio/gameOver.mp3", "loop": false },
+      "music": { "path": "../../assets/audio/music.wav", "loop": true },
+      "end": { "path": "../../assets/audio/end.wav", "loop": false },
+      "collected": {
+        "path": "../../assets/audio/collected.wav",
+        "loop": false
+      },
+      "decreaseSpeed": {
+        "path": "../../assets/audio/decreaseSpeed.wav",
+        "loop": false
+      },
+      "increaseSpeed": {
+        "path": "../../assets/audio/increaseSpeed.mp3",
+        "loop": false
+      },
+      "bounce": { "path": "../../assets/audio/bounce.wav", "loop": false },
+      "checkpoint": { "path": "../../assets/audio/checkpoint.wav", "loop": false },
+      "glitch": { "path": "../../assets/audio/glitch.wav", "loop": false }
+    }
+  },
+  "spawn": {
+    "x": 0,
+    "y": 1,
+    "z": 0
+  },
+  "title": "Good Luck"
+}
